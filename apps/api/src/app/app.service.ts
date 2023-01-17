@@ -1,9 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { Message } from '@mindmap/api-interfaces';
+import {Injectable} from '@nestjs/common';
+import {PrismaService} from "../prisma/prisma.service";
+import {User} from "@prisma/client";
 
 @Injectable()
 export class AppService {
-  getData(): Message {
-    return { message: 'Welcome to api!' };
+  constructor(private prisma: PrismaService) {}
+
+  async getData(): Promise<User[]> {
+    return await this.prisma.user.findMany();
   }
 }
