@@ -1,9 +1,45 @@
-<div style="text-align: center">
-  <h1>Welcome to frontend!</h1>
-  <img
-    width="450"
-    src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-    alt="Nx - Smart, Fast and Extensible Build System"
-  />
+<div class="container" xmlns:svg="http://www.w3.org/1999/XSL/Transform">
+  <ngx-graph
+    class="chart-container"
+    [showMiniMap]="true"
+    [links]="links"
+    [nodes]="nodes"
+    [layout]="layout"
+  >
+    <ng-template #defsTemplate>
+      <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+      </svg:marker>
+    </ng-template>
+
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node">
+        <svg:circle
+          [attr.r]="node.dimension.width/2"
+          [attr.cx]="node.dimension.width/2"
+          [attr.cy]="node.dimension.width/2"
+          [attr.fill]="node.data.color"
+        />
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+          {{node.label}}
+        </svg:text>
+      </svg:g>
+    </ng-template>
+
+    <ng-template #linkTemplate let-link>
+      <svg:g class="edge">
+        <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath
+            class="text-path"
+            [attr.href]="'#' + link.id"
+            [style.dominant-baseline]="link.dominantBaseline"
+            startOffset="50%"
+          >
+            {{link.label}}
+          </textPath>
+        </svg:text>
+      </svg:g>
+    </ng-template>
+  </ngx-graph>
 </div>
-<div>Message: {{ hello$ | async | json }}</div>

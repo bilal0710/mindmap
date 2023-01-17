@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@mindmap/api-interfaces';
+import {Component} from '@angular/core';
+import {Layout} from "@swimlane/ngx-graph";
 
 @Component({
   selector: 'mindmap-root',
@@ -8,6 +7,49 @@ import { Message } from '@mindmap/api-interfaces';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
+  title = 'mind-map';
+  layout: string | Layout = 'dagreCluster';
+
+  links = [
+    {
+      id: 'a',
+      source: 'first',
+      target: 'second',
+      label: 'is parent of',
+    },
+    {
+      id: 'b',
+      source: 'first',
+      target: 'third',
+      label: 'custom label',
+    },
+    {
+      id: 'c',
+      source: 'second',
+      target: 'fourth',
+      label: 'custom label',
+    },
+  ];
+  nodes = [
+    {
+      id: 'first',
+      label: 'Root',
+    },
+    {
+      id: 'second',
+      label: 'Bilal',
+    },
+    {
+      id: 'third',
+      label: 'Tom',
+    },
+    {
+      id: 'fourth',
+      label: 'Daniel',
+    },
+    {
+      id: 'test',
+      label: 'test',
+    },
+  ];
 }

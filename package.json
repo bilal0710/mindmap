@@ -25,6 +25,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nrwl/angular": "14.2.4",
     "@prisma/client": "^4.8.1",
+    "@swimlane/ngx-graph": "^8.0.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
