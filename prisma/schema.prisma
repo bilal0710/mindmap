@@ -11,10 +11,11 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
+  id    String     @default(uuid()) @id
   email String  @unique
   firstname  String?
   lastname  String?
+  password  String
   deleted Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -22,7 +23,7 @@ model User {
 }
 
 model Chatroom {
-  id    Int     @default(autoincrement()) @id
+  id    String     @default(uuid()) @id
   name  String?
   deleted Boolean @default(false)
   createdAt DateTime @default(now())
@@ -32,13 +33,13 @@ model Chatroom {
 }
 
 model Message{
-  id    Int     @default(autoincrement()) @id
+  id    String     @default(uuid()) @id
   text  String
   deleted Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  from Int
-  to Int
-  roomId Int
+  from String
+  to String
+  roomId String
   chatroom Chatroom @relation(fields: [roomId], references: [id])
 }

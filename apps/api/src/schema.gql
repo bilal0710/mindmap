@@ -1,0 +1,49 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Chatroom {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type User {
+  id: String!
+  firstName: String
+  lastName: String
+  email: String!
+  password: String!
+  deleted: Boolean!
+  chatroom: Chatroom
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+}
+
+input CreateUserInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  passwordRepeat: String!
+}
+
+input UpdateUserInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String
+  passwordRepeat: String
+  id: String!
+  oldPassword: String!
+  newPassword: String!
+  newPasswordRepeat: String!
+}
