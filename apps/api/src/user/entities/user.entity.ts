@@ -9,10 +9,10 @@ export class User {
   id: string;
 
   @Field({nullable: true})
-  firstName?: string;
+  firstname?: string;
 
   @Field({nullable: true})
-  lastName?: string;
+  lastname?: string;
 
   @Field({nullable: false})
   email: string;

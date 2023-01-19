@@ -9,8 +9,8 @@ type Chatroom {
 
 type User {
   id: String!
-  firstName: String
-  lastName: String
+  firstname: String
+  lastname: String
   email: String!
   password: String!
   deleted: Boolean!
@@ -19,7 +19,7 @@ type User {
 
 type Query {
   users: [User!]!
-  user(id: Int!): User!
+  user(id: String!): User!
 }
 
 type Mutation {
@@ -37,8 +37,8 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-  firstname: String!
-  lastname: String!
+  firstname: String
+  lastname: String
   email: String!
   password: String
   passwordRepeat: String

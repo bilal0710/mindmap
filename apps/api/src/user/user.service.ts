@@ -24,13 +24,12 @@ export class UserService {
   }
 
 
- async update(id: string, updateUserInput: UpdateUserInput) {
-    const user = await this.prisma.user.findUnique({ where: { id: id } });
-
-   if (!user) {
-     throw new HttpException({}, HttpStatus.NOT_FOUND);
-   }
-   return `This action updated a #${id} user`;
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    const user = await this.prisma.user.findUnique({where: {id: id}});
+    if (!user) {
+      throw new HttpException({}, HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 
   remove(id: string) {
