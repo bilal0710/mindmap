@@ -50,7 +50,18 @@ export class UserService {
     return user;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    let user = await this.prisma.user.findUnique({where: {id: id}});
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    user.deleted = true;
+    user.email = 'deleted-' + user.id;
+    user.firstname = '';
+    user.lastname = '';
+    user.password = '';
+    user = await this.prisma.user.update({where: {id: id}, data: user});
+    delete user.password;
+    return user;
   }
 }

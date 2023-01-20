@@ -15,7 +15,6 @@ export class UserResolver {
     return this.userService.create(createUserInput);
   }
 
-  @Roles(UserRole.ADMIN)
   @Query(() => [User], { name: 'users' })
   findAll() {
     return this.userService.findAll();
@@ -32,8 +31,9 @@ export class UserResolver {
     return this.userService.update(updateUserInput.id, updateUserInput);
   }
 
+  @Roles(UserRole.ADMIN)
   @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: string) {
+  removeUser(@Args('id', { type: () => String }) id: string) {
     return this.userService.remove(id);
   }
 }
