@@ -14,18 +14,32 @@ type User {
   email: String!
   password: String!
   deleted: Boolean!
+  role: UserRole!
   chatroom: Chatroom
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+type Auth {
+  """Generated access_token of the user"""
+  token: String!
 }
 
 type Query {
   users: [User!]!
   user(id: String!): User!
+  whoAmI: User!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  removeUser(id: String!): User!
+  login(email: String!, password: String!): Auth!
+  signup(email: String!, password: String!, passwordRepeat: String!, firstname: String!, lastname: String!): Auth!
 }
 
 input CreateUserInput {

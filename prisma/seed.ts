@@ -1,4 +1,5 @@
 import {PrismaClient} from '@prisma/client';
+import {UserRole} from "../apps/api/src/user/entities/user.entity";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +13,8 @@ async function main() {
       email: 'max@email.com',
       firstname: 'max',
       lastname: 'mustermann',
-      password: '123456',
+      password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
+      role: UserRole.ADMIN,
     },
   });
   const daniel = await prisma.user.upsert({
@@ -23,7 +25,7 @@ async function main() {
       email: 'tom@email.com',
       firstname: 'tom',
       lastname: 'mustermann',
-      password: '123456',
+      password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
     },
   });
   const chatroom = await prisma.chatroom.upsert({
