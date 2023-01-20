@@ -38,8 +38,8 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: String!): User!
-  login(loginInput: LoginInput!): Auth!
-  signup(signupInput: CreateAuthInput!): Auth!
+  login(email: String!, password: String!): Auth!
+  signup(email: String!, password: String!, passwordRepeat: String!, firstname: String!, lastname: String!): Auth!
 }
 
 input CreateUserInput {
@@ -60,17 +60,4 @@ input UpdateUserInput {
   oldPassword: String!
   newPassword: String!
   newPasswordRepeat: String!
-}
-
-input LoginInput {
-  email: String!
-  password: String!
-}
-
-input CreateAuthInput {
-  firstname: String!
-  lastname: String!
-  email: String!
-  password: String!
-  passwordRepeat: String!
 }

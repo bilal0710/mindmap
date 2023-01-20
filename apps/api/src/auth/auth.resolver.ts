@@ -1,28 +1,32 @@
 import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
 import {AuthService} from './auth.service';
 import {Auth} from './entities/auth.entity';
-import {LoginInput} from "./dto/login.input";
 import {User} from "../user/entities/user.entity";
-import {CreateAuthInput} from "./dto/create-auth.input";
 import {Public} from "./decorator/public.decorator";
 import {CurrentUser} from "./decorator/current-user.decorator";
 
 @Resolver(() => Auth)
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
-
-
-  @Public()
-  @Mutation(() => Auth)
-  login(@Args('loginInput') loginInput: LoginInput) {
-    return this.authService.login(loginInput);
+  constructor(private readonly authService: AuthService) {
   }
 
 
   @Public()
   @Mutation(() => Auth)
-  signup(@Args('signupInput') signupInput: CreateAuthInput) {
-    return this.authService.signup(signupInput);
+  login(@Args('email') email: string,
+        @Args('password') password: string) {
+    return this.authService.login({email, password});
+  }
+
+
+  @Public()
+  @Mutation(() => Auth)
+  signup(@Args('email') email: string,
+         @Args('password') password: string,
+         @Args('passwordRepeat') passwordRepeat: string,
+         @Args('firstname') firstname: string,
+         @Args('lastname') lastname: string,) {
+    return this.authService.signup({email, password, passwordRepeat, firstname, lastname});
   }
 
   @Public()

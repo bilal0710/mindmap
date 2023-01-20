@@ -2,8 +2,8 @@ import {BadRequestException, HttpException, HttpStatus, Injectable} from '@nestj
 import {UserService} from "../user/user.service";
 import {compareSync, hashSync} from "bcrypt";
 import {JwtService} from "@nestjs/jwt";
-import {CreateAuthInput} from "./dto/create-auth.input";
 import {LoginInput} from "./dto/login.input";
+import {CreateAuthInput} from "./dto/create-auth.input";
 import {Auth} from "./entities/auth.entity";
 import {User} from "@prisma/client";
 
