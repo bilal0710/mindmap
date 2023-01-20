@@ -17,15 +17,23 @@ type User {
   chatroom: Chatroom
 }
 
+type Auth {
+  """Generated access_token of the user"""
+  token: String!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
+  whoAmI: User!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+  login(loginInput: LoginInput!): Auth!
+  signup(signupInput: CreateAuthInput!): Auth!
 }
 
 input CreateUserInput {
@@ -46,4 +54,17 @@ input UpdateUserInput {
   oldPassword: String!
   newPassword: String!
   newPasswordRepeat: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input CreateAuthInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  passwordRepeat: String!
 }
