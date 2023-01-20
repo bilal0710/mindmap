@@ -19,6 +19,7 @@ model User {
   deleted Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  role      UserRole     @default(user)
   chatroom Chatroom[]
 }
 
@@ -42,4 +43,8 @@ model Message{
   to String
   roomId String
   chatroom Chatroom @relation(fields: [roomId], references: [id])
+}
+enum UserRole {
+  user
+  admin
 }

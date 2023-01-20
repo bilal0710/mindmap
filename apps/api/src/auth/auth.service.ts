@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   async generateUserCredentials(user: User): Promise<Auth> {
-    const payload = {email: user.email, sub: user.id};
+    const payload = {email: user.email, sub: user.id, role: user.role};
 
     return {
       token: this.jwtService.sign(payload),
@@ -54,11 +54,7 @@ export class AuthService {
 
     const user = await this.usersService.create(userInput);
 
-    const payload = {email: user.email, sub: user.id};
-
-    return {
-      token: this.jwtService.sign(payload),
-    };
+    return this.generateUserCredentials(user);
   }
 
   async findById(id: string) {
