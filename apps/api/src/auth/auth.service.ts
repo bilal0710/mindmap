@@ -3,7 +3,7 @@ import {UserService} from "../user/user.service";
 import {compareSync, hashSync} from "bcrypt";
 import {JwtService} from "@nestjs/jwt";
 import {LoginInput} from "./dto/login.input";
-import {CreateAuthInput} from "./dto/create-auth.input";
+import {SignupInput} from "./dto/signup.input";
 import {Auth} from "./entities/auth.entity";
 import {User} from "@prisma/client";
 
@@ -42,7 +42,7 @@ export class AuthService {
     }
   }
 
-  async signup(userInput: CreateAuthInput): Promise<Auth> {
+  async signup(userInput: SignupInput): Promise<Auth> {
     if (userInput.password !== userInput.passwordRepeat) {
       throw new HttpException(
         'ERROR_PASSWORDS_NOT_MATCHING',

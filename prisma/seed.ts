@@ -1,7 +1,8 @@
 import {PrismaClient} from '@prisma/client';
-import {UserRole} from "../apps/api/src/user/entities/user.entity";
+import {UserRole} from "../apps/api/src/shared/user-role.enum";
 
 const prisma = new PrismaClient();
+
 
 async function main() {
 

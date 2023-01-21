@@ -2,9 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Chatroom {
+type Message {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+type Chatroom {
+  id: String!
+  name: String!
+  deleted: Boolean!
+  messages: Message
+  user: User
+  role: ChatroomType!
+}
+
+enum ChatroomType {
+  PUBLIC
+  PRIVATE
 }
 
 type User {
