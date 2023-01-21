@@ -3,8 +3,11 @@
 # ------------------------------------------------------
 
 type Message {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: String!
+  content: String!
+  from: String!
+  to: String!
+  roomId: String!
 }
 
 type Chatroom {
@@ -46,6 +49,8 @@ type Query {
   users: [User!]!
   user(id: String!): User!
   whoAmI: User!
+  messages: [Message!]!
+  message(id: String!): Message!
 }
 
 type Mutation {
@@ -54,6 +59,9 @@ type Mutation {
   removeUser(id: String!): User!
   login(email: String!, password: String!): Auth!
   signup(email: String!, password: String!, passwordRepeat: String!, firstname: String!, lastname: String!): Auth!
+  createMessage(createMessageInput: CreateMessageInput!): Message!
+  updateMessage(updateMessageInput: UpdateMessageInput!): Message!
+  removeMessage(id: String!): Message!
 }
 
 input CreateUserInput {
@@ -74,4 +82,19 @@ input UpdateUserInput {
   oldPassword: String!
   newPassword: String!
   newPasswordRepeat: String!
+}
+
+input CreateMessageInput {
+  content: String!
+  from: String!
+  to: String!
+  roomId: String!
+}
+
+input UpdateMessageInput {
+  content: String
+  from: String
+  to: String
+  roomId: String
+  id: String!
 }

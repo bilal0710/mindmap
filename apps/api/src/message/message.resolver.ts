@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { MessageService } from './message.service';
-import { Message } from './entities/message.entity';
-import { CreateMessageInput } from './dto/create-message.input';
-import { UpdateMessageInput } from './dto/update-message.input';
+import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
+import {MessageService} from './message.service';
+import {Message} from './entities/message.entity';
+import {CreateMessageInput} from './dto/create-message.input';
+import {UpdateMessageInput} from './dto/update-message.input';
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -15,13 +15,13 @@ export class MessageResolver {
     return this.messageService.create(createMessageInput);
   }
 
-  @Query(() => [Message], { name: 'message' })
+  @Query(() => [Message], { name: 'messages' })
   findAll() {
     return this.messageService.findAll();
   }
 
   @Query(() => Message, { name: 'message' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.messageService.findOne(id);
   }
 
@@ -36,7 +36,7 @@ export class MessageResolver {
   }
 
   @Mutation(() => Message)
-  removeMessage(@Args('id', { type: () => Int }) id: number) {
+  removeMessage(@Args('id', { type: () => String }) id: string) {
     return this.messageService.remove(id);
   }
 }

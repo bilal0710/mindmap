@@ -36,8 +36,7 @@ model Chatroom {
 
 model Message{
   id    String     @default(uuid()) @id
-  text  String
-  deleted Boolean @default(false)
+  content  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   from String

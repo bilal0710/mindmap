@@ -1,7 +1,19 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import {Field, ObjectType} from '@nestjs/graphql';
 
 @ObjectType()
 export class Message {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field()
+  id: string;
+
+  @Field({nullable: false})
+  content: string;
+
+  @Field({nullable: false})
+  from: string;
+
+  @Field({nullable: false})
+  to: string;
+
+  @Field({nullable: false})
+  roomId: string;
 }
