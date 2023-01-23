@@ -1,11 +1,9 @@
 import {Field, ObjectType, registerEnumType} from '@nestjs/graphql';
 import {User} from "../../user/entities/user.entity";
 import {Message} from "../../message/entities/message.entity";
+import {ChatroomType} from "../../shared/enums";
 
-enum ChatroomType {
-  PUBLIC = 'public',
-  PRIVATE = 'private',
-}
+
 
 registerEnumType(ChatroomType, {
   name: 'ChatroomType',
@@ -28,8 +26,8 @@ export class Chatroom {
 
 
   @Field(() => User, {nullable: true})
-  user: User[];
+  users: User[];
 
   @Field(() => ChatroomType, {defaultValue: ChatroomType.PUBLIC})
-  role: ChatroomType;
+  type: ChatroomType;
 }

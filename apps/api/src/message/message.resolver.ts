@@ -3,6 +3,8 @@ import {MessageService} from './message.service';
 import {Message} from './entities/message.entity';
 import {CreateMessageInput} from './dto/create-message.input';
 import {UpdateMessageInput} from './dto/update-message.input';
+import {CurrentUser} from "../auth/decorator/current-user.decorator";
+import {LoggedUser} from "../shared/interfaces";
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -36,7 +38,8 @@ export class MessageResolver {
   }
 
   @Mutation(() => Message)
-  removeMessage(@Args('id', { type: () => String }) id: string) {
-    return this.messageService.remove(id);
+  removeMessage(@Args('id', { type: () => String }) id: string,
+                @CurrentUser() loggedUser: LoggedUser) {
+    return this.messageService.remove(id, loggedUser);
   }
 }

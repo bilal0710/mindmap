@@ -13,6 +13,7 @@ import {JwtAuthGuard} from "../auth/guards/jwt-auth-guard.service";
 import {APP_GUARD} from "@nestjs/core";
 import {RolesGuard} from "../auth/guards/roles.guard";
 import {MessageModule} from "../message/message.module";
+import {ChatroomModule} from "../chatroom/chatroom.module";
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import {MessageModule} from "../message/message.module";
     }),
     UserModule,
     AuthModule,
-    MessageModule
+    MessageModule,
+    ChatroomModule,
   ],
   controllers: [AppController],
   providers: [AppService,

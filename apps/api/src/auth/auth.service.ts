@@ -56,8 +56,4 @@ export class AuthService {
 
     return this.generateUserCredentials(user);
   }
-
-  async findById(id: string) {
-    return await this.usersService.findOne(id);
-  }
 }

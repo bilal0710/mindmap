@@ -1,9 +1,6 @@
 import {Field, ObjectType, registerEnumType} from "@nestjs/graphql";
 import {Chatroom} from "../../chatroom/entities/chatroom.entity";
-import {UserRole} from "../../shared/user-role.enum";
-
-
-
+import {UserRole} from "../../shared/enums";
 
 registerEnumType(UserRole, {
   name: 'UserRole',
@@ -29,7 +26,6 @@ export class User {
 
   @Field({defaultValue: false})
   deleted: boolean;
-
 
   @Field(() => UserRole, {defaultValue: UserRole.USER})
   role: UserRole;

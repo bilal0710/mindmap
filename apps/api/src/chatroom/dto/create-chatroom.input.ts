@@ -1,7 +1,15 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import {Field, InputType, registerEnumType} from '@nestjs/graphql';
+import {ChatroomType} from "../../shared/enums";
 
+registerEnumType(ChatroomType, {
+  name: 'ChatroomType',
+});
 @InputType()
 export class CreateChatroomInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field({nullable: false})
+  name: string;
+
+
+  @Field(() => [String], { nullable: false })
+  users: string[];
 }

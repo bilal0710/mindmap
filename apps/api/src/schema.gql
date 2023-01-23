@@ -15,8 +15,8 @@ type Chatroom {
   name: String!
   deleted: Boolean!
   messages: Message
-  user: User
-  role: ChatroomType!
+  users: User
+  type: ChatroomType!
 }
 
 enum ChatroomType {
@@ -51,6 +51,8 @@ type Query {
   whoAmI: User!
   messages: [Message!]!
   message(id: String!): Message!
+  chatrooms: [Chatroom!]!
+  chatroom(id: String!): Chatroom!
 }
 
 type Mutation {
@@ -62,6 +64,11 @@ type Mutation {
   createMessage(createMessageInput: CreateMessageInput!): Message!
   updateMessage(updateMessageInput: UpdateMessageInput!): Message!
   removeMessage(id: String!): Message!
+  createChatroom(createChatroomInput: CreateChatroomInput!): Chatroom!
+  updateChatroom(updateChatroomInput: UpdateChatroomInput!): Chatroom!
+  removeChatroom(id: String!): Chatroom!
+  removeUserFromChatroom(userId: String!, roomId: String!): Chatroom!
+  addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
 }
 
 input CreateUserInput {
@@ -97,4 +104,14 @@ input UpdateMessageInput {
   to: String
   roomId: String
   id: String!
+}
+
+input CreateChatroomInput {
+  name: String!
+  users: [String!]!
+}
+
+input UpdateChatroomInput {
+  id: String!
+  name: String
 }

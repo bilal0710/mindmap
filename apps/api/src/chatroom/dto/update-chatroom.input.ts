@@ -1,8 +1,11 @@
-import { CreateChatroomInput } from './create-chatroom.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import {Field, InputType} from '@nestjs/graphql';
 
 @InputType()
-export class UpdateChatroomInput extends PartialType(CreateChatroomInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateChatroomInput {
+  @Field(() => String)
+  id: string;
+
+  @Field({nullable: true})
+  name: string;
+
 }
