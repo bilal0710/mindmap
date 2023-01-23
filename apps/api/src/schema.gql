@@ -2,9 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Message {
+  id: String!
+  content: String!
+  from: String!
+  to: String!
+  roomId: String!
+}
+
 type Chatroom {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: String!
+  name: String!
+  deleted: Boolean!
+  messages: Message
+  users: User
+  type: ChatroomType!
+}
+
+enum ChatroomType {
+  PUBLIC
+  PRIVATE
 }
 
 type User {
@@ -32,6 +49,10 @@ type Query {
   users: [User!]!
   user(id: String!): User!
   whoAmI: User!
+  messages: [Message!]!
+  message(id: String!): Message!
+  chatrooms: [Chatroom!]!
+  chatroom(id: String!): Chatroom!
 }
 
 type Mutation {
@@ -40,6 +61,14 @@ type Mutation {
   removeUser(id: String!): User!
   login(email: String!, password: String!): Auth!
   signup(email: String!, password: String!, passwordRepeat: String!, firstname: String!, lastname: String!): Auth!
+  createMessage(createMessageInput: CreateMessageInput!): Message!
+  updateMessage(updateMessageInput: UpdateMessageInput!): Message!
+  removeMessage(id: String!): Message!
+  createChatroom(createChatroomInput: CreateChatroomInput!): Chatroom!
+  updateChatroom(updateChatroomInput: UpdateChatroomInput!): Chatroom!
+  removeChatroom(id: String!): Chatroom!
+  removeUserFromChatroom(userId: String!, roomId: String!): Chatroom!
+  addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
 }
 
 input CreateUserInput {
@@ -60,4 +89,29 @@ input UpdateUserInput {
   oldPassword: String!
   newPassword: String!
   newPasswordRepeat: String!
+}
+
+input CreateMessageInput {
+  content: String!
+  from: String!
+  to: String!
+  roomId: String!
+}
+
+input UpdateMessageInput {
+  content: String
+  from: String
+  to: String
+  roomId: String
+  id: String!
+}
+
+input CreateChatroomInput {
+  name: String!
+  users: [String!]!
+}
+
+input UpdateChatroomInput {
+  id: String!
+  name: String
 }

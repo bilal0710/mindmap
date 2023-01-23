@@ -10,6 +10,10 @@ import {GraphQLModule} from "@nestjs/graphql";
 import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
 import {AuthModule} from "../auth/auth.module";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth-guard.service";
+import {APP_GUARD} from "@nestjs/core";
+import {RolesGuard} from "../auth/guards/roles.guard";
+import {MessageModule} from "../message/message.module";
+import {ChatroomModule} from "../chatroom/chatroom.module";
 
 @Module({
   imports: [
@@ -20,10 +24,15 @@ import {JwtAuthGuard} from "../auth/guards/jwt-auth-guard.service";
     }),
     UserModule,
     AuthModule,
+    MessageModule,
+    ChatroomModule,
   ],
   controllers: [AppController],
   providers: [AppService,
-    {provide: 'APP_GUARD', useClass: JwtAuthGuard}],
+    {provide: 'APP_GUARD', useClass: JwtAuthGuard},
+    {provide: APP_GUARD, useClass: RolesGuard}],
+
 })
+
 export class AppModule {
 }

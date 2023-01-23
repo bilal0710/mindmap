@@ -20,7 +20,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   role      UserRole     @default(user)
-  chatroom Chatroom[]
+  chatrooms Chatroom[]
 }
 
 model Chatroom {
@@ -30,13 +30,13 @@ model Chatroom {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   messages Message[]
-  Users User[]
+  users User[]
+  type ChatroomType @default(public)
 }
 
 model Message{
   id    String     @default(uuid()) @id
-  text  String
-  deleted Boolean @default(false)
+  content  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   from String
@@ -47,4 +47,9 @@ model Message{
 enum UserRole {
   user
   admin
+}
+
+enum ChatroomType {
+  public
+  private
 }

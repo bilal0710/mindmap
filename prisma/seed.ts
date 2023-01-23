@@ -1,7 +1,8 @@
 import {PrismaClient} from '@prisma/client';
-import {UserRole} from "../apps/api/src/user/entities/user.entity";
+import {UserRole} from "../apps/api/src/shared/enums";
 
 const prisma = new PrismaClient();
+
 
 async function main() {
 
@@ -42,7 +43,7 @@ async function main() {
     update: {},
     create: {
       id: '00000000-0000-0000-0000-000000000001',
-      text: 'hello world',
+      content: 'hello world',
       from: '00000000-0000-0000-0000-000000000001',
       to: '00000000-0000-0000-0000-000000000002',
       roomId: '00000000-0000-0000-0000-000000000001',
