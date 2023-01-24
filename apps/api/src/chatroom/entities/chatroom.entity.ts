@@ -25,7 +25,7 @@ export class Chatroom {
   messages: Message[];
 
 
-  @Field(() => User, {nullable: true})
+  @Field(() => [User], {nullable: true})
   users: User[];
 
   @Field(() => ChatroomType, {defaultValue: ChatroomType.PUBLIC})

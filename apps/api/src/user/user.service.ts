@@ -18,6 +18,18 @@ export class UserService {
     return await this.prisma.user.findMany();
   }
 
+  async findAllUserWithChatRoom(chatroomId?: string) {
+    return await this.prisma.user.findMany({
+      where: {
+        chatrooms: {
+          some: {
+            id: chatroomId
+          }
+        }
+      }
+    });
+  }
+
   async findOne(id: string) {
     return await this.prisma.user.findUnique({
       where: {id},
