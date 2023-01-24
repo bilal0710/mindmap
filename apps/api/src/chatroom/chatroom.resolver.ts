@@ -1,12 +1,12 @@
 import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
 import {ChatroomService} from './chatroom.service';
-import {Chatroom} from './entities/chatroom.entity';
 import {CreateChatroomInput} from './dto/create-chatroom.input';
 import {UpdateChatroomInput} from './dto/update-chatroom.input';
 import {Roles} from "../auth/decorator/role.decorator";
 import {UserRole} from "../shared/enums";
 import {CurrentUser} from "../auth/decorator/current-user.decorator";
 import {LoggedUser} from "../shared/interfaces";
+import {Chatroom} from "./entities/chatroom.entity";
 
 @Resolver(() => Chatroom)
 export class ChatroomResolver {

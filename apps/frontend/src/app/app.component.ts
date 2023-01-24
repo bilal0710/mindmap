@@ -7,7 +7,6 @@ import {Layout} from "@swimlane/ngx-graph";
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'mind-map';
   layout: string | Layout = 'dagreCluster';
 
   links = [
@@ -21,7 +20,7 @@ export class AppComponent {
       id: 'b',
       source: 'first',
       target: 'third',
-      label: 'custom label',
+      label: 'is parent of',
     },
     {
       id: 'c',
@@ -33,23 +32,23 @@ export class AppComponent {
   nodes = [
     {
       id: 'first',
-      label: 'Root',
+      label: 'Mindmap',
     },
     {
       id: 'second',
-      label: 'Bilal',
+      label: 'Second',
     },
     {
       id: 'third',
-      label: 'Tom',
+      label: 'Third',
     },
     {
       id: 'fourth',
-      label: 'Daniel',
+      label: 'Fourth',
     },
-    {
+    /*{
       id: 'test',
       label: 'test',
-    },
+    },*/
   ];
 }
