@@ -1,53 +1,76 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Layout} from "@swimlane/ngx-graph";
+import {Edge} from "@swimlane/ngx-graph/lib/models/edge.model";
+import {Node} from "@swimlane/ngx-graph/lib/models/node.model";
+
+interface Mindmap {
+  id: string;
+  title: string;
+  parent_id: string;
+}
+
 @Component({
   selector: 'mindmap-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+
+
+export class AppComponent implements OnInit {
   layout: string | Layout = 'dagreCluster';
 
-  links = [
+  children: Mindmap[] = [
     {
-      id: 'a',
-      source: 'first',
-      target: 'second',
-      label: 'is parent of',
+      id: "00000000-0000-0000-0000-000000000001",
+      title: "root",
+      parent_id: "null"
     },
     {
-      id: 'b',
-      source: 'first',
-      target: 'third',
-      label: 'is parent of',
+      id: "00000000-0000-0000-0000-000000000003",
+      title: "child_3",
+      parent_id: "00000000-0000-0000-0000-000000000001"
     },
     {
-      id: 'c',
-      source: 'second',
-      target: 'fourth',
-      label: 'custom label',
-    },
-  ];
-  nodes = [
-    {
-      id: 'first',
-      label: 'Mindmap',
+      id: "00000000-0000-0000-0000-000000000005",
+      title: "child_5",
+      parent_id: "00000000-0000-0000-0000-000000000002"
     },
     {
-      id: 'second',
-      label: 'Second',
+      id: "00000000-0000-0000-0000-000000000004",
+      title: "child_4",
+      parent_id: "00000000-0000-0000-0000-000000000002"
     },
     {
-      id: 'third',
-      label: 'Third',
+      id: "00000000-0000-0000-0000-000000000002",
+      title: "child_2",
+      parent_id: "00000000-0000-0000-0000-000000000001"
     },
     {
-      id: 'fourth',
-      label: 'Fourth',
-    },
-    /*{
-      id: 'test',
-      label: 'test',
-    },*/
-  ];
+      id: "00000000-0000-0000-0000-000000000006",
+      title: "child_6",
+      parent_id: "00000000-0000-0000-0000-000000000004"
+    }
+  ]
+
+  links: Edge[] = [];
+  nodes: Node[] = [];
+
+
+  ngOnInit(): void {
+    this.nodes = this.children?.map((child) => {
+      return {
+        id: child.id,
+        label: child.title,
+      }
+    });
+    this.children = this.children?.filter((child) => child.parent_id !== "null");
+    this.links = this.children.map((child) => {
+      return {
+        id: child.title,
+        source: child.parent_id,
+        target: child.id,
+        label: 'is parent of',
+      }
+    });
+  }
 }
