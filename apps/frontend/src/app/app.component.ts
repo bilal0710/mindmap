@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Layout} from "@swimlane/ngx-graph";
-
 @Component({
   selector: 'mindmap-root',
   templateUrl: './app.component.html',
