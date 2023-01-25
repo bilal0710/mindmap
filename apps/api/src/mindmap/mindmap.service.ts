@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {CreateMindmapInput} from './dto/create-mindmap.input';
 import {UpdateMindmapInput} from './dto/update-mindmap.input';
 import {PrismaService} from "../prisma/prisma.service";
@@ -9,8 +9,21 @@ export class MindmapService {
   constructor(private prisma: PrismaService) {
   }
 
-  create(createMindmapInput: CreateMindmapInput) {
-    return 'This action adds a new mindmap';
+  async create(createMindmapInput: CreateMindmapInput) {
+    if (createMindmapInput?.parent_id) {
+      const mindmap = await this.prisma.mindmap.findUnique({
+        where: {
+          id: createMindmapInput?.parent_id
+        }
+      })
+      if (!mindmap) {
+        throw new HttpException(`Mindmap with parent id ${createMindmapInput.parent_id} not found`, HttpStatus.NOT_FOUND);
+      }
+    }
+    ;
+    return await this.prisma.mindmap.create({
+      data: createMindmapInput,
+    });
   }
 
   async findAll() {
@@ -29,12 +42,12 @@ export class MindmapService {
     There should be a terminating condition to recursive CTE.
     The recursive CTEs are used for series generation and traversal of hierarchical or tree-structured data.
   * */
-  async findAllChildren(parentId?: string) {
+  async findAllChildren(parent_id?: string) {
     return <Mindmap[]>await this.prisma.$queryRaw`
     WITH RECURSIVE mindmap_tree AS (
     SELECT id, title, parent_id
     FROM "Mindmap"
-    WHERE parent_id = ${parentId}
+    WHERE parent_id = ${parent_id}
     UNION ALL
     SELECT c.id, c.title, c.parent_id
     FROM "Mindmap" c
@@ -43,20 +56,56 @@ export class MindmapService {
     SELECT DISTINCT *
     FROM mindmap_tree;`;
   }
- /*
- *  I threw the distinct in there because there were duplicates in the result set
- *  but I think that's due to having a duplicate in the sample data.
- *  one cans get rid of it
- * */
+
+  /*
+  *  I threw the distinct in there because there were duplicates in the result set
+  *  but I think that's due to having a duplicate in the sample data.
+  *  one cans get rid of it
+  * */
   async findOne(id: string) {
-    return await this.prisma.mindmap.findUnique({where: {id}})
+      const mindmap = await this.prisma.mindmap.findUnique({where: {id}})
+        if (!mindmap) {
+          throw new HttpException(`Mindmap with parent id ${id} not found`, HttpStatus.NOT_FOUND);
+        }
+      return mindmap;
   }
 
-  update(id: number, updateMindmapInput: UpdateMindmapInput) {
-    return `This action updates a #${id} mindmap`;
+  async update(id: string, updateMindmapInput: UpdateMindmapInput) {
+    const mindmap = await this.prisma.mindmap.findUnique({where: {id}});
+    if (!mindmap) {
+      throw new HttpException(`Mindmap with id ${id} not found`, HttpStatus.NOT_FOUND);
+    }
+    return this.prisma.mindmap.update({
+      where: {id},
+      data: {
+        title: updateMindmapInput.title,
+      }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} mindmap`;
+  async remove(id: string) {
+    const mindmap = await this.prisma.mindmap.findUnique({where: {id}});
+    const children = await this.findAllChildren(id);
+    if (!mindmap) {
+      //throw new GraphQLError(`Mindmap with id ${id} not found`);
+      throw new HttpException(`Mindmap with id ${id} not found`, HttpStatus.NOT_FOUND);
+
+    }
+    if (children.length <= 0) {
+      return await this.prisma.mindmap.delete({where: {id}});
+    }
+    if (mindmap?.parent_id === null) {
+      for (const child of children) {
+        if (child.parent_id === id) {
+          await this.prisma.mindmap.update({
+            where: {id: child.id},
+            data: {
+              parent_id: null
+            }
+          });
+        }
+      }
+    }
+    return this.prisma.mindmap.delete({where: {id}});
   }
 }

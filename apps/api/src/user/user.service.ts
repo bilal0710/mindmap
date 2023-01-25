@@ -31,15 +31,23 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    return await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {id},
     });
+    if (!user) {
+      throw new HttpException(`Mindmap with parent id ${id} not found`, HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 
   async findOneByEmail(email: string) {
-    return await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {email},
     });
+    if (!user) {
+      throw new HttpException(`User with email ${email} not found`, HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
@@ -55,6 +63,7 @@ export class UserService {
     }
     user.password = hashSync(updateUserInput.newPassword, 10);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {oldPassword, newPassword, newPasswordRepeat, ...result} = updateUserInput;
     Object.assign(user, result);
     user = await this.prisma.user.update({where: {id: id}, data: user});

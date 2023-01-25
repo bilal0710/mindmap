@@ -80,7 +80,7 @@ type Mutation {
   addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
   createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
   updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
-  removeMindmap(id: Int!): Mindmap!
+  removeMindmap(id: String!): Mindmap!
 }
 
 input CreateUserInput {
@@ -129,12 +129,12 @@ input UpdateChatroomInput {
 }
 
 input CreateMindmapInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  title: String!
+  parent_id: String
 }
 
 input UpdateMindmapInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  title: String
+  parent_id: String
+  id: String!
 }

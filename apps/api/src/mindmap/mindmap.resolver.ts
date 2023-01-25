@@ -1,4 +1,4 @@
-import {Resolver, Query, Mutation, Args, Int, ResolveField, Parent} from '@nestjs/graphql';
+import {Args, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {MindmapService} from './mindmap.service';
 import {Mindmap} from './entities/mindmap.entity';
 import {CreateMindmapInput} from './dto/create-mindmap.input';
@@ -43,7 +43,7 @@ export class MindmapResolver {
   }
 
   @Mutation(() => Mindmap)
-  removeMindmap(@Args('id', {type: () => Int}) id: number) {
+  removeMindmap(@Args('id', {type: () => String}) id: string) {
     return this.mindmapService.remove(id);
   }
 }

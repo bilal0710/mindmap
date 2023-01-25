@@ -1,7 +1,11 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import {Field, InputType} from '@nestjs/graphql';
 
 @InputType()
 export class CreateMindmapInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+
+  @Field({nullable: false})
+  title: string;
+
+  @Field({nullable: true})
+  parent_id: string;
 }

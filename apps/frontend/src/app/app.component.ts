@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     this.children = this.children?.filter((child) => child.parent_id !== "null");
     this.links = this.children.map((child) => {
       return {
-        id: child.title,
+        id: child.title.concat(child.id),
         source: child.parent_id,
         target: child.id,
         label: 'is parent of',
