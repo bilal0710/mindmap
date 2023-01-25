@@ -7,7 +7,6 @@ import {UserRole} from "../shared/enums";
 import {CurrentUser} from "../auth/decorator/current-user.decorator";
 import {LoggedUser} from "../shared/interfaces";
 import {Chatroom} from "./entities/chatroom.entity";
-import {Mindmap} from "../mindmap/entities/mindmap.entity";
 import {UserService} from "../user/user.service";
 import {User} from "../user/entities/user.entity";
 
