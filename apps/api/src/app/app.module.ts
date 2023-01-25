@@ -14,6 +14,7 @@ import {APP_GUARD} from "@nestjs/core";
 import {RolesGuard} from "../auth/guards/roles.guard";
 import {MessageModule} from "../message/message.module";
 import {ChatroomModule} from "../chatroom/chatroom.module";
+import {MindmapModule} from "../mindmap/mindmap.module";
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import {ChatroomModule} from "../chatroom/chatroom.module";
     AuthModule,
     MessageModule,
     ChatroomModule,
+    MindmapModule
   ],
   controllers: [AppController],
   providers: [AppService,

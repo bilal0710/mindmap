@@ -1,4 +1,4 @@
-import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
+import {Args, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {ChatroomService} from './chatroom.service';
 import {CreateChatroomInput} from './dto/create-chatroom.input';
 import {UpdateChatroomInput} from './dto/update-chatroom.input';
@@ -7,16 +7,18 @@ import {UserRole} from "../shared/enums";
 import {CurrentUser} from "../auth/decorator/current-user.decorator";
 import {LoggedUser} from "../shared/interfaces";
 import {Chatroom} from "./entities/chatroom.entity";
+import {UserService} from "../user/user.service";
+import {User} from "../user/entities/user.entity";
 
 @Resolver(() => Chatroom)
 export class ChatroomResolver {
-  constructor(private readonly chatroomService: ChatroomService) {}
+  constructor(private readonly chatroomService: ChatroomService,
+              private readonly userService: UserService) {}
 
   @Mutation(() => Chatroom)
   createChatroom(
     @Args('createChatroomInput') createChatroomInput: CreateChatroomInput
   ) {
-    console.log('createChatroomInput', createChatroomInput);
     return this.chatroomService.create(createChatroomInput);
   }
 
@@ -29,7 +31,10 @@ export class ChatroomResolver {
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.chatroomService.findOne(id);
   }
-
+  @ResolveField('users', () => [User])
+  async getChildren(@Parent() chatroom: Chatroom) {
+    return await this.userService.findAllUserWithChatRoom(chatroom.id);
+  }
   @Mutation(() => Chatroom)
   updateChatroom(
     @Args('updateChatroomInput') updateChatroomInput: UpdateChatroomInput

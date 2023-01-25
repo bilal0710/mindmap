@@ -28,8 +28,11 @@ export class ChatroomService {
   }
 
   async findOne(id: string) {
-    return await this.prisma.chatroom.findUnique({where: {id}, include: {users: true}});
-
+    const chatroom = await this.prisma.chatroom.findUnique({where: {id: id}});
+    if (!chatroom) {
+      throw new HttpException('Chatroom not found', HttpStatus.NOT_FOUND);
+    }
+    return chatroom;
   }
 
   async update(id: string, updateChatroomInput: UpdateChatroomInput) {

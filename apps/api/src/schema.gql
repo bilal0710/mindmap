@@ -15,7 +15,7 @@ type Chatroom {
   name: String!
   deleted: Boolean!
   messages: Message
-  users: User
+  users: [User!]!
   type: ChatroomType!
 }
 
@@ -45,6 +45,13 @@ type Auth {
   token: String!
 }
 
+type Mindmap {
+  id: String!
+  title: String!
+  parent_id: String
+  children: [Mindmap!]!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
@@ -53,6 +60,8 @@ type Query {
   message(id: String!): Message!
   chatrooms: [Chatroom!]!
   chatroom(id: String!): Chatroom!
+  mindmaps: [Mindmap!]!
+  mindmap(id: String!): Mindmap!
 }
 
 type Mutation {
@@ -69,6 +78,9 @@ type Mutation {
   removeChatroom(id: String!): Chatroom!
   removeUserFromChatroom(userId: String!, roomId: String!): Chatroom!
   addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
+  createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
+  updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
+  removeMindmap(id: String!): Mindmap!
 }
 
 input CreateUserInput {
@@ -114,4 +126,15 @@ input CreateChatroomInput {
 input UpdateChatroomInput {
   id: String!
   name: String
+}
+
+input CreateMindmapInput {
+  title: String!
+  parent_id: String
+}
+
+input UpdateMindmapInput {
+  title: String
+  parent_id: String
+  id: String!
 }

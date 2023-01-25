@@ -19,7 +19,11 @@ export class MessageService {
   }
 
   async findOne(id: string) {
-    return await this.prisma.message.findUnique({where: {id}});
+    const message =  await this.prisma.message.findUnique({where: {id}});
+    if (!message) {
+      throw new HttpException('Message not found', HttpStatus.BAD_REQUEST);
+    }
+    return message;
   }
 
   async update(id: string, updateMessageInput: UpdateMessageInput) {

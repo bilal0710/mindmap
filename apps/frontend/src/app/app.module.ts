@@ -3,8 +3,8 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
-import {GraphModule} from "@swimlane/ngx-graph";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {GraphModule} from "@swimlane/ngx-graph";
 
 @NgModule({
   declarations: [AppComponent],

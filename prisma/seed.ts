@@ -37,7 +37,6 @@ async function main() {
       name: 'chatroom 1',
     }
   });
-
   const messages = await prisma.message.upsert({
     where: {id: '00000000-0000-0000-0000-000000000001'},
     update: {},
@@ -50,11 +49,49 @@ async function main() {
     }
   });
 
+  const node = await prisma.mindmap.upsert({
+    where: {id: '00000000-0000-0000-0000-000000000001'},
+    update: {},
+    create: {
+      id: '00000000-0000-0000-0000-000000000001',
+      title: 'root',
+      children: {
+        create:
+          [{
+            id: '00000000-0000-0000-0000-000000000002',
+            title: 'child_2',
+            children: {
+              create:
+                [{
+                  id: '00000000-0000-0000-0000-000000000004',
+                  title: 'child_4',
+                  children: {
+                    create: {
+                      id: '00000000-0000-0000-0000-000000000006',
+                      title: 'child_6',
+                    }
+                  }
+                },
+                  {
+                    id: '00000000-0000-0000-0000-000000000005',
+                    title: 'child_5',
+                  },]
+            },
+          },
+            {
+              id: '00000000-0000-0000-0000-000000000003',
+              title: 'child_3',
+            },]
+      },
+    }
+  });
+
   console.log({
     tom,
     daniel,
     chatroom,
     messages,
+    node
   });
 }
 
