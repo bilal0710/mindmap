@@ -19,6 +19,7 @@ export class MindmapResolver {
   @Query(() => [Mindmap], {name: 'mindmaps'})
   findAll() {
     return this.mindmapService.findAll();
+
   }
 
   @Query(() => Mindmap, {name: 'mindmap'})

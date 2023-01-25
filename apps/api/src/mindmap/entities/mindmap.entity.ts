@@ -9,8 +9,8 @@ export class Mindmap {
   @Field({nullable: false})
   title: string;
 
-  @Field()
-  parentId: string;
+  @Field({nullable: true})
+  parent_id: string;
 
   @Field(() => Mindmap, {nullable: true})
   children: Mindmap[];

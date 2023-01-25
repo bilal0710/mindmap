@@ -2,6 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {CreateMindmapInput} from './dto/create-mindmap.input';
 import {UpdateMindmapInput} from './dto/update-mindmap.input';
 import {PrismaService} from "../prisma/prisma.service";
+import {Mindmap} from "./entities/mindmap.entity";
 
 @Injectable()
 export class MindmapService {
@@ -17,24 +18,18 @@ export class MindmapService {
   }
 
   async findAllChildren(parentId?: string) {
-    // const children = await this.prisma.mindmap.findMany({
-    //   where: {
-    //     parentId: parentId
-    //   }
-    // });
-    return await this.prisma.$queryRaw`
+    return <Mindmap[]> await this.prisma.$queryRaw`
     WITH RECURSIVE mindmap_tree AS (
-    SELECT id, title, parent_Id
+    SELECT id, title, parent_id
     FROM "Mindmap"
-    WHERE id = ${parentId}
+    WHERE parent_id = ${parentId}
     UNION ALL
-    SELECT c.id, c.title, c.parent_Id
+    SELECT c.id, c.title, c.parent_id
     FROM "Mindmap" c
-    INNER JOIN mindmap_tree ct ON ct.id = c.parent_id
+    INNER JOIN mindmap_tree ct ON ct.id = c.parent_Id
 )
     SELECT DISTINCT *
-    FROM mindmap_tree
-    ORDER BY title;`;
+    FROM mindmap_tree;`;
   }
 
   async findOne(id: string) {

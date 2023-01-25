@@ -48,7 +48,7 @@ type Auth {
 type Mindmap {
   id: String!
   title: String!
-  parentId: String!
+  parent_id: String
   children: [Mindmap!]!
 }
 
