@@ -9,6 +9,7 @@ import {MessageComponent} from './chatroom/message/message.component';
 import {NgxGraphComponent} from './mindmap/ngx-graph/ngx-graph.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule} from "@angular/router";
+import {AngularMaterialModule} from "./angular-material.module";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {RouterModule} from "@angular/router";
     AppRoutingModule,
     GraphModule,
     RouterModule,
+    AngularMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

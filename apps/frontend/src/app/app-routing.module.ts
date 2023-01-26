@@ -5,7 +5,7 @@ import {MessageComponent} from "./chatroom/message/message.component";
 import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'ngx-graph', pathMatch: 'full' },
+  { path: '', redirectTo: 'message', pathMatch: 'full' },
   {
     path: 'message',
     component: MessageComponent,
