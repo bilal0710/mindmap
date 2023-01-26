@@ -4,15 +4,18 @@ import {RouterModule, Routes} from "@angular/router";
 import {MessageComponent} from "./chatroom/message/message.component";
 import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
 import {AuthenticationComponent} from "./auth/authentication/authentication.component";
+import {AuthGuard} from "./auth";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+  { path: '', redirectTo: 'ngx-graph', pathMatch: 'full' },
   {
     path: 'message',
+    canActivate: [AuthGuard],
     component: MessageComponent,
   },
   {
     path: 'ngx-graph',
+    canActivate: [AuthGuard],
     component: NgxGraphComponent,
   },
   {

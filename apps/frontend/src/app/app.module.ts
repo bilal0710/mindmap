@@ -13,6 +13,7 @@ import {AngularMaterialModule} from "./angular-material.module";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AuthModule} from "./auth/auth.module";
+import { GraphQLModule } from './graphql.module';
 
 
 
@@ -44,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+    GraphQLModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
