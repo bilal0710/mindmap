@@ -53,7 +53,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     MatIconModule,
     MatTableModule,
-    MatCardModule,
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,

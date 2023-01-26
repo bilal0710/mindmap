@@ -3,9 +3,10 @@ import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {MessageComponent} from "./chatroom/message/message.component";
 import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
+import {AuthenticationComponent} from "./auth/authentication/authentication.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'message', pathMatch: 'full' },
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
   {
     path: 'message',
     component: MessageComponent,
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'ngx-graph',
     component: NgxGraphComponent,
+  },
+  {
+    path: 'auth',
+    component: AuthenticationComponent,
   },]
 
 @NgModule({
