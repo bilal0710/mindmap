@@ -3,7 +3,7 @@
     <h1 *ngIf="isSignup">{{ 'REGISTER' | translate }}</h1>
     <h1 *ngIf="!isSignup">{{ 'LOGIN' | translate }}</h1>
     <form #f="ngForm">
-      <mat-form-field>
+      <mat-form-field color="accent">
         <mat-label>{{ 'PROFILES.EMAIL' | translate }}</mat-label>
         <input
           matInput
@@ -21,7 +21,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="isSignup">
+      <mat-form-field *ngIf="isSignup" color="accent">
         <mat-label>{{ 'PROFILES.FIRSTNAME' | translate }}</mat-label>
         <input
           matInput
@@ -38,7 +38,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="isSignup">
+      <mat-form-field *ngIf="isSignup" color="accent">
         <mat-label>{{ 'PROFILES.LASTNAME' | translate }}</mat-label>
         <input
           matInput
@@ -55,7 +55,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field color="accent">
         <mat-label>{{ 'PROFILES.PASSWORD' | translate }}</mat-label>
         <input
           matInput
