@@ -2,15 +2,16 @@ import {Injectable, OnDestroy} from '@angular/core';
 
 import {Router} from "@angular/router";
 import {ServerService} from "../shared/server.service";
-import {LoginCredentials} from "../shared/types";
 import {Subscription} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private token: string | undefined | null= null;
+  private token: string | undefined | null = null;
   private subscriptions: Subscription[] = [];
+  email = "max@email.com";
+  password = "123456";
 
   constructor(
     private serverSrv: ServerService,
@@ -24,22 +25,21 @@ export class AuthService implements OnDestroy {
 
   getToken(): string | null {
     if (!this.token) {
-      this.token = localStorage.getItem('token');
-      console.log('token', this.token);
+      this.token = localStorage.getItem('mindmap_token');
     }
-
+    console.log('token= ', this.token);
     return this.token;
   }
 
-  login(loginCredentials?: LoginCredentials) {
+  login(email: string,
+        password: string) {
     this.subscriptions.push(
-      this.serverSrv.login(loginCredentials).subscribe({
-        next: (result) => {
-          this.token = result.data?.token;
-          this.token ? localStorage.setItem('ccn_token', this.token) : null;
+      this.serverSrv.login(email, password).subscribe({
+        next: (token) => {
+          this.token = token;
+          this.token ? localStorage.setItem('mindmap_token', this.token) : null;
           //this.adminService.autoAdmin();
-
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/ngx-graph']);
         },
         error: (error) => {
           console.error(error);
@@ -48,20 +48,22 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  /*  signup(user: UserSignup) {
-      this.serverSrv.signup(user).subscribe({
-        next: (result) => {
-          this.token = result.token;
-          localStorage.setItem('token', this.token);
+  signup(firstname: string, lastname: string, email: string, password: string, passwordRepeat: string) {
+    this.subscriptions.push(this.serverSrv.signup(firstname, lastname,
+      email,
+      password,
+      passwordRepeat).subscribe({
+      next: (token) => {
+        this.token = token;
+        this.token ? localStorage.setItem('mindmap_token', this.token) : null;
+        this.router.navigate(['/ngx-graph']);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    }));
+  }
 
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-    }
-  */
   logout() {
     this.token = '';
     localStorage.removeItem('token');
