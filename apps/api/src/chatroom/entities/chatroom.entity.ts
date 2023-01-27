@@ -3,8 +3,6 @@ import {User} from "../../user/entities/user.entity";
 import {Message} from "../../message/entities/message.entity";
 import {ChatroomType} from "../../shared/enums";
 
-
-
 registerEnumType(ChatroomType, {
   name: 'ChatroomType',
 });
