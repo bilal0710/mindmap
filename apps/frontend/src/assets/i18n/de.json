@@ -26,6 +26,11 @@
     "SIGN_IN_INSTEAD": "Stattdessen anmelden",
     "CREATE_ACCOUNT": "Konto erstellen"
   },
+  "CHATROOMS": {
+    "CHATROOM" : "Chatroom",
+    "CHATROOM_CREATE" : "Chatroom erstellen",
+    "CHATROOM_LIST" : "Chatroom-liste"
+  },
   "PROFILES": {
     "PROFILE": "Profil",
     "PROFILES": "Profile",

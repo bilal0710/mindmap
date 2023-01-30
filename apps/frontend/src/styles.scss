@@ -1,4 +1,14 @@
 @import "./assets/theme.scss";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  padding: 0 24px !important;
+}

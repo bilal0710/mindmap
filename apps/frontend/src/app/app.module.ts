@@ -14,6 +14,10 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AuthModule} from "./auth/auth.module";
 import { GraphQLModule } from './graphql.module';
+import {ChatroomModule} from "./chatroom/chatroom.module";
+import {ProfileComponent} from "./profile/profile.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ConfirmationDialogComponent} from "./lib/confirmation-dialog/confirmation-dialog.component";
 
 
 
@@ -27,6 +31,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     MessageComponent,
     NgxGraphComponent,
+    ConfirmationDialogComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +52,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     GraphQLModule,
+    ChatroomModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

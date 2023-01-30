@@ -1,13 +1,12 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth.service";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'mindmap-authentication',
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss'],
 })
-export class AuthenticationComponent {
+export class AuthenticationComponent implements OnInit {
   email!: string;
   firstname!: string;
   lastname !: string;
@@ -17,8 +16,11 @@ export class AuthenticationComponent {
 
   constructor(
     private authSrv: AuthService,
-    private router: Router
   ) {
+  }
+
+  ngOnInit(): void {
+    this.authSrv.signupSubject.subscribe(result => this.isSignup = result);
   }
 
   handleSubmit() {

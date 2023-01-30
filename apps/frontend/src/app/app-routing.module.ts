@@ -2,21 +2,33 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {MessageComponent} from "./chatroom/message/message.component";
-import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
 import {AuthenticationComponent} from "./auth/authentication/authentication.component";
 import {AuthGuard} from "./auth";
+import {ChatroomListComponent} from "./chatroom/chatroom-list/chatroom-list.component";
+import {ProfileComponent} from "./profile/profile.component";
+import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'ngx-graph', pathMatch: 'full' },
+  {path: '', redirectTo: '/chatrooms', pathMatch: 'full'},
   {
-    path: 'message',
+    path: 'chatrooms',
     canActivate: [AuthGuard],
-    component: MessageComponent,
+    component: ChatroomListComponent,
+  },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    component: ProfileComponent,
   },
   {
     path: 'ngx-graph',
     canActivate: [AuthGuard],
     component: NgxGraphComponent,
+  },
+  {
+    path: 'message',
+    canActivate: [AuthGuard],
+    component: MessageComponent,
   },
   {
     path: 'auth',
@@ -27,4 +39,5 @@ const routes: Routes = [
   imports: [CommonModule, RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
