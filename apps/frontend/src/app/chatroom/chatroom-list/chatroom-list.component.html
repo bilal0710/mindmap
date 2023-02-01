@@ -1,6 +1,38 @@
-<div class="card-wrapper">
-  <mat-tab-group mat-stretch-tabs color="accent">
-    <mat-tab label="First">{{ 'CHATROOMS.CHATROOM' | translate }}</mat-tab>
-    <mat-tab label="Second"> {{ 'CHATROOMS.CHATROOM_CREATE' | translate }}</mat-tab>
-  </mat-tab-group>
+<div class="card">
+  <div class="chatroom-title">{{'CHATROOMS.CHATROOM' | translate}}</div>
+  <mat-divider></mat-divider>
+
+  <div *ngIf="!createComponent">
+    <div class="title-wrapper">
+      <div class="chatroom-sub-title">{{'CHATROOMS.CHATROOM_LIST' | translate}}</div>
+      <button
+        mat-stroked-button
+        (click)="createComponent = true"
+        color="accent">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <mindmap-list></mindmap-list>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div *ngIf="createComponent">
+    <mindmap-chatroom-create></mindmap-chatroom-create>
+  </div>
+
+  <div class="footer">
+    <button
+      *ngIf="createComponent"
+      (click)="createComponent = false"
+      class="cancel-btn"
+      mat-stroked-button>
+      {{ 'CANCEL' | translate }}
+    </button>
+    <button
+      mat-stroked-button
+      color="accent">
+      {{ 'SUBMIT' | translate }}
+    </button>
+  </div>
 </div>

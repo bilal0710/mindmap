@@ -1,0 +1,12 @@
+<mat-selection-list
+  class="select-list"
+  [multiple]="false">
+  <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+    <div class="item">
+      {{shoe}}
+      <mat-icon>more_vert</mat-icon>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list-option>
+</mat-selection-list>
+

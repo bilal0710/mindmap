@@ -6,4 +6,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./chatroom-list.component.scss'],
 })
 export class ChatroomListComponent {
+
+  createComponent = true;
 }

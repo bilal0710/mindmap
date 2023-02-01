@@ -28,8 +28,12 @@
   },
   "CHATROOMS": {
     "CHATROOM" : "Chatroom",
-    "CHATROOM_CREATE" : "Create chatroom",
-    "CHATROOM_LIST" : "Chatroom-lis"
+    "CREATE_CHATROOM" : "Create chatroom",
+    "CHATROOM_LIST" : "Chatroom-list",
+    "CHATROOM_CREATE_MESSAGE" : "Choose chat room members",
+    "CHATROOM_NAME" : "Chatroom Name",
+    "CHATROOM_MEMBER" : "Member",
+    "CHATROOM_Member" : "choose member"
   },
   "PROFILES": {
     "PROFILE": "Profile",

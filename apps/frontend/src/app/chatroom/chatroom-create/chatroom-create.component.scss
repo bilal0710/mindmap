@@ -1,0 +1,29 @@
+@import "~@angular/material/theming";
+@import 'apps/frontend/src/assets/theme.scss';
+
+.action-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+  margin-top: 1em;
+
+  .chatroom-input {
+    width: 70%;
+
+    .label {
+      color: mat-color($app-accent, default);;
+    }
+  }
+}
+
+.select-wrapper {
+  margin: 1em;
+  height: 266px;
+
+
+
+  mat-form-field {
+    margin-bottom: 1em;
+  }
+}
