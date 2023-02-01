@@ -21,6 +21,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
 .mat-checkbox .mat-checkbox-frame {
   transform: scale(1.3);
 }
@@ -30,8 +31,9 @@ body {
 }
 
 mat-form-field {
- width: 100%;
+  width: 100%;
 }
+
 mat-chip-list {
   display: block;
   height: 200px;
@@ -39,4 +41,13 @@ mat-chip-list {
   overflow-x: hidden;
 }
 
+.select-panel {
+  min-width: unset !important;
+  max-width: 372px !important;
 
+}
+
+.cdk-overlay-pane {
+  transform: unset !important;
+
+}

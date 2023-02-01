@@ -17,7 +17,7 @@
   }
 }
 
-.select-wrapper {
+.chatroom-select-wrapper {
   margin: 1em;
   height: 266px;
 
@@ -26,4 +26,10 @@
   mat-form-field {
     margin-bottom: 1em;
   }
+}
+
+
+.select-trigger{
+  opacity: 0.75;
+  font-size: 0.75em;
 }

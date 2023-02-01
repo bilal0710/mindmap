@@ -11,9 +11,9 @@ export class ChatroomCreateComponent {
   inputValue = '';
   toppings = new FormControl<string[]>([]);
   toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni',
-    'Sausage', 'Tomato','Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry',
-    'Sausage', 'Tomato','Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry',
-    'Sausage', 'Tomato','Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+    'Sausage', 'Tomato', 'Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry',
+    'Sausage', 'Tomato', 'Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry',
+    'Sausage', 'Tomato', 'Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
   @ViewChild('fruitInput') fruitInput!: ElementRef<HTMLInputElement>;
 
@@ -29,8 +29,8 @@ export class ChatroomCreateComponent {
 
   remove(fruit: string): void {
     const index = this.toppings.value?.indexOf(fruit);
-    console.log('index', index);
-    if (!!index && index !== -1) {
+    if (index !== undefined && index !== -1 && this.toppings.value) {
+      console.log(this.toppings.value[index]);
       this.toppings.value?.splice(index, 1);
     }
   }
