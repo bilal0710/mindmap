@@ -29,25 +29,6 @@ async function main() {
       password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
     },
   });
-  const chatroom = await prisma.chatroom.upsert({
-    where: {id: '00000000-0000-0000-0000-000000000001'},
-    update: {},
-    create: {
-      id: '00000000-0000-0000-0000-000000000001',
-      name: 'chatroom 1',
-    }
-  });
-  const messages = await prisma.message.upsert({
-    where: {id: '00000000-0000-0000-0000-000000000001'},
-    update: {},
-    create: {
-      id: '00000000-0000-0000-0000-000000000001',
-      content: 'hello world',
-      from: '00000000-0000-0000-0000-000000000001',
-      to: '00000000-0000-0000-0000-000000000002',
-      roomId: '00000000-0000-0000-0000-000000000001',
-    }
-  });
 
   const node = await prisma.mindmap.upsert({
     where: {id: '00000000-0000-0000-0000-000000000001'},
@@ -86,11 +67,30 @@ async function main() {
     }
   });
 
+  for (let i = 0; i < 10; i++) {
+    await prisma.chatroom.upsert({
+      where: {id: `00000000-0000-0000-0000-00000000000${i}`},
+      update: {},
+      create: {
+        id: `00000000-0000-0000-0000-00000000000${i}`,
+        name: `chatroom ${i}`,
+      }
+    });
+    await prisma.message.upsert({
+      where: {id: `00000000-0000-0000-0000-00000000000${i}`},
+      update: {},
+      create: {
+        id: `00000000-0000-0000-0000-00000000000${i}`,
+        content: `hello world ${i}`,
+        from: '00000000-0000-0000-0000-000000000001',
+        to: '00000000-0000-0000-0000-000000000002',
+        roomId: '00000000-0000-0000-0000-000000000001',
+      }
+    });
+  }
   console.log({
     tom,
     daniel,
-    chatroom,
-    messages,
     node
   });
 }

@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {ChatroomService} from "../chatroom.service";
 
 @Component({
   selector: 'mindmap-chatroom-list',
@@ -7,5 +8,8 @@ import {Component} from '@angular/core';
 })
 export class ChatroomListComponent {
 
-  createComponent = true;
+  createComponent = false;
+
+  constructor(private chatroomService: ChatroomService) {
+  }
 }
