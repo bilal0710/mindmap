@@ -13,7 +13,9 @@
       </button>
     </div>
     <mat-divider></mat-divider>
-    <mindmap-list></mindmap-list>
+    <ng-container *ngIf="chatrooms.length > 0">
+      <mindmap-list [list]="chatrooms"></mindmap-list>
+      </ng-container>
     <mat-divider></mat-divider>
   </div>
 

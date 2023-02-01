@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {ChatroomItem} from "../../shared/types";
 
 @Component({
   selector: 'mindmap-list',
@@ -6,5 +7,10 @@ import {Component} from '@angular/core';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers', "Boots", "Boots", "Boots", "Loafers"];
+  @Input() list!: ChatroomItem[];
+
+  //
+  // ngOnInit(): void {
+  //   // console.log(this.list);
+  // }
 }

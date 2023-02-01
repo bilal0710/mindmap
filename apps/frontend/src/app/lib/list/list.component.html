@@ -1,9 +1,9 @@
 <mat-selection-list
   class="select-list"
   [multiple]="false">
-  <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+  <mat-list-option *ngFor="let room of list" [value]="room">
     <div class="item">
-      {{shoe}}
+      {{room.name}}
       <mat-icon>more_vert</mat-icon>
       <mat-divider></mat-divider>
     </div>
