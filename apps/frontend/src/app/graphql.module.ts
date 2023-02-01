@@ -13,14 +13,13 @@ export function createApollo(httpLink: HttpLink) {
   }));
 
   const auth = setContext((operation, context) => {
-    const token = localStorage.getItem('token');
-    console.log('token', token);
+    const token = localStorage.getItem('mindmap_token');
     if (token === null) {
       return {};
     } else {
       return {
         headers: {
-          Authorization: `JWT ${token}`
+          Authorization: `Bearer ${token}`
         }
       };
     }

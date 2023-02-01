@@ -9,12 +9,15 @@ import {LoggedUser} from "../shared/interfaces";
 import {Chatroom} from "./entities/chatroom.entity";
 import {UserService} from "../user/user.service";
 import {User} from "../user/entities/user.entity";
+import {UseGuards} from "@nestjs/common";
+import {JwtAuthGuard} from "../auth/guards/jwt-auth-guard.service";
 
 @Resolver(() => Chatroom)
 export class ChatroomResolver {
   constructor(private readonly chatroomService: ChatroomService,
               private readonly userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Chatroom)
   createChatroom(
     @Args('createChatroomInput') createChatroomInput: CreateChatroomInput

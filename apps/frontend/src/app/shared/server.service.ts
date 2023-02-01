@@ -1,13 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
-import {LoginGQL, MessagesGQL, MessagesQuery, SignupGQL} from "../graphql/generated";
+import {ChatroomsGQL, ChatroomsQuery, LoginGQL, MessagesGQL, MessagesQuery, SignupGQL} from "../graphql/generated";
 import {map, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServerService {
-  constructor(private apollo: Apollo, private messagesGQL: MessagesGQL,
+  constructor(private apollo: Apollo,
+              private messagesGQL: MessagesGQL,
+              private chatroomsGQL: ChatroomsGQL,
               private loginGQL: LoginGQL,
               private signupGQL: SignupGQL) {
   }
@@ -28,9 +30,14 @@ export class ServerService {
     }).pipe(map(result => result.data?.signup.token));
   }
 
-  rooms(): Observable<MessagesQuery['messages']> {
+  messages(): Observable<MessagesQuery['messages']> {
     return this.messagesGQL.watch().valueChanges.pipe(
       map(result => result.data.messages));
+  }
+
+  chatrooms(): Observable<ChatroomsQuery['chatrooms']> {
+    return this.chatroomsGQL.watch().valueChanges.pipe(
+      map(result => result.data.chatrooms));
   }
 }
 

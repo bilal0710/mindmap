@@ -11,5 +11,10 @@ export class ChatroomListComponent {
   createComponent = false;
 
   constructor(private chatroomService: ChatroomService) {
+    this.chatroomService.getAllChatrooms().subscribe(chatrooms => {
+      console.log(chatrooms);
+    });
   }
+
+
 }

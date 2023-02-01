@@ -28,4 +28,7 @@ export class Chatroom {
 
   @Field(() => ChatroomType, {defaultValue: ChatroomType.PUBLIC})
   type: ChatroomType;
+
+  @Field({nullable: false})
+  mindmapId?: string;
 }

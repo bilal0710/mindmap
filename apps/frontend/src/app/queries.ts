@@ -10,6 +10,17 @@ const QUERY_MESSAGES = gql`
     }
   }
 `
+
+const QUERY_ALL_CHATROOM = gql`
+  query Chatrooms
+  {
+    chatrooms{
+      name,
+      type
+    }
+  }
+`
+
 const MUTATION_LOGIN = gql`
   mutation login($email: String!, $password: String!) {
   login(

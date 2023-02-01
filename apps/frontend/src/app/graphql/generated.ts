@@ -26,6 +26,7 @@ export type Chatroom = {
   deleted: Scalars['Boolean'];
   id: Scalars['String'];
   messages?: Maybe<Message>;
+  mindmapId: Scalars['String'];
   name: Scalars['String'];
   type: ChatroomType;
   users: Array<User>;
@@ -271,6 +272,11 @@ export type MessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string }> };
 
+export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ChatroomsQuery = { __typename?: 'Query', chatrooms: Array<{ __typename?: 'Chatroom', name: string, type: ChatroomType }> };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -302,7 +308,26 @@ export const MessagesDocument = gql`
     providedIn: 'root'
   })
   export class MessagesGQL extends Apollo.Query<MessagesQuery, MessagesQueryVariables> {
-    override document = MessagesDocument;
+    override  document = MessagesDocument;
+
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ChatroomsDocument = gql`
+    query Chatrooms {
+  chatrooms {
+    name
+    type
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ChatroomsGQL extends Apollo.Query<ChatroomsQuery, ChatroomsQueryVariables> {
+    override document = ChatroomsDocument;
 
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

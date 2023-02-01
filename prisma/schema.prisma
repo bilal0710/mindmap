@@ -19,6 +19,8 @@ model Mindmap {
   parent_id String?
   parent   Mindmap?    @relation("ParentChildren", fields: [parent_id], references: [id])
   children  Mindmap[]  @relation("ParentChildren")
+  chatroom_id String
+  chatroom Chatroom @relation(fields: [chatroom_id], references: [id])
 }
 
 model User {
@@ -43,6 +45,7 @@ model Chatroom {
   messages Message[]
   users User[]
   type ChatroomType @default(public)
+  mindMap Mindmap[]
 }
 
 model Message{

@@ -17,6 +17,7 @@ type Chatroom {
   messages: Message
   users: [User!]!
   type: ChatroomType!
+  mindmapId: String!
 }
 
 enum ChatroomType {
