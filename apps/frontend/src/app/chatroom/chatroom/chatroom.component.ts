@@ -1,10 +1,9 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {ChatroomService} from "../chatroom.service";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
-import {ChangeDetection} from "@angular/cli/lib/config/workspace-schema";
 
 @Component({
   selector: 'mindmap-chatroom-create',
@@ -15,19 +14,15 @@ export class ChatroomComponent implements OnInit, OnDestroy {
   id = '';
   chatroomName = '';
   selectedUser = new FormControl<string[]>([]);
-  userList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni',
-    'Sausage', 'Tomato', 'Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry',
-    'Sausage', 'Tomato', 'Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry',
-    'Sausage', 'Tomato', 'Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  userList!: string[];
 
   subscriptions: Subscription[] = [];
 
 
   constructor(private chatroomService: ChatroomService,
               private activeRoute: ActivatedRoute,
-              private changeDetection: ChangeDetectorRef) {
+  ) {
   }
-
 
 
   ngOnInit(): void {
@@ -35,17 +30,22 @@ export class ChatroomComponent implements OnInit, OnDestroy {
       this.activeRoute.paramMap.subscribe((params) => {
         this.id = params.get('id') || '';
       }));
-    console.log('id= ', this.id);
+    this.subscriptions.push(
+      this.chatroomService.getAllUsers().subscribe(users => {
+        console.log(users);
+        this.userList = users.map(user => user.firstname + ' ' + user.lastname)
+      })
+    );
     if (this.id) {
       this.subscriptions.push(this.chatroomService.getChatroom(this.id).subscribe((data) => {
         this.chatroomName = data.name || '';
-        this.userList = data.users?.map((user) => user.firstname + ' ' + user.lastname) || [];
         const users = [this.userList[0], this.userList[1]];
-        console.log('users= ', this.selectedUser.value);
         this.selectedUser.setValue(users);
       }));
     }
+
   }
+
   remove(fruit: string): void {
     const index = this.selectedUser.value?.indexOf(fruit);
     if (index !== undefined && index !== -1 && this.selectedUser.value) {
@@ -53,6 +53,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
       this.selectedUser.value?.splice(index, 1);
     }
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }

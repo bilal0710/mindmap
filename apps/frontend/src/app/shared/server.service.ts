@@ -8,7 +8,7 @@ import {
   LoginGQL,
   MessagesGQL,
   MessagesQuery,
-  SignupGQL
+  SignupGQL, UsersGQL, UsersQuery
 } from "../graphql/generated";
 import {map, Observable} from "rxjs";
 
@@ -21,7 +21,8 @@ export class ServerService {
               private chatroomsGQL: ChatroomsGQL,
               private loginGQL: LoginGQL,
               private signupGQL: SignupGQL,
-              private chatroomGQL: ChatroomGQL) {
+              private chatroomGQL: ChatroomGQL,
+              private usersGQL: UsersGQL) {
   }
 
   login(email: string, password: string) {
@@ -53,6 +54,11 @@ export class ServerService {
   chatroom(id: string): Observable<ChatroomQuery['chatroom']> {
     return this.chatroomGQL.watch({id}).valueChanges.pipe(
       map(result => result.data.chatroom));
+  }
+
+  users(): Observable<UsersQuery['users']> {
+    return this.usersGQL.watch().valueChanges.pipe(
+      map(result => result.data.users));
   }
 }
 

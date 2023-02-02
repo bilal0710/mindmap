@@ -16,4 +16,8 @@ export class ChatroomService {
   getChatroom(id: string) {
     return this.serverService.chatroom(id);
   }
+
+  getAllUsers(){
+  return this.serverService.users();
+  }
 }

@@ -1,4 +1,3 @@
-
 // We use the gql tag to parse our query string into a query document
 import {gql} from "apollo-angular";
 
@@ -29,35 +28,45 @@ const QUERY_ALL_CHATROOM = gql`
   }
 `
 
+const QUERY_ALL_USERS = gql`
+  query users{
+    users{
+      id,
+      firstname,
+      lastname,
+      email,
+    }
+  }
+`
 
 
 const QUERY_GET_CHATROOM = gql`
-    query Chatroom($id: String!){
-        chatroom(id: $id)
-        {
-          id,
-          name,
-          type,
-          users{
-            id,
-            firstname,
-            lastname,
-            email,
+  query Chatroom($id: String!){
+    chatroom(id: $id)
+    {
+      id,
+      name,
+      type,
+      users{
+        id,
+        firstname,
+        lastname,
+        email,
 
-          }
-        }
+      }
     }
+  }
 `
 
 const MUTATION_LOGIN = gql`
   mutation login($email: String!, $password: String!) {
-  login(
-    email:$email,
-    password: $password
-){
-    token
+    login(
+      email:$email,
+      password: $password
+    ){
+      token
+    }
   }
-}
 `
 
 const MUTATION_SIGNUP = gql`

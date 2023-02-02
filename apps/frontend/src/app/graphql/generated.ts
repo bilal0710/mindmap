@@ -50,6 +50,7 @@ export type CreateMessageInput = {
 };
 
 export type CreateMindmapInput = {
+  chatroom_id: Scalars['String'];
   parent_id?: InputMaybe<Scalars['String']>;
   title: Scalars['String'];
 };
@@ -233,6 +234,7 @@ export type UpdateMessageInput = {
 };
 
 export type UpdateMindmapInput = {
+  chatroom_id?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
   parent_id?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
@@ -276,6 +278,11 @@ export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ChatroomsQuery = { __typename?: 'Query', chatrooms: Array<{ __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> }> };
+
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> };
 
 export type ChatroomQueryVariables = Exact<{
   id: Scalars['String'];
@@ -342,6 +349,27 @@ export const ChatroomsDocument = gql`
   })
   export class ChatroomsGQL extends Apollo.Query<ChatroomsQuery, ChatroomsQueryVariables> {
     override document = ChatroomsDocument;
+
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UsersDocument = gql`
+    query users {
+  users {
+    id
+    firstname
+    lastname
+    email
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UsersGQL extends Apollo.Query<UsersQuery, UsersQueryVariables> {
+    override document = UsersDocument;
 
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
