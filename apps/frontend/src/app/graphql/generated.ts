@@ -275,7 +275,14 @@ export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename
 export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ChatroomsQuery = { __typename?: 'Query', chatrooms: Array<{ __typename?: 'Chatroom', name: string, type: ChatroomType }> };
+export type ChatroomsQuery = { __typename?: 'Query', chatrooms: Array<{ __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> }> };
+
+export type ChatroomQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ChatroomQuery = { __typename?: 'Query', chatroom: { __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -308,7 +315,7 @@ export const MessagesDocument = gql`
     providedIn: 'root'
   })
   export class MessagesGQL extends Apollo.Query<MessagesQuery, MessagesQueryVariables> {
-    override  document = MessagesDocument;
+    override document = MessagesDocument;
 
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -317,8 +324,15 @@ export const MessagesDocument = gql`
 export const ChatroomsDocument = gql`
     query Chatrooms {
   chatrooms {
+    id
     name
     type
+    users {
+      id
+      firstname
+      lastname
+      email
+    }
   }
 }
     `;
@@ -328,6 +342,32 @@ export const ChatroomsDocument = gql`
   })
   export class ChatroomsGQL extends Apollo.Query<ChatroomsQuery, ChatroomsQueryVariables> {
     override document = ChatroomsDocument;
+
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ChatroomDocument = gql`
+    query Chatroom($id: String!) {
+  chatroom(id: $id) {
+    id
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+      email
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ChatroomGQL extends Apollo.Query<ChatroomQuery, ChatroomQueryVariables> {
+    override document = ChatroomDocument;
 
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

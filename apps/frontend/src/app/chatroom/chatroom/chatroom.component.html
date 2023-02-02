@@ -1,10 +1,12 @@
-<div class="title-wrapper">
+<div class="card">
+  <div class="chatroom-title">{{'CHATROOMS.CHATROOM' | translate}}</div>
+  <mat-divider></mat-divider>
 
   <div class="action-wrapper">
     <mat-form-field class="chatroom-input">
       <mat-label class="label">{{'CHATROOMS.CHATROOM_NAME' | translate}}</mat-label>
-      <input matInput type="text" [(ngModel)]="inputValue">
-      <button *ngIf="inputValue" matSuffix mat-icon-button aria-label="Clear" (click)="inputValue=''">
+      <input matInput type="text" [(ngModel)]="chatroomName">
+      <button *ngIf="chatroomName" matSuffix mat-icon-button aria-label="Clear" (click)="chatroomName=''">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
@@ -16,23 +18,23 @@
   <div class="chatroom-select-wrapper">
     <mat-form-field color="accent">
       <mat-label>Select an option</mat-label>
-      <mat-select [formControl]="toppings" multiple
+      <mat-select [formControl]="selectedUser" multiple
                   panelClass="select-panel">
         <mat-select-trigger>
-          {{toppings.value?.[0] || ''}}
-          <span *ngIf="(toppings.value?.length || 0) > 1" class="select-trigger">
-        (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+          {{selectedUser.value?.[0] || ''}}
+          <span *ngIf="(selectedUser.value?.length || 0) > 1" class="select-trigger">
+        (+{{(selectedUser.value?.length || 0) - 1}} {{selectedUser.value?.length === 2 ? 'other' : 'others'}})
       </span>
         </mat-select-trigger>
-        <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+        <mat-option *ngFor="let user of userList" [value]="user">{{user}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <div class="">
       <mat-chip-list>
-        <mat-chip *ngFor="let fruit of toppings.value">
-          {{fruit}}
-          <button matChipRemove (click)="remove(fruit)">
+        <mat-chip *ngFor="let user of selectedUser.value">
+          {{user}}
+          <button matChipRemove (click)="remove(user)">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip>
@@ -41,5 +43,17 @@
   </div>
 
 
+  <div class="footer">
+    <button
+      class="cancel-btn"
+      [routerLink]="['/chatrooms']"
+      mat-stroked-button>
+      {{ 'CANCEL' | translate }}
+    </button>
+    <button
+      mat-stroked-button
+      color="accent">
+      {{ 'SUBMIT' | translate }}
+    </button>
+  </div>
 </div>
-

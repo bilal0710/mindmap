@@ -20,7 +20,6 @@ export class MindmapService {
         throw new HttpException(`Mindmap with parent id ${createMindmapInput.parent_id} not found`, HttpStatus.NOT_FOUND);
       }
     }
-    ;
     return await this.prisma.mindmap.create({
       data: createMindmapInput,
     });

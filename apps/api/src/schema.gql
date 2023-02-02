@@ -132,10 +132,12 @@ input UpdateChatroomInput {
 input CreateMindmapInput {
   title: String!
   parent_id: String
+  chatroom_id: String!
 }
 
 input UpdateMindmapInput {
   title: String
   parent_id: String
+  chatroom_id: String
   id: String!
 }

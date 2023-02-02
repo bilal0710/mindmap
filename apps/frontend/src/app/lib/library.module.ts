@@ -4,6 +4,7 @@ import {ListComponent} from "./list/list.component";
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {AngularMaterialModule} from "../angular-material.module";
+import { RouterModule } from '@angular/router';
 
 
 
@@ -16,7 +17,8 @@ import {AngularMaterialModule} from "../angular-material.module";
   imports: [
     CommonModule,
     TranslateModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    RouterModule
   ]
 })
 export class LibraryModule { }

@@ -4,7 +4,15 @@
   <mat-list-option *ngFor="let room of list" [value]="room">
     <div class="item">
       {{room.name}}
-      <mat-icon>more_vert</mat-icon>
+      <div>
+        <button mat-button
+                [routerLink]="room.id">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
       <mat-divider></mat-divider>
     </div>
   </mat-list-option>

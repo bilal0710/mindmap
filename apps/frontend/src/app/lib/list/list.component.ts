@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {ChatroomItem} from "../../shared/types";
+import {Component, Input, OnInit} from '@angular/core';
+import {ChatroomsQuery, ChatroomType} from "../../graphql/generated";
+import {ChatroomService} from "../../chatroom/chatroom.service";
 
 @Component({
   selector: 'mindmap-list',
@@ -7,10 +8,8 @@ import {ChatroomItem} from "../../shared/types";
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
-  @Input() list!: ChatroomItem[];
+  @Input() list!: ChatroomsQuery["chatrooms"];
 
-  //
-  // ngOnInit(): void {
-  //   // console.log(this.list);
-  // }
+constructor(private chatroomService: ChatroomService) {
+}
 }

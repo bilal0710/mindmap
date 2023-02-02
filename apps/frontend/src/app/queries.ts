@@ -15,10 +15,38 @@ const QUERY_ALL_CHATROOM = gql`
   query Chatrooms
   {
     chatrooms{
+      id,
       name,
-      type
+      type,
+      users{
+        id,
+        firstname,
+        lastname,
+        email,
+
+      }
     }
   }
+`
+
+
+
+const QUERY_GET_CHATROOM = gql`
+    query Chatroom($id: String!){
+        chatroom(id: $id)
+        {
+          id,
+          name,
+          type,
+          users{
+            id,
+            firstname,
+            lastname,
+            email,
+
+          }
+        }
+    }
 `
 
 const MUTATION_LOGIN = gql`

@@ -7,15 +7,16 @@
   margin: 4em auto;
   height: 484px;
   background-color: #424242;
+
+  .chatroom-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 1em;
+    text-align: center;
+    color: mat-color($app-accent, default);
+  }
 }
 
-.chatroom-title {
-  font-size: 1.5em;
-  font-weight: bold;
-  padding: 1em;
-  text-align: center;
-  color: mat-color($app-accent, default);
-}
 
 .title-wrapper {
   display: flex;
@@ -39,7 +40,8 @@
 .footer {
   margin: 20px 1em 1em;
   text-align: end;
-  .cancel-btn{
+
+  .cancel-btn {
     margin-right: 1em;
   }
 }

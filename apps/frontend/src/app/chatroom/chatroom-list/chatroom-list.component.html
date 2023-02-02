@@ -2,12 +2,11 @@
   <div class="chatroom-title">{{'CHATROOMS.CHATROOM' | translate}}</div>
   <mat-divider></mat-divider>
 
-  <div *ngIf="!createComponent">
+  <div>
     <div class="title-wrapper">
       <div class="chatroom-sub-title">{{'CHATROOMS.CHATROOM_LIST' | translate}}</div>
       <button
         mat-stroked-button
-        (click)="createComponent = true"
         color="accent">
         <mat-icon>add</mat-icon>
       </button>
@@ -19,18 +18,8 @@
     <mat-divider></mat-divider>
   </div>
 
-  <div *ngIf="createComponent">
-    <mindmap-chatroom-create></mindmap-chatroom-create>
-  </div>
 
   <div class="footer">
-    <button
-      *ngIf="createComponent"
-      (click)="createComponent = false"
-      class="cancel-btn"
-      mat-stroked-button>
-      {{ 'CANCEL' | translate }}
-    </button>
     <button
       mat-stroked-button
       color="accent">

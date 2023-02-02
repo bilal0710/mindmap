@@ -7,13 +7,19 @@ import {AuthGuard} from "./auth";
 import {ChatroomListComponent} from "./chatroom/chatroom-list/chatroom-list.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
+import {ChatroomComponent} from "./chatroom/chatroom/chatroom.component";
+import {ChatroomBaseComponent} from "./chatroom/chatroom-base/chatroom-base.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/chatrooms', pathMatch: 'full'},
   {
     path: 'chatrooms',
     canActivate: [AuthGuard],
-    component: ChatroomListComponent,
+    component: ChatroomBaseComponent,
+    children: [
+      { path: '', component: ChatroomListComponent},
+      { path: ':id', component: ChatroomComponent}
+    ]
   },
   {
     path: 'profile',

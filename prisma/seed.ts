@@ -6,37 +6,44 @@ const prisma = new PrismaClient();
 
 async function main() {
 
-  const tom = await prisma.user.upsert({
-    where: {email: 'max@email.com'},
-    update: {},
-    create: {
-      id: '00000000-0000-0000-0000-000000000001',
-      email: 'max@email.com',
-      firstname: 'max',
-      lastname: 'mustermann',
-      password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
-      role: UserRole.ADMIN,
-    },
-  });
-  const daniel = await prisma.user.upsert({
-    where: {email: 'tom@email.com'},
-    update: {},
-    create: {
-      id: '00000000-0000-0000-0000-000000000002',
-      email: 'tom@email.com',
-      firstname: 'tom',
-      lastname: 'mustermann',
-      password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
-    },
-  });
 
   for (let i = 0; i < 10; i++) {
+    if (i === 0) {
+      await prisma.user.upsert({
+        where: {email: 'max@email.com'},
+        update: {},
+        create: {
+          id: '00000000-0000-0000-0000-000000000000',
+          email: 'max@email.com',
+          firstname: 'max',
+          lastname: 'mustermann',
+          password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
+          role: UserRole.ADMIN,
+        },
+      });
+    } else {
+      await prisma.user.upsert({
+        where: {email: `user${i}@email.com`},
+        update: {},
+        create: {
+          id: `00000000-0000-0000-0000-00000000000${i}`,
+          email: `user${i}@email.com`,
+          firstname: `user ${i}`,
+          lastname: `mustermann ${i}`,
+          password: '$2b$10$.nTDGoYc/52u0t0pkW5yfOZI72RK/u67DDepiDyJCJWHHGy4NYmYK',
+          role: UserRole.USER,
+        },
+      });
+    }
     await prisma.chatroom.upsert({
       where: {id: `00000000-0000-0000-0000-00000000000${i}`},
       update: {},
       create: {
         id: `00000000-0000-0000-0000-00000000000${i}`,
         name: `chatroom ${i}`,
+        users: {
+          connect: {id: '00000000-0000-0000-0000-000000000000'}
+        }
       }
     });
     await prisma.message.upsert({
@@ -95,8 +102,6 @@ async function main() {
     }
   });
   console.log({
-    tom,
-    daniel,
     node
   });
 }

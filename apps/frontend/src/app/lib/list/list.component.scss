@@ -3,13 +3,6 @@
   height: 286px;
   overflow-y: scroll;
 
-  //::-webkit-scrollbar {
-  //  width: 2px !important;
-  //}
-  //
-  //::-webkit-scrollbar-thumb {
-  //  //background: white !important;
-  //}
 
   .item {
     display: flex;
@@ -17,4 +10,6 @@
     align-items: center;
   }
 }
+
+
 

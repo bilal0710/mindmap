@@ -1,6 +1,22 @@
 @import "~@angular/material/theming";
 @import 'apps/frontend/src/assets/theme.scss';
 
+
+.card {
+  max-width: 400px;
+  margin: 4em auto;
+  height: 484px;
+  background-color: #424242;
+
+  .chatroom-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 1em;
+    text-align: center;
+    color: mat-color($app-accent, default);
+  }
+}
+
 .action-wrapper {
   display: flex;
   justify-content: space-between;
@@ -32,4 +48,13 @@
 .select-trigger{
   opacity: 0.75;
   font-size: 0.75em;
+}
+
+.footer {
+  margin: 20px 1em 1em;
+  text-align: end;
+
+  .cancel-btn {
+    margin-right: 1em;
+  }
 }

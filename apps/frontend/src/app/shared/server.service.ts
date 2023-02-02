@@ -1,6 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
-import {ChatroomsGQL, ChatroomsQuery, LoginGQL, MessagesGQL, MessagesQuery, SignupGQL} from "../graphql/generated";
+import {
+  ChatroomGQL,
+  ChatroomQuery,
+  ChatroomsGQL,
+  ChatroomsQuery,
+  LoginGQL,
+  MessagesGQL,
+  MessagesQuery,
+  SignupGQL
+} from "../graphql/generated";
 import {map, Observable} from "rxjs";
 
 @Injectable({
@@ -11,7 +20,8 @@ export class ServerService {
               private messagesGQL: MessagesGQL,
               private chatroomsGQL: ChatroomsGQL,
               private loginGQL: LoginGQL,
-              private signupGQL: SignupGQL) {
+              private signupGQL: SignupGQL,
+              private chatroomGQL: ChatroomGQL) {
   }
 
   login(email: string, password: string) {
@@ -38,6 +48,11 @@ export class ServerService {
   chatrooms(): Observable<ChatroomsQuery['chatrooms']> {
     return this.chatroomsGQL.watch().valueChanges.pipe(
       map(result => result.data.chatrooms));
+  }
+
+  chatroom(id: string): Observable<ChatroomQuery['chatroom']> {
+    return this.chatroomGQL.watch({id}).valueChanges.pipe(
+      map(result => result.data.chatroom));
   }
 }
 
