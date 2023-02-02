@@ -4,10 +4,10 @@ import {MatChipInputEvent} from "@angular/material/chips";
 
 @Component({
   selector: 'mindmap-chatroom-create',
-  templateUrl: './chatroom-create.component.html',
-  styleUrls: ['./chatroom-create.component.scss'],
+  templateUrl: './chatroom.component.html',
+  styleUrls: ['./chatroom.component.scss'],
 })
-export class ChatroomCreateComponent {
+export class ChatroomComponent {
   inputValue = '';
   toppings = new FormControl<string[]>([]);
   toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni',
