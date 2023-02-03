@@ -38,25 +38,34 @@ export class ChatroomComponent implements OnInit, OnDestroy {
     );
     if (this.id) {
       this.subscriptions.push(this.chatroomService.getChatroom(this.id).subscribe((data) => {
+        console.log(data);
         if(!data) return;
         this.chatroomName = data.name;
         this.roomPrivacy = data.type === 'PRIVATE'
         const users = this.userList.filter(user => data.users.filter(item => item.id === user.id).length > 0);
-        console.log(users);
+
         this.selectedUser.setValue(users);
-        console.log(this.selectedUser.getRawValue());
       }));
     }
 
   }
 
-  /*remove(user: UsersQuery['users']): void {
+  remove(user: UsersQuery['users'][number]): void {
     const index = this.selectedUser.value?.indexOf(user);
+    console.log(index);
     if (index !== undefined && index !== -1 && this.selectedUser.value) {
       console.log(this.selectedUser.value[index]);
       this.selectedUser.value?.splice(index, 1);
     }
-  }*/
+  }
+  save() {
+    const users = this.selectedUser.value?.map(user => user.id);
+    this.chatroomService.UpdateChatroom(this.id, this.chatroomName, this.roomPrivacy, users || []).subscribe(
+      (data) => {
+        console.log('data', data);
+      }
+    );
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
