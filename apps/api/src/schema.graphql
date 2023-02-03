@@ -122,13 +122,13 @@ input UpdateMessageInput {
 input CreateChatroomInput {
   name: String!
   users: [String!]!
-  private: Boolean
+  privateRoom: Boolean
 }
 
 input UpdateChatroomInput {
   id: String!
   name: String
-  private: Boolean
+  privateRoom: Boolean
   users: [String!]!
 }
 

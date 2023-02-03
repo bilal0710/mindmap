@@ -39,7 +39,7 @@ export enum ChatroomType {
 
 export type CreateChatroomInput = {
   name: Scalars['String'];
-  private?: InputMaybe<Scalars['Boolean']>;
+  privateRoom?: InputMaybe<Scalars['Boolean']>;
   users: Array<Scalars['String']>;
 };
 
@@ -224,7 +224,7 @@ export type QueryUserArgs = {
 export type UpdateChatroomInput = {
   id: Scalars['String'];
   name?: InputMaybe<Scalars['String']>;
-  private?: InputMaybe<Scalars['Boolean']>;
+  privateRoom?: InputMaybe<Scalars['Boolean']>;
   users: Array<Scalars['String']>;
 };
 
@@ -317,7 +317,7 @@ export type UpdateRoomMutationVariables = Exact<{
   id: Scalars['String'];
   name: Scalars['String'];
   users: Array<Scalars['String']> | Scalars['String'];
-  private: Scalars['Boolean'];
+  privateRoom: Scalars['Boolean'];
 }>;
 
 
@@ -457,9 +457,9 @@ export const SignupDocument = gql`
     }
   }
 export const UpdateRoomDocument = gql`
-    mutation updateRoom($id: String!, $name: String!, $users: [String!]!, $private: Boolean!) {
+    mutation updateRoom($id: String!, $name: String!, $users: [String!]!, $privateRoom: Boolean!) {
   updateChatroom(
-    updateChatroomInput: {id: $id, name: $name, private: $private, users: $users}
+    updateChatroomInput: {id: $id, name: $name, privateRoom: $privateRoom, users: $users}
   ) {
     name
     type

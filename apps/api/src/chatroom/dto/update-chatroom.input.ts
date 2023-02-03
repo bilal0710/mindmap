@@ -10,7 +10,7 @@ export class UpdateChatroomInput {
   name: string;
 
   @Field({nullable: true})
-  private: boolean;
+  privateRoom: boolean;
 
   @Field(() => [String], { nullable: false })
   users: string[];

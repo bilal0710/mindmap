@@ -46,7 +46,7 @@ export class ChatroomService {
       where: {id},
       data: {
         name: updateChatroomInput.name,
-        type: updateChatroomInput.private ? ChatroomType.PRIVATE : ChatroomType.PUBLIC,
+        type: updateChatroomInput.privateRoom ? ChatroomType.PRIVATE : ChatroomType.PUBLIC,
         users: {
           connect: updateChatroomInput.users.map(id => {
             return {id: id}

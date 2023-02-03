@@ -20,4 +20,8 @@ export class ChatroomService {
   getAllUsers(){
   return this.serverService.users();
   }
+
+  UpdateChatroom(id: string, name: string, privateRoom: boolean, users: string[]) {
+    return this.serverService.updateChatroom(id, name, privateRoom, users);
+  }
 }

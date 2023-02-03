@@ -21,20 +21,20 @@
       <mat-select [formControl]="selectedUser" multiple
                   panelClass="select-panel">
         <mat-select-trigger>
-          {{selectedUser.value?.[0] || ''}}
+          {{selectedUser.value?.[0]?.firstname + ' ' + selectedUser.value?.[0]?.lastname || ''}}
           <span *ngIf="(selectedUser.value?.length || 0) > 1" class="select-trigger">
         (+{{(selectedUser.value?.length || 0) - 1}} {{selectedUser.value?.length === 2 ? 'other' : 'others'}})
       </span>
         </mat-select-trigger>
-        <mat-option *ngFor="let user of userList" [value]="user">{{user}}</mat-option>
+        <mat-option *ngFor="let user of userList" [value]="user">{{user.firstname + ' ' + user.lastname}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <div class="">
       <mat-chip-list>
         <mat-chip *ngFor="let user of selectedUser.value">
-          {{user}}
-          <button matChipRemove (click)="remove(user)">
+          {{user.firstname + ' ' + user.lastname}}
+          <button matChipRemove >
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip>

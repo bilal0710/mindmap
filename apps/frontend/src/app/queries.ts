@@ -84,12 +84,12 @@ const MUTATION_SIGNUP = gql`
 `
 
 const MUTATION_UPDATE_CHATROOM = gql`
-    mutation updateRoom($id : String!, $name: String!, $users: [String!]!, $private: Boolean!){
+    mutation updateRoom($id : String!, $name: String!, $users: [String!]!, $privateRoom: Boolean!){
     updateChatroom(
     updateChatroomInput: {
     id: $id,
     name:$name,
-    private: $private,
+    privateRoom: $privateRoom,
     users: $users
     }
     ){

@@ -11,7 +11,7 @@ export class CreateChatroomInput {
   users: string[];
 
   @Field({nullable: true})
-  private: boolean;
+  privateRoom: boolean;
 
 
 }
