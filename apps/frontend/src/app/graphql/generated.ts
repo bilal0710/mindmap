@@ -313,6 +313,16 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'Auth', token: string } };
 
+export type UpdateRoomMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+  users: Array<Scalars['String']> | Scalars['String'];
+  private: Scalars['Boolean'];
+}>;
+
+
+export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
+
 export const MessagesDocument = gql`
     query Messages {
   messages {
@@ -441,6 +451,32 @@ export const SignupDocument = gql`
   })
   export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
     override document = SignupDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateRoomDocument = gql`
+    mutation updateRoom($id: String!, $name: String!, $users: [String!]!, $private: Boolean!) {
+  updateChatroom(
+    updateChatroomInput: {id: $id, name: $name, private: $private, users: $users}
+  ) {
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateRoomGQL extends Apollo.Mutation<UpdateRoomMutation, UpdateRoomMutationVariables> {
+    override document = UpdateRoomDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
