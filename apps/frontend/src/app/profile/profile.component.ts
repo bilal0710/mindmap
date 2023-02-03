@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    public t: TranslateService
+    public  t: TranslateService
   ) {}
 
   ngOnInit(): void {

@@ -17,6 +17,7 @@ import {GraphQLModule} from './graphql.module';
 import {ChatroomModule} from "./chatroom/chatroom.module";
 import {ProfileComponent} from "./profile/profile.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
 
 // AoT requires an exported function for factories
@@ -29,7 +30,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     MessageComponent,
     NgxGraphComponent,
-    ProfileComponent
+    ProfileComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

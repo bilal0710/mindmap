@@ -9,7 +9,8 @@
                 [routerLink]="room.id">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-button>
+        <button mat-button
+        (click)="deleteRoom(room.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

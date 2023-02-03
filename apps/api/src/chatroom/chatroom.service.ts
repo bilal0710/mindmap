@@ -60,10 +60,24 @@ export class ChatroomService {
   }
 
 
-  async remove(id: string) {
+  async remove(id: string, loggedUser: LoggedUser) {
     const chatroom = await this.prisma.chatroom.findUnique({where: {id}, include: {users: true}});
+    if (loggedUser.role !== 'admin') {
+      return new HttpException('You are not allowed to remove this user from chat', HttpStatus.FORBIDDEN);
+    }
     if (chatroom?.users.length > 0) {
-      throw new Error('Chatroom has users');
+      await this.prisma.chatroom.update({
+        where: {id: id},
+        data: {
+          users: {
+            disconnect: chatroom.users.map(user => {
+              return {
+                id: user.id
+              }
+            })
+          }
+        },
+      });
     }
     return await this.prisma.chatroom.delete({where: {id}})
   }
@@ -87,7 +101,6 @@ export class ChatroomService {
           }
         }
       },
-      include: {users: true}
     });
   }
 

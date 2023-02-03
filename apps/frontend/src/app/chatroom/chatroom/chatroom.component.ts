@@ -1,9 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {ChatroomService} from "../chatroom.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UsersQuery} from "../../graphql/generated";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'mindmap-chatroom-create',
@@ -22,6 +24,9 @@ export class ChatroomComponent implements OnInit, OnDestroy {
 
   constructor(private chatroomService: ChatroomService,
               private activeRoute: ActivatedRoute,
+              private _snackBar: MatSnackBar,
+              public t: TranslateService,
+              private router: Router
   ) {
   }
 
@@ -30,20 +35,19 @@ export class ChatroomComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.activeRoute.paramMap.subscribe((params) => {
         this.id = params.get('id') || '';
+        this.id = this.id === 'create' ? '' : this.id;
       }));
     this.subscriptions.push(
       this.chatroomService.getAllUsers().subscribe(users => {
         this.userList = users;
       })
     );
-    if (this.id) {
+    if (this.id !== '') {
       this.subscriptions.push(this.chatroomService.getChatroom(this.id).subscribe((data) => {
-        console.log(data);
-        if(!data) return;
+        if (!data) return;
         this.chatroomName = data.name;
         this.roomPrivacy = data.type === 'PRIVATE'
         const users = this.userList.filter(user => data.users.filter(item => item.id === user.id).length > 0);
-
         this.selectedUser.setValue(users);
       }));
     }
@@ -52,19 +56,34 @@ export class ChatroomComponent implements OnInit, OnDestroy {
 
   remove(user: UsersQuery['users'][number]): void {
     const index = this.selectedUser.value?.indexOf(user);
-    console.log(index);
     if (index !== undefined && index !== -1 && this.selectedUser.value) {
-      console.log(this.selectedUser.value[index]);
       this.selectedUser.value?.splice(index, 1);
     }
   }
+
   save() {
     const users = this.selectedUser.value?.map(user => user.id);
-    this.chatroomService.UpdateChatroom(this.id, this.chatroomName, this.roomPrivacy, users || []).subscribe(
+    if (this.id !== '') {
+      this.subscriptions.push(this.chatroomService.UpdateChatroom(this.id, this.chatroomName, this.roomPrivacy, users || []).subscribe(
+        (data) => {
+          this._snackBar.open(this.t.instant("UPDATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          this.router.navigate(['chatrooms']);
+        }
+      ));
+      return;
+    }
+    this.subscriptions.push(this.chatroomService.CreateChatroom(this.chatroomName, this.roomPrivacy, users || []).subscribe(
       (data) => {
-        console.log('data', data);
-      }
-    );
+        this._snackBar.open(this.t.instant("CREATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        this.router.navigate(['chatrooms']);
+      }));
+
   }
 
   ngOnDestroy(): void {

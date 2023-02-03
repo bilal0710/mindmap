@@ -85,21 +85,52 @@ const MUTATION_SIGNUP = gql`
 
 const MUTATION_UPDATE_CHATROOM = gql`
     mutation updateRoom($id : String!, $name: String!, $users: [String!]!, $privateRoom: Boolean!){
-    updateChatroom(
-    updateChatroomInput: {
-    id: $id,
-    name:$name,
-    privateRoom: $privateRoom,
-    users: $users
-    }
-    ){
-        name,
-        type,
-        users{
-            id,
-            firstname,
-            lastname
+        updateChatroom(
+            updateChatroomInput: {
+                id: $id,
+                name:$name,
+                privateRoom: $privateRoom,
+                users: $users
+            }
+        ){
+            name,
+            type,
+            users{
+                id,
+                firstname,
+                lastname
+            }
         }
     }
+`
+
+const MUTATION_CREATE_CHATROOM = gql`
+  mutation createRoom($name: String!, $users: [String!]!, $privateRoom: Boolean!){
+    createChatroom(
+      createChatroomInput: {
+        name:$name,
+        privateRoom: $privateRoom,
+        users: $users
+      }
+    ){
+      id,
+      name,
+      type,
+      users{
+        id,
+        firstname,
+        lastname
+      }
     }
+  }
+`
+
+const MUTATION_DELETE_CHATROOM = gql`
+  mutation deleteChatroom ($roomId:String!){
+    removeChatroom(
+      id:$roomId
+    ){
+      id
+    }
+  }
 `

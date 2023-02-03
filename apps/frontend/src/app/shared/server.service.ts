@@ -4,7 +4,7 @@ import {
   ChatroomGQL,
   ChatroomQuery,
   ChatroomsGQL,
-  ChatroomsQuery,
+  ChatroomsQuery, CreateRoomGQL, DeleteChatroomGQL,
   LoginGQL,
   MessagesGQL,
   MessagesQuery,
@@ -23,16 +23,16 @@ export class ServerService {
               private signupGQL: SignupGQL,
               private chatroomGQL: ChatroomGQL,
               private usersGQL: UsersGQL,
-              private updateChatroomGQL: UpdateRoomGQL) {
+              private updateChatroomGQL: UpdateRoomGQL,
+              private createChatroomGQL: CreateRoomGQL,
+              private deleteChatroomGQL: DeleteChatroomGQL) {
   }
 
   login(email: string, password: string) {
     return this.loginGQL.mutate({email, password}).pipe(map(result => result.data?.login.token));
   }
 
-  signup(firstname: string, lastname: string,
-         email: string, password: string,
-         passwordRepeat: string) {
+  signup(firstname: string, lastname: string, email: string, password: string, passwordRepeat: string) {
     return this.signupGQL.mutate({
       email,
       password,
@@ -62,12 +62,19 @@ export class ServerService {
       map(result => result.data.users));
   }
 
-  updateChatroom(id: string,
-                 name: string,
-                 privateRoom: boolean,
-                 users: string[]) {
+  updateChatroom(id: string, name: string, privateRoom: boolean, users: string[]) {
     return this.updateChatroomGQL.mutate({id, name, privateRoom, users})
       .pipe(map(result => result.data?.updateChatroom));
+  }
+
+  createChatroom(name: string, privateRoom: boolean, users: string[]) {
+    return this.createChatroomGQL.mutate({name, privateRoom, users})
+      .pipe(map(result => result.data?.createChatroom));
+  }
+
+  deleteChatroom(id: string) {
+    return this.deleteChatroomGQL.mutate({roomId: id})
+      .pipe(map(result => result.data?.removeChatroom));
   }
 }
 

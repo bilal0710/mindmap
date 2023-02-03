@@ -9,6 +9,8 @@ import {ProfileComponent} from "./profile/profile.component";
 import {NgxGraphComponent} from "./mindmap/ngx-graph/ngx-graph.component";
 import {ChatroomComponent} from "./chatroom/chatroom/chatroom.component";
 import {ChatroomBaseComponent} from "./chatroom/chatroom-base/chatroom-base.component";
+import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
+import {CheckChatroomGuard} from "./shared/check-chatroom.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: '/chatrooms', pathMatch: 'full'},
@@ -17,8 +19,9 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: ChatroomBaseComponent,
     children: [
-      { path: '', component: ChatroomListComponent},
-      { path: ':id', component: ChatroomComponent}
+      {path: '', component: ChatroomListComponent},
+      {path: ':id', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
+      {path: 'create', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
     ]
   },
   {
@@ -39,7 +42,10 @@ const routes: Routes = [
   {
     path: 'auth',
     component: AuthenticationComponent,
-  },]
+  },
+  {path: '404', component: PageNotFoundComponent},
+  {path: '**', redirectTo: '/404'},
+]
 
 @NgModule({
   imports: [CommonModule, RouterModule.forRoot(routes)],

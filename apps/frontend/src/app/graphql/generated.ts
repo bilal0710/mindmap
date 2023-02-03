@@ -323,6 +323,22 @@ export type UpdateRoomMutationVariables = Exact<{
 
 export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
 
+export type CreateRoomMutationVariables = Exact<{
+  name: Scalars['String'];
+  users: Array<Scalars['String']> | Scalars['String'];
+  privateRoom: Scalars['Boolean'];
+}>;
+
+
+export type CreateRoomMutation = { __typename?: 'Mutation', createChatroom: { __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
+
+export type DeleteChatroomMutationVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type DeleteChatroomMutation = { __typename?: 'Mutation', removeChatroom: { __typename?: 'Chatroom', id: string } };
+
 export const MessagesDocument = gql`
     query Messages {
   messages {
@@ -477,6 +493,51 @@ export const UpdateRoomDocument = gql`
   })
   export class UpdateRoomGQL extends Apollo.Mutation<UpdateRoomMutation, UpdateRoomMutationVariables> {
     override document = UpdateRoomDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateRoomDocument = gql`
+    mutation createRoom($name: String!, $users: [String!]!, $privateRoom: Boolean!) {
+  createChatroom(
+    createChatroomInput: {name: $name, privateRoom: $privateRoom, users: $users}
+  ) {
+    id
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateRoomGQL extends Apollo.Mutation<CreateRoomMutation, CreateRoomMutationVariables> {
+    override document = CreateRoomDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteChatroomDocument = gql`
+    mutation deleteChatroom($roomId: String!) {
+  removeChatroom(id: $roomId) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteChatroomGQL extends Apollo.Mutation<DeleteChatroomMutation, DeleteChatroomMutationVariables> {
+    override document = DeleteChatroomDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

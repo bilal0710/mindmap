@@ -1,4 +1,7 @@
 {
+  "CREATE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom created successfully",
+  "UPDATE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom updated successfully",
+  "DELETE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom deleted successfully",
   "CLICK": "click the button",
   "LANGUAGE": "Sprache",
   "CREATE": "Create",
@@ -59,25 +62,6 @@
   },
   "YES": "yes",
   "NO": "no",
-  "CASES": {
-    "CASES": "Cases",
-    "ALL_CASES": "All Cases"
-  },
-  "SESSIONS": {
-    "SESSIONS": "Sessions",
-    "ALL SESSIONS": "All sessions",
-    "SESSION": "Session",
-    "LAST_SESSION": "Last Sessions",
-    "UPDATE_SESSION": "Update Session",
-    "DELETE_SESSION": "Delete Session",
-    "SESSION_OVERVIEW": "Session overview",
-    "SESSION_START": "Session start",
-    "SESSION_END": "Session end",
-    "INFECTED": "infected",
-    "NOTE": "Note",
-    "MARK_INFECTED_TOOLTIP": "Mark this session as infected",
-    "MARK_INFECTED_TOOLTIP_DISABLED": "This session is already marked as infected"
-  },
   "ROOMS": {
     "ROOMS": "Rooms",
     "ROOM": "Room",
@@ -91,9 +75,5 @@
     "FACULITY": "faculty"
   },
   "ERROR_OLD_PASSWORD_WRONG": "Old password is wrong",
-  "ERROR_PASSWORDS_NOT_MATCHING": "New password is not matching",
-  "FACULTY": {
-    "AI": "Applied Computer Science",
-    "SA": "Social Work"
-  }
+  "ERROR_PASSWORDS_NOT_MATCHING": "New password is not matching"
 }
