@@ -5,7 +5,10 @@ const config: CodegenConfig = {
   documents: './apps/frontend/src/app/queries.ts',
   generates: {
     './apps/frontend/src/app/graphql/generated.ts': {
-      plugins: ['typescript', 'typescript-operations', 'typescript-apollo-angular']
+      plugins: ['typescript', 'typescript-operations', 'typescript-apollo-angular'],
+      config: {
+        addExplicitOverride: true
+      },
     }
   }
 }

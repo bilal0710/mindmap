@@ -1,5 +1,6 @@
 import {Field, InputType} from '@nestjs/graphql';
 
+
 @InputType()
 export class UpdateChatroomInput {
   @Field(() => String)
@@ -8,4 +9,9 @@ export class UpdateChatroomInput {
   @Field({nullable: true})
   name: string;
 
+  @Field({nullable: true})
+  private: boolean;
+
+  @Field(() => [String], { nullable: false })
+  users: string[];
 }

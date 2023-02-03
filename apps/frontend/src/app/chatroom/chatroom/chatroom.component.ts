@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {MatChipInputEvent} from "@angular/material/chips";
 import {ChatroomService} from "../chatroom.service";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -15,6 +14,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
   chatroomName = '';
   selectedUser = new FormControl<string[]>([]);
   userList!: string[];
+  roomPrivacy = false;
 
   subscriptions: Subscription[] = [];
 
@@ -32,14 +32,15 @@ export class ChatroomComponent implements OnInit, OnDestroy {
       }));
     this.subscriptions.push(
       this.chatroomService.getAllUsers().subscribe(users => {
-        console.log(users);
         this.userList = users.map(user => user.firstname + ' ' + user.lastname)
       })
     );
     if (this.id) {
       this.subscriptions.push(this.chatroomService.getChatroom(this.id).subscribe((data) => {
-        this.chatroomName = data.name || '';
-        const users = [this.userList[0], this.userList[1]];
+        if(!data) return;
+        this.chatroomName = data.name;
+        this.roomPrivacy = data.type === 'PRIVATE'
+        const users = data.users.map(user => user.firstname + ' ' + user.lastname);
         this.selectedUser.setValue(users);
       }));
     }
@@ -56,15 +57,6 @@ export class ChatroomComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our fruit
-    if (event.value) {
-      this.selectedUser.value?.push(value);
-    }
   }
 
 }

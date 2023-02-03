@@ -39,6 +39,7 @@ export enum ChatroomType {
 
 export type CreateChatroomInput = {
   name: Scalars['String'];
+  private?: InputMaybe<Scalars['Boolean']>;
   users: Array<Scalars['String']>;
 };
 
@@ -223,6 +224,8 @@ export type QueryUserArgs = {
 export type UpdateChatroomInput = {
   id: Scalars['String'];
   name?: InputMaybe<Scalars['String']>;
+  private?: InputMaybe<Scalars['Boolean']>;
+  users: Array<Scalars['String']>;
 };
 
 export type UpdateMessageInput = {
@@ -323,7 +326,7 @@ export const MessagesDocument = gql`
   })
   export class MessagesGQL extends Apollo.Query<MessagesQuery, MessagesQueryVariables> {
     override document = MessagesDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -349,7 +352,7 @@ export const ChatroomsDocument = gql`
   })
   export class ChatroomsGQL extends Apollo.Query<ChatroomsQuery, ChatroomsQueryVariables> {
     override document = ChatroomsDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -370,7 +373,7 @@ export const UsersDocument = gql`
   })
   export class UsersGQL extends Apollo.Query<UsersQuery, UsersQueryVariables> {
     override document = UsersDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -396,7 +399,7 @@ export const ChatroomDocument = gql`
   })
   export class ChatroomGQL extends Apollo.Query<ChatroomQuery, ChatroomQueryVariables> {
     override document = ChatroomDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -414,7 +417,7 @@ export const LoginDocument = gql`
   })
   export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
     override document = LoginDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -438,7 +441,7 @@ export const SignupDocument = gql`
   })
   export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
     override document = SignupDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

@@ -11,7 +11,7 @@
       </button>
     </mat-form-field>
     <section>
-      <mat-checkbox color="accent" class="example-margin">Private</mat-checkbox>
+      <mat-checkbox color="accent" [checked]="roomPrivacy" (change)="roomPrivacy = !roomPrivacy">Private</mat-checkbox>
     </section>
   </div>
 
