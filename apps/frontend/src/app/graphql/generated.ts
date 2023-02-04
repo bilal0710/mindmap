@@ -212,6 +212,11 @@ export type QueryMessageArgs = {
 };
 
 
+export type QueryMessagesArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryMindmapArgs = {
   id: Scalars['String'];
 };
@@ -272,10 +277,12 @@ export enum UserRole {
   User = 'USER'
 }
 
-export type MessagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type MessagesQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
 
 
-export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string }> };
+export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string, from: string, to: string, roomId: string }> };
 
 export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -340,9 +347,12 @@ export type DeleteChatroomMutationVariables = Exact<{
 export type DeleteChatroomMutation = { __typename?: 'Mutation', removeChatroom: { __typename?: 'Chatroom', id: string } };
 
 export const MessagesDocument = gql`
-    query Messages {
-  messages {
+    query Messages($id: String!) {
+  messages(id: $id) {
     content
+    from
+    to
+    roomId
   }
 }
     `;

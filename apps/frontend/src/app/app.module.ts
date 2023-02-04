@@ -5,8 +5,6 @@ import {AppComponent} from './app.component';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GraphModule} from '@swimlane/ngx-graph';
-import {MessageComponent} from './chatroom/message/message.component';
-import {NgxGraphComponent} from './mindmap/ngx-graph/ngx-graph.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule} from "@angular/router";
 import {AngularMaterialModule} from "./angular-material.module";
@@ -18,6 +16,7 @@ import {ChatroomModule} from "./chatroom/chatroom.module";
 import {ProfileComponent} from "./profile/profile.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
+import {MessageModule} from "./message/message.module";
 
 
 // AoT requires an exported function for factories
@@ -28,8 +27,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    MessageComponent,
-    NgxGraphComponent,
     ProfileComponent,
     PageNotFoundComponent
   ],
@@ -42,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RouterModule,
     AngularMaterialModule,
     AuthModule,
+    MessageModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {

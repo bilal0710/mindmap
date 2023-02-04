@@ -42,9 +42,10 @@ export class ServerService {
     }).pipe(map(result => result.data?.signup.token));
   }
 
-  messages(): Observable<MessagesQuery['messages']> {
-    return this.messagesGQL.watch().valueChanges.pipe(
-      map(result => result.data.messages));
+  messages(id: string): Observable<MessagesQuery['messages']> {
+    return this.messagesGQL.watch({id}).valueChanges.pipe(
+      map(result => result.data.messages)
+    );
   }
 
   chatrooms(): Observable<ChatroomsQuery['chatrooms']> {

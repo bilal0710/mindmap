@@ -1,0 +1,13 @@
+.message-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  .messages{
+    width: 35%;
+    background-color: #404040;
+  }
+  .chart{
+    width: 65%;
+  }
+}

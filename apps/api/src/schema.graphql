@@ -57,7 +57,7 @@ type Query {
   users: [User!]!
   user(id: String!): User!
   whoAmI: User!
-  messages: [Message!]!
+  messages(id: String!): [Message!]!
   message(id: String!): Message!
   chatrooms: [Chatroom!]!
   chatroom(id: String!): Chatroom!
