@@ -20,8 +20,8 @@ const routes: Routes = [
     component: ChatroomBaseComponent,
     children: [
       {path: '', component: ChatroomListComponent},
-      {path: ':id', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
-      {path: 'create', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
+      {path: 'create', component: ChatroomComponent},
+      {path: ':id/edit', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
     ]
   },
   {
