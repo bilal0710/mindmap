@@ -13,8 +13,11 @@ import {AngularMaterialModule} from "./angular-material.module";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AuthModule} from "./auth/auth.module";
-import { GraphQLModule } from './graphql.module';
-
+import {GraphQLModule} from './graphql.module';
+import {ChatroomModule} from "./chatroom/chatroom.module";
+import {ProfileComponent} from "./profile/profile.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
 
 // AoT requires an exported function for factories
@@ -27,6 +30,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     MessageComponent,
     NgxGraphComponent,
+    ProfileComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -46,8 +51,13 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     GraphQLModule,
+    ChatroomModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
+  exports: [
+  ]
 })
 export class AppModule {}

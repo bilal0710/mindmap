@@ -8,4 +8,7 @@ export class CreateMindmapInput {
 
   @Field({nullable: true})
   parent_id: string;
+
+  @Field({nullable: false})
+  chatroom_id: string;
 }

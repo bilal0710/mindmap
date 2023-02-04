@@ -1,9 +1,6 @@
-import {Field, InputType, registerEnumType} from '@nestjs/graphql';
-import {ChatroomType} from "../../shared/enums";
+import {Field, InputType} from '@nestjs/graphql';
 
-registerEnumType(ChatroomType, {
-  name: 'ChatroomType',
-});
+
 @InputType()
 export class CreateChatroomInput {
   @Field({nullable: false})
@@ -12,4 +9,9 @@ export class CreateChatroomInput {
 
   @Field(() => [String], { nullable: false })
   users: string[];
+
+  @Field({nullable: true})
+  privateRoom: boolean;
+
+
 }

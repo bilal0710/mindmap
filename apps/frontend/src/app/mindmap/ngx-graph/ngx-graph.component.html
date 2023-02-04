@@ -6,10 +6,11 @@
       [links]="links"
       [nodes]="nodes"
       [layout]="layout"
+      [customColors]="customColors"
     >
       <ng-template #defsTemplate>
         <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-          <svg:path d="M0,-5L10,0L0,5" class="arrow-head"/>
+          <svg:path d="M0,-5L10,0L0,5" class="arrow-head"  [attr.fill]="'#EEEEEE'"/>
         </svg:marker>
       </ng-template>
 
@@ -21,7 +22,10 @@
             [attr.cy]="node.dimension.width/2"
             [attr.fill]="node.data.color"
           />
-          <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+          <svg:text alignment-baseline="central"
+                    [attr.x]="10"
+                    [attr.y]="node.dimension.height / 2"
+                    [attr.fill]="'#EEEEEE'">
             {{node.label}}
           </svg:text>
         </svg:g>
@@ -29,10 +33,15 @@
 
       <ng-template #linkTemplate let-link>
         <svg:g class="edge">
-          <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+          <svg:path
+            class="line"
+            stroke-width="2"
+            stroke="#EEEEEE"
+            marker-end="url(#arrow)"/>
           <svg:text class="edge-label" text-anchor="middle">
             <textPath
               class="text-path"
+              [attr.fill]="'#EEEEEE'"
               [attr.href]="'#' + link.id"
               [style.dominant-baseline]="link.dominantBaseline"
               startOffset="50%"

@@ -26,6 +26,7 @@ export type Chatroom = {
   deleted: Scalars['Boolean'];
   id: Scalars['String'];
   messages?: Maybe<Message>;
+  mindmapId: Scalars['String'];
   name: Scalars['String'];
   type: ChatroomType;
   users: Array<User>;
@@ -38,6 +39,7 @@ export enum ChatroomType {
 
 export type CreateChatroomInput = {
   name: Scalars['String'];
+  privateRoom?: InputMaybe<Scalars['Boolean']>;
   users: Array<Scalars['String']>;
 };
 
@@ -49,6 +51,7 @@ export type CreateMessageInput = {
 };
 
 export type CreateMindmapInput = {
+  chatroom_id: Scalars['String'];
   parent_id?: InputMaybe<Scalars['String']>;
   title: Scalars['String'];
 };
@@ -221,6 +224,8 @@ export type QueryUserArgs = {
 export type UpdateChatroomInput = {
   id: Scalars['String'];
   name?: InputMaybe<Scalars['String']>;
+  privateRoom?: InputMaybe<Scalars['Boolean']>;
+  users: Array<Scalars['String']>;
 };
 
 export type UpdateMessageInput = {
@@ -232,6 +237,7 @@ export type UpdateMessageInput = {
 };
 
 export type UpdateMindmapInput = {
+  chatroom_id?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
   parent_id?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
@@ -271,6 +277,23 @@ export type MessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string }> };
 
+export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ChatroomsQuery = { __typename?: 'Query', chatrooms: Array<{ __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> }> };
+
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> };
+
+export type ChatroomQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ChatroomQuery = { __typename?: 'Query', chatroom: { __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string }> } };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -290,6 +313,32 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'Auth', token: string } };
 
+export type UpdateRoomMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+  users: Array<Scalars['String']> | Scalars['String'];
+  privateRoom: Scalars['Boolean'];
+}>;
+
+
+export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
+
+export type CreateRoomMutationVariables = Exact<{
+  name: Scalars['String'];
+  users: Array<Scalars['String']> | Scalars['String'];
+  privateRoom: Scalars['Boolean'];
+}>;
+
+
+export type CreateRoomMutation = { __typename?: 'Mutation', createChatroom: { __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
+
+export type DeleteChatroomMutationVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type DeleteChatroomMutation = { __typename?: 'Mutation', removeChatroom: { __typename?: 'Chatroom', id: string } };
+
 export const MessagesDocument = gql`
     query Messages {
   messages {
@@ -303,7 +352,80 @@ export const MessagesDocument = gql`
   })
   export class MessagesGQL extends Apollo.Query<MessagesQuery, MessagesQueryVariables> {
     override document = MessagesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ChatroomsDocument = gql`
+    query Chatrooms {
+  chatrooms {
+    id
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+      email
+    }
+  }
+}
+    `;
 
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ChatroomsGQL extends Apollo.Query<ChatroomsQuery, ChatroomsQueryVariables> {
+    override document = ChatroomsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UsersDocument = gql`
+    query users {
+  users {
+    id
+    firstname
+    lastname
+    email
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UsersGQL extends Apollo.Query<UsersQuery, UsersQueryVariables> {
+    override document = UsersDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ChatroomDocument = gql`
+    query Chatroom($id: String!) {
+  chatroom(id: $id) {
+    id
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+      email
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ChatroomGQL extends Apollo.Query<ChatroomQuery, ChatroomQueryVariables> {
+    override document = ChatroomDocument;
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -321,7 +443,7 @@ export const LoginDocument = gql`
   })
   export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
     override document = LoginDocument;
-
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }
@@ -345,7 +467,78 @@ export const SignupDocument = gql`
   })
   export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
     override document = SignupDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateRoomDocument = gql`
+    mutation updateRoom($id: String!, $name: String!, $users: [String!]!, $privateRoom: Boolean!) {
+  updateChatroom(
+    updateChatroomInput: {id: $id, name: $name, privateRoom: $privateRoom, users: $users}
+  ) {
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+    }
+  }
+}
+    `;
 
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateRoomGQL extends Apollo.Mutation<UpdateRoomMutation, UpdateRoomMutationVariables> {
+    override document = UpdateRoomDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateRoomDocument = gql`
+    mutation createRoom($name: String!, $users: [String!]!, $privateRoom: Boolean!) {
+  createChatroom(
+    createChatroomInput: {name: $name, privateRoom: $privateRoom, users: $users}
+  ) {
+    id
+    name
+    type
+    users {
+      id
+      firstname
+      lastname
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateRoomGQL extends Apollo.Mutation<CreateRoomMutation, CreateRoomMutationVariables> {
+    override document = CreateRoomDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteChatroomDocument = gql`
+    mutation deleteChatroom($roomId: String!) {
+  removeChatroom(id: $roomId) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteChatroomGQL extends Apollo.Mutation<DeleteChatroomMutation, DeleteChatroomMutationVariables> {
+    override document = DeleteChatroomDocument;
+    
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
     }

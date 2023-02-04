@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="chatroom-title">{{'CHATROOMS.CHATROOM' | translate}}</div>
+  <mat-divider></mat-divider>
+
+  <div>
+    <div class="title-wrapper">
+      <div class="chatroom-sub-title">{{'CHATROOMS.CHATROOM_LIST' | translate}}</div>
+      <button
+        mat-stroked-button
+        [routerLink]="['create']"
+        color="accent">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <ng-container *ngIf="chatrooms.length > 0">
+      <mindmap-list [list]="chatrooms"></mindmap-list>
+      </ng-container>
+    <mat-divider></mat-divider>
+  </div>
+
+
+  <div class="footer">
+    <button
+      mat-stroked-button
+      color="accent">
+      {{ 'SUBMIT' | translate }}
+    </button>
+  </div>
+</div>

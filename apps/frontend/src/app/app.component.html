@@ -1,3 +1,30 @@
 <div class="main-wrapper" [class.is-mobile]="mobileQuery.matches">
-<router-outlet></router-outlet>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span class="mindmap" routerLink="./chatrooms">Mindmap</span>
+      <span class="header-spacer"></span>
+      <button mat-icon-button
+              class="example-icon"
+              mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item
+                  *ngIf="!isLogged"
+                  (click)="auth()">
+            <span>{{ !changeAuthStatus ? 'REGISTER' : 'LOGIN'  | translate }}</span>
+          </button>
+          <button mat-menu-item
+                  *ngIf="isLogged"
+                  routerLink="./profile">
+            {{ 'PROFILES.PROFILE'  | translate }}
+          </button>
+          <button mat-menu-item
+                  *ngIf="isLogged"
+                  (click)="logout()"
+          >{{'LOGOUT'  | translate }}</button>
+        </mat-menu>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
 </div>

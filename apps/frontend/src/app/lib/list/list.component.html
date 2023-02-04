@@ -1,0 +1,21 @@
+<mat-selection-list
+  class="select-list"
+  [multiple]="false">
+  <mat-list-option *ngFor="let room of list" [value]="room">
+    <div class="item">
+      {{room.name}}
+      <div>
+        <button mat-button
+                [routerLink]="[room.id, 'edit']">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-button
+        (click)="deleteRoom(room.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list-option>
+</mat-selection-list>
+

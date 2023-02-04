@@ -1,4 +1,56 @@
 @import "./assets/theme.scss";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  padding: 0 24px !important;
+}
+
+.mat-list-text {
+  padding: 0 !important;
+}
+
+.mat-form-field-wrapper {
+  padding: 0;
+  margin: 0;
+}
+
+.mat-checkbox .mat-checkbox-frame {
+  transform: scale(1.3);
+}
+
+.mat-checkbox-checked .mat-checkbox-background {
+  transform: scale(1.3);
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-chip-list {
+  display: block;
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.select-panel {
+  min-width: unset !important;
+  max-width: 372px !important;
+
+}
+
+.cdk-overlay-pane {
+  transform: unset !important;
+}
+
+.mat-list-item-content{
+  padding-right: 0 !important;
+}

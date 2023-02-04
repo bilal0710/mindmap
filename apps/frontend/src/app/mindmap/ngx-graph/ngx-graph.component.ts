@@ -17,7 +17,12 @@ interface Mindmap {
 export class NgxGraphComponent implements OnInit {
 
   layout: string | Layout = 'dagreCluster';
-
+  customColors = [
+    {
+      name: 'france',
+      value: '#ffffff'
+    }
+  ];
   children: Mindmap[] = [
     {
       id: "00000000-0000-0000-0000-000000000001",
@@ -65,7 +70,6 @@ export class NgxGraphComponent implements OnInit {
     this.children = this.children?.filter((child) => child.parent_id !== "null");
     this.links = this.children.map((child) => {
       return {
-        id: child.title.concat(child.id),
         source: child.parent_id,
         target: child.id,
         label: 'is parent of',

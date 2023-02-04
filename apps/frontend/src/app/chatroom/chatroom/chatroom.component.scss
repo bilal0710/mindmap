@@ -1,0 +1,60 @@
+@import "~@angular/material/theming";
+@import 'apps/frontend/src/assets/theme.scss';
+
+
+.card {
+  max-width: 400px;
+  margin: 4em auto;
+  height: 484px;
+  background-color: #424242;
+
+  .chatroom-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 1em;
+    text-align: center;
+    color: mat-color($app-accent, default);
+  }
+}
+
+.action-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+  margin-top: 1em;
+
+  .chatroom-input {
+    width: 70%;
+
+    .label {
+      color: mat-color($app-accent, default);;
+    }
+  }
+}
+
+.chatroom-select-wrapper {
+  margin: 1em;
+  height: 266px;
+
+
+
+  mat-form-field {
+    margin-bottom: 1em;
+  }
+}
+
+
+.select-trigger{
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+
+.footer {
+  margin: 20px 1em 1em;
+  text-align: end;
+
+  .cancel-btn {
+    margin-right: 1em;
+  }
+}

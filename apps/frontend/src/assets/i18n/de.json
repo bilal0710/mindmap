@@ -1,4 +1,7 @@
 {
+  "CREATE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom wurde erfolgreich erstellt",
+  "UPDATE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom wurde erfolgreich aktualisiert",
+  "DELETE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom wurde erfolgreich gelöscht",
   "CLICK": "Klicke die Taste",
   "LANGUAGE": "Sprache",
   "CREATE": "Erstellen",
@@ -26,6 +29,15 @@
     "SIGN_IN_INSTEAD": "Stattdessen anmelden",
     "CREATE_ACCOUNT": "Konto erstellen"
   },
+  "CHATROOMS": {
+    "CHATROOM" : "Chatroom",
+    "CREATE_CHATROOM" : "Chatroom erstellen",
+    "CHATROOM_LIST" : "Chatroom-liste",
+    "CHATROOM_CREATE_MESSAGE" : "Wählen Sie Chatroom-Mitglieder",
+    "CHATROOM_NAME" : "Chatroom-Name",
+    "CHATROOM_MEMBER" : "Mitglieder",
+    "CHATROOM_Member" : "Mitglieder auswählen"
+  },
   "PROFILES": {
     "PROFILE": "Profil",
     "PROFILES": "Profile",
@@ -50,25 +62,6 @@
   },
   "YES": "Ja",
   "NO": "Nein",
-  "CASES": {
-    "CASES": "Infektionen",
-    "ALL_CASES": "Alle Infektionen"
-  },
-  "SESSIONS": {
-    "SESSIONS": "Sessions",
-    "ALL SESSIONS": "Alle Sessions",
-    "SESSION": "Session",
-    "LAST_SESSION": "Letzte Session",
-    "UPDATE_SESSION": "Update Session",
-    "DELETE_SESSION": "Session löschen",
-    "SESSION_OVERVIEW": "Session-Übersicht",
-    "SESSION_START": "Session-Beginn",
-    "SESSION_END": "Session-Ende",
-    "INFECTED": "Infiziert",
-    "NOTE": "Notiz",
-    "MARK_INFECTED_TOOLTIP": "Diese Session als infiziert markieren",
-    "MARK_INFECTED_TOOLTIP_DISABLED": "Die Session ist bereits als infiziert markiert"
-  },
   "ROOMS": {
     "ROOMS": "Räume",
     "ROOM": "Raum",
@@ -82,9 +75,5 @@
     "FACULITY": "Fakultät"
   },
   "ERROR_OLD_PASSWORD_WRONG": "Altes Passwort ist falsch",
-  "ERROR_PASSWORDS_NOT_MATCHING": "Neues Passwort stimmt nicht überein",
-  "FACULTY": {
-    "AI": "Angewandte Informatik",
-    "SA": "Soziale Arbeit"
-  }
+  "ERROR_PASSWORDS_NOT_MATCHING": "Neues Passwort stimmt nicht überein"
 }

@@ -5,7 +5,6 @@ import {CreateMessageInput} from './dto/create-message.input';
 import {UpdateMessageInput} from './dto/update-message.input';
 import {CurrentUser} from "../auth/decorator/current-user.decorator";
 import {LoggedUser} from "../shared/interfaces";
-import {Public} from "../auth/decorator/public.decorator";
 
 @Resolver(() => Message)
 export class MessageResolver {
@@ -18,7 +17,6 @@ export class MessageResolver {
     return this.messageService.create(createMessageInput);
   }
 
-  @Public()
   @Query(() => [Message], { name: 'messages' })
   findAll() {
     return this.messageService.findAll();

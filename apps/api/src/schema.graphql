@@ -17,6 +17,7 @@ type Chatroom {
   messages: Message
   users: [User!]!
   type: ChatroomType!
+  mindmapId: String!
 }
 
 enum ChatroomType {
@@ -121,20 +122,25 @@ input UpdateMessageInput {
 input CreateChatroomInput {
   name: String!
   users: [String!]!
+  privateRoom: Boolean
 }
 
 input UpdateChatroomInput {
   id: String!
   name: String
+  privateRoom: Boolean
+  users: [String!]!
 }
 
 input CreateMindmapInput {
   title: String!
   parent_id: String
+  chatroom_id: String!
 }
 
 input UpdateMindmapInput {
   title: String
   parent_id: String
+  chatroom_id: String
   id: String!
 }

@@ -2,19 +2,20 @@ import {Args, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/gra
 import {ChatroomService} from './chatroom.service';
 import {CreateChatroomInput} from './dto/create-chatroom.input';
 import {UpdateChatroomInput} from './dto/update-chatroom.input';
-import {Roles} from "../auth/decorator/role.decorator";
-import {UserRole} from "../shared/enums";
 import {CurrentUser} from "../auth/decorator/current-user.decorator";
 import {LoggedUser} from "../shared/interfaces";
 import {Chatroom} from "./entities/chatroom.entity";
 import {UserService} from "../user/user.service";
 import {User} from "../user/entities/user.entity";
+import {UseGuards} from "@nestjs/common";
+import {JwtAuthGuard} from "../auth/guards/jwt-auth-guard.service";
 
 @Resolver(() => Chatroom)
 export class ChatroomResolver {
   constructor(private readonly chatroomService: ChatroomService,
               private readonly userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Chatroom)
   createChatroom(
     @Args('createChatroomInput') createChatroomInput: CreateChatroomInput
@@ -45,10 +46,10 @@ export class ChatroomResolver {
     );
   }
 
-  @Roles(UserRole.ADMIN)
   @Mutation(() => Chatroom)
-  async removeChatroom(@Args('id', { type: () => String }) id: string) {
-    return this.chatroomService.remove(id);
+  async removeChatroom(@Args('id', { type: () => String }) id: string,
+                       @CurrentUser() loggedUser: LoggedUser) {
+    return this.chatroomService.remove(id, loggedUser);
   }
 
   @Mutation(() => Chatroom)
