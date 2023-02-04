@@ -1,19 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {ListComponent} from "./list/list.component";
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {AngularMaterialModule} from "../angular-material.module";
-import { RouterModule } from '@angular/router';
-
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
-  declarations: [ListComponent,
+  declarations: [
     ConfirmationDialogComponent],
-  exports: [
-    ListComponent
-  ],
+  exports: [],
   imports: [
     CommonModule,
     TranslateModule,
@@ -21,4 +17,5 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ]
 })
-export class LibraryModule { }
+export class LibraryModule {
+}

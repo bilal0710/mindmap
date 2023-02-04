@@ -22,6 +22,7 @@ const routes: Routes = [
       {path: '', component: ChatroomListComponent},
       {path: 'create', component: ChatroomComponent},
       {path: ':id/edit', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
+      {path: ':id', canActivate: [CheckChatroomGuard], component: MessageComponent,},
     ]
   },
   {
@@ -34,11 +35,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: NgxGraphComponent,
   },
-  {
-    path: 'message',
-    canActivate: [AuthGuard],
-    component: MessageComponent,
-  },
+
   {
     path: 'auth',
     component: AuthenticationComponent,
