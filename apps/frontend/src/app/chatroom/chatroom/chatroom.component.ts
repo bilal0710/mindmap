@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {ChatroomService} from "../chatroom.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
+import {combineLatest, Subscription} from "rxjs";
 import {UsersQuery} from "../../graphql/generated";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {TranslateService} from "@ngx-translate/core";
@@ -37,21 +37,22 @@ export class ChatroomComponent implements OnInit, OnDestroy {
         this.id = params.get('id') || '';
         this.id = this.id === 'create' ? '' : this.id;
       }));
-    this.subscriptions.push(
-      this.chatroomService.getAllUsers().subscribe(users => {
-        this.userList = users;
-      })
-    );
-    if (this.id !== '') {
-      this.subscriptions.push(this.chatroomService.getChatroom(this.id).subscribe((data) => {
-        if (!data) return;
-        this.chatroomName = data.name;
-        this.roomPrivacy = data.type === 'PRIVATE'
-        const users = this.userList.filter(user => data.users.filter(item => item.id === user.id).length > 0);
-        this.selectedUser.setValue(users);
-      }));
-    }
 
+    if (this.id !== '') {
+      this.subscriptions.push(combineLatest([
+        this.chatroomService.getAllUsers(),
+        this.chatroomService.getChatroom(this.id),
+      ]).subscribe(result => {
+          this.userList = result[0];
+             if (!result[1]) return;
+              const data = result[1];
+             this.chatroomName = data.name;
+             this.roomPrivacy = data.type === 'PRIVATE'
+             const users = this.userList.filter(user => data.users.filter(item => item.id === user.id).length > 0);
+             this.selectedUser.setValue(users);
+        })
+      )
+    }
   }
 
   remove(user: UsersQuery['users'][number]): void {
@@ -65,7 +66,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
     const users = this.selectedUser.value?.map(user => user.id);
     if (this.id !== '') {
       this.subscriptions.push(this.chatroomService.UpdateChatroom(this.id, this.chatroomName, this.roomPrivacy, users || []).subscribe(
-        (data) => {
+        () => {
           this._snackBar.open(this.t.instant("UPDATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
@@ -76,7 +77,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
       return;
     }
     this.subscriptions.push(this.chatroomService.CreateChatroom(this.chatroomName, this.roomPrivacy, users || []).subscribe(
-      (data) => {
+      () => {
         this._snackBar.open(this.t.instant("CREATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
           horizontalPosition: 'center',
           verticalPosition: 'top',

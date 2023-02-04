@@ -17,7 +17,6 @@ export class CheckChatroomGuard implements CanActivate {
     state: RouterStateSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const id = route.params['id'];
-    console.log(route);
     return this.chatroomService.getAllChatrooms().pipe(
       map((chatrooms) => {
         const room = chatrooms.find(room => room.id === id);
