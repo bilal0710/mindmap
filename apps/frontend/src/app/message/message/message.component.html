@@ -1,8 +1,16 @@
-<div class="imessage">
-  <div *ngFor="let message of messageList">
-    <div [ngClass]="message.from === user.id ? 'from-me': 'from-them' ">
+<div class="container">
+  <div class="imessage">
+    <div *ngFor="let message of messageList">
+      <div [ngClass]="message.from === user.id ? 'from-me': 'from-them' ">
         {{message.content}}
+      </div>
     </div>
+  </div>
 
+  <div class="text-area">
+  <mat-form-field>
+    <mat-label>Leave a comment</mat-label>
+    <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+  </mat-form-field>
   </div>
 </div>
