@@ -12,4 +12,8 @@ export class MessageService {
   getMessages(roomId: string) {
     return this.serverService.messages(roomId);
   }
+
+  whoAmI() {
+    return this.serverService.whoAmI();
+  }
 }

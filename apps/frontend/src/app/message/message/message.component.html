@@ -1,1 +1,8 @@
-<p>message works!</p>
+<div class="imessage">
+  <div *ngFor="let message of messageList">
+    <div [ngClass]="message.from === user.id ? 'from-me': 'from-them' ">
+        {{message.content}}
+    </div>
+
+  </div>
+</div>

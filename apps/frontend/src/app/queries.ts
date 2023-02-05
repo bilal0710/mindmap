@@ -137,3 +137,16 @@ const MUTATION_DELETE_CHATROOM = gql`
     }
   }
 `
+
+const WHO_AM_I = gql`
+    query whoAmI {
+        whoAmI
+        {
+            id,
+            firstname,
+            lastname,
+            email,
+            role
+        }
+    }
+`
