@@ -2,12 +2,15 @@
 import {gql} from "apollo-angular";
 
 const QUERY_ALL_MESSAGES = gql`
-  query Messages
-  {
-    messages{
-      content
+    query Messages($id: String!)
+    {
+        messages(id: $id)  {
+            content,
+            from,
+            to,
+            roomId
+        }
     }
-  }
 `
 
 const QUERY_ALL_CHATROOM = gql`
@@ -133,4 +136,17 @@ const MUTATION_DELETE_CHATROOM = gql`
       id
     }
   }
+`
+
+const WHO_AM_I = gql`
+    query whoAmI {
+        whoAmI
+        {
+            id,
+            firstname,
+            lastname,
+            email,
+            role
+        }
+    }
 `

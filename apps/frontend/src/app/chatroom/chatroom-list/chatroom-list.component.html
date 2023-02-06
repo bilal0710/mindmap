@@ -12,10 +12,32 @@
         <mat-icon>add</mat-icon>
       </button>
     </div>
+
     <mat-divider></mat-divider>
+
     <ng-container *ngIf="chatrooms.length > 0">
-      <mindmap-list [list]="chatrooms"></mindmap-list>
-      </ng-container>
+      <mat-selection-list
+        #roomList
+        class="select-list"
+        [multiple]="false">
+        <mat-list-option *ngFor="let room of chatrooms" [value]="room">
+          <div class="item">
+            {{room.name}}
+            <div>
+              <button mat-button
+                      [routerLink]="[room.id, 'edit']">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-button
+                      (click)="deleteRoom(room.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </ng-container>
     <mat-divider></mat-divider>
   </div>
 
@@ -23,7 +45,9 @@
   <div class="footer">
     <button
       mat-stroked-button
-      color="accent">
+      color="accent"
+      (click)="navigateToMessageView(roomList.selectedOptions.selected[0].value.id)"
+      >
       {{ 'SUBMIT' | translate }}
     </button>
   </div>

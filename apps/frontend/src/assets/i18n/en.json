@@ -29,6 +29,7 @@
     "SIGN_IN_INSTEAD": "Sign in instead",
     "CREATE_ACCOUNT": "Create account"
   },
+  "MESSAGE": "Message",
   "CHATROOMS": {
     "CHATROOM" : "Chatroom",
     "CREATE_CHATROOM" : "Create chatroom",

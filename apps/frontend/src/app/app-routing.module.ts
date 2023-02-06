@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
-import {MessageComponent} from "./chatroom/message/message.component";
+import {MessageBaseComponent} from "./message/message-base/message-base.component";
 import {AuthenticationComponent} from "./auth/authentication/authentication.component";
 import {AuthGuard} from "./auth";
 import {ChatroomListComponent} from "./chatroom/chatroom-list/chatroom-list.component";
@@ -22,6 +22,7 @@ const routes: Routes = [
       {path: '', component: ChatroomListComponent},
       {path: 'create', component: ChatroomComponent},
       {path: ':id/edit', canActivate: [CheckChatroomGuard], component: ChatroomComponent},
+      {path: ':id', canActivate: [CheckChatroomGuard], component: MessageBaseComponent,},
     ]
   },
   {
@@ -34,11 +35,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: NgxGraphComponent,
   },
-  {
-    path: 'message',
-    canActivate: [AuthGuard],
-    component: MessageComponent,
-  },
+
   {
     path: 'auth',
     component: AuthenticationComponent,

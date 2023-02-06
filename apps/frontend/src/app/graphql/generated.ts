@@ -212,6 +212,11 @@ export type QueryMessageArgs = {
 };
 
 
+export type QueryMessagesArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryMindmapArgs = {
   id: Scalars['String'];
 };
@@ -272,10 +277,12 @@ export enum UserRole {
   User = 'USER'
 }
 
-export type MessagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type MessagesQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
 
 
-export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string }> };
+export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string, from: string, to: string, roomId: string }> };
 
 export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -339,10 +346,18 @@ export type DeleteChatroomMutationVariables = Exact<{
 
 export type DeleteChatroomMutation = { __typename?: 'Mutation', removeChatroom: { __typename?: 'Chatroom', id: string } };
 
+export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string, role: UserRole } };
+
 export const MessagesDocument = gql`
-    query Messages {
-  messages {
+    query Messages($id: String!) {
+  messages(id: $id) {
     content
+    from
+    to
+    roomId
   }
 }
     `;
@@ -538,6 +553,28 @@ export const DeleteChatroomDocument = gql`
   })
   export class DeleteChatroomGQL extends Apollo.Mutation<DeleteChatroomMutation, DeleteChatroomMutationVariables> {
     override document = DeleteChatroomDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const WhoAmIDocument = gql`
+    query whoAmI {
+  whoAmI {
+    id
+    firstname
+    lastname
+    email
+    role
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class WhoAmIGQL extends Apollo.Query<WhoAmIQuery, WhoAmIQueryVariables> {
+    override document = WhoAmIDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

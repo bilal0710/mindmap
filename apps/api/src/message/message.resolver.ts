@@ -18,8 +18,8 @@ export class MessageResolver {
   }
 
   @Query(() => [Message], { name: 'messages' })
-  findAll() {
-    return this.messageService.findAll();
+  findAll(@Args('id', { type: () => String }) id: string) {
+    return this.messageService.findAll(id);
   }
 
   @Query(() => Message, { name: 'message' })

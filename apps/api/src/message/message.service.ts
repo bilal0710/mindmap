@@ -14,12 +14,12 @@ export class MessageService {
     return await this.prisma.message.create({data: createMessageInput});
   }
 
-  async findAll() {
-    return await this.prisma.message.findMany();
+  async findAll(id: string) {
+    return await this.prisma.message.findMany({where: {roomId: id}});
   }
 
   async findOne(id: string) {
-    const message =  await this.prisma.message.findUnique({where: {id}});
+    const message = await this.prisma.message.findUnique({where: {id}});
     if (!message) {
       throw new HttpException('Message not found', HttpStatus.BAD_REQUEST);
     }
@@ -39,7 +39,7 @@ export class MessageService {
     if (!message) {
       throw new HttpException('Message not found', HttpStatus.BAD_REQUEST);
     }
-    if(loggedUser.sub !== message.from || loggedUser.role !== 'admin') {
+    if (loggedUser.sub !== message.from || loggedUser.role !== 'admin') {
       return new HttpException('You are not allowed to remove this message', HttpStatus.FORBIDDEN);
     }
     return await this.prisma.message.delete({where: {id}});

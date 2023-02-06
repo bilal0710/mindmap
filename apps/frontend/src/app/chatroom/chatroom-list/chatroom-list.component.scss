@@ -1,6 +1,19 @@
 @import "~@angular/material/theming";
 @import 'apps/frontend/src/assets/theme.scss';
 
+.select-list {
+  margin: 0 1em;
+  height: 286px;
+  overflow-y: scroll;
+
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 
 .card {
   max-width: 400px;
