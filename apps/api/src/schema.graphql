@@ -144,3 +144,7 @@ input UpdateMindmapInput {
   chatroom_id: String
   id: String!
 }
+
+type Subscription {
+  newMessage(roomId: String!): Message!
+}

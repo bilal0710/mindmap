@@ -35,8 +35,7 @@ export class MessageComponent implements OnInit, OnDestroy {
         .subscribe(([messages, user]) => {
           this.messageList = messages;
           this.user = user;
-          console.log('message', messages);
-          console.log('user', user);
+          this.messageService.subscribeNewMessage(this.roomId);
         }));
      /* this.messageService.getMessages(this.roomId).subscribe(
       {

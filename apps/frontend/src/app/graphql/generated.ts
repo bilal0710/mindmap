@@ -226,6 +226,16 @@ export type QueryUserArgs = {
   id: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  newMessage: Message;
+};
+
+
+export type SubscriptionNewMessageArgs = {
+  roomId: Scalars['String'];
+};
+
 export type UpdateChatroomInput = {
   id: Scalars['String'];
   name?: InputMaybe<Scalars['String']>;
@@ -350,6 +360,13 @@ export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string, role: UserRole } };
+
+export type NewMessageSubscriptionVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', id: string, content: string, from: string } };
 
 export const MessagesDocument = gql`
     query Messages($id: String!) {
@@ -575,6 +592,26 @@ export const WhoAmIDocument = gql`
   })
   export class WhoAmIGQL extends Apollo.Query<WhoAmIQuery, WhoAmIQueryVariables> {
     override document = WhoAmIDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const NewMessageDocument = gql`
+    subscription newMessage($roomId: String!) {
+  newMessage(roomId: $roomId) {
+    id
+    content
+    from
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NewMessageGQL extends Apollo.Subscription<NewMessageSubscription, NewMessageSubscriptionVariables> {
+    override document = NewMessageDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

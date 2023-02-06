@@ -4,7 +4,8 @@
 $accent-color: mat-color($app-accent, default);
 
 .container {
-  height: 100%;
+  height: 70%;
+  overflow: scroll;
 
   .imessage {
     //max-width: 600px;
@@ -79,7 +80,7 @@ $accent-color: mat-color($app-accent, default);
     display: flex;
     align-items: flex-end;
 
-    mat-form-field{
+    mat-form-field {
       margin: 12px;
     }
   }

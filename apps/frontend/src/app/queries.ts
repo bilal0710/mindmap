@@ -150,3 +150,13 @@ const WHO_AM_I = gql`
         }
     }
 `
+
+const SUBSCRIPTION_NEW_MESSAGE = gql`
+  subscription newMessage($roomId : String!) {
+    newMessage (roomId: $roomId) {
+      id
+      content
+      from
+    }
+  }
+`

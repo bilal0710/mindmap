@@ -7,7 +7,7 @@ import {
   ChatroomsQuery, CreateRoomGQL, DeleteChatroomGQL,
   LoginGQL,
   MessagesGQL,
-  MessagesQuery,
+  MessagesQuery, NewMessageGQL,
   SignupGQL, UpdateRoomGQL, UsersGQL, UsersQuery, WhoAmIGQL
 } from "../graphql/generated";
 import {map, Observable} from "rxjs";
@@ -26,7 +26,8 @@ export class ServerService {
               private updateChatroomGQL: UpdateRoomGQL,
               private createChatroomGQL: CreateRoomGQL,
               private deleteChatroomGQL: DeleteChatroomGQL,
-              private whoAmIGQL: WhoAmIGQL) {
+              private whoAmIGQL: WhoAmIGQL,
+              private newMessageGQL: NewMessageGQL) {
   }
 
   login(email: string, password: string) {
@@ -80,9 +81,15 @@ export class ServerService {
   }
 
   whoAmI(){
+
     return this.whoAmIGQL.watch().valueChanges.pipe(
       map(result => result.data?.whoAmI)
     );
+  }
+
+  newMessageSubscriber(roomId: string){
+    this.newMessageGQL.subscribe({roomId: roomId}).subscribe((result) => {  console.log(result); });
+    // this.newMessageGQL.subscribe()
   }
 }
 

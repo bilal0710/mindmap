@@ -3,6 +3,9 @@ import {CreateMessageInput} from './dto/create-message.input';
 import {UpdateMessageInput} from './dto/update-message.input';
 import {PrismaService} from "../prisma/prisma.service";
 import {LoggedUser} from "../shared/interfaces";
+import {PubSub} from "graphql-subscriptions";
+
+//const pubSub = new PubSub();
 
 @Injectable()
 export class MessageService {
@@ -10,8 +13,10 @@ export class MessageService {
   constructor(private prisma: PrismaService) {
   }
 
-  async create(createMessageInput: CreateMessageInput) {
-    return await this.prisma.message.create({data: createMessageInput});
+  async create(createMessageInput: CreateMessageInput, pubsub: PubSub) {
+    const message = await this.prisma.message.create({data: createMessageInput});
+    pubsub.publish('newMessage', {newMessage: message});
+    return message;
   }
 
   async findAll(id: string) {
