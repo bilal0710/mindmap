@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Apollo} from "apollo-angular";
+import {Apollo, gql} from "apollo-angular";
 import {
   ChatroomGQL,
   ChatroomQuery,
@@ -11,6 +11,7 @@ import {
   SignupGQL, UpdateRoomGQL, UsersGQL, UsersQuery, WhoAmIGQL
 } from "../graphql/generated";
 import {map, Observable} from "rxjs";
+
 
 @Injectable({
   providedIn: 'root',
@@ -80,15 +81,17 @@ export class ServerService {
       .pipe(map(result => result.data?.removeChatroom));
   }
 
-  whoAmI(){
+  whoAmI() {
 
     return this.whoAmIGQL.watch().valueChanges.pipe(
       map(result => result.data?.whoAmI)
     );
   }
 
-  newMessageSubscriber(roomId: string){
-    this.newMessageGQL.subscribe({roomId: roomId}).subscribe((result) => {  console.log(result); });
+  newMessageSubscriber(roomId: string) {
+    this.newMessageGQL.subscribe({roomId: roomId}).subscribe((result) => {
+      console.log(result);
+    });
     // this.newMessageGQL.subscribe()
   }
 }

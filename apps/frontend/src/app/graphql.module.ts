@@ -3,15 +3,14 @@ import {APOLLO_OPTIONS, ApolloModule} from 'apollo-angular';
 import {ApolloLink, DefaultOptions, InMemoryCache, split} from '@apollo/client/core';
 import {HttpLink} from 'apollo-angular/http';
 import {setContext} from "@apollo/client/link/context";
-
-import {WebSocketLink} from '@apollo/client/link/ws'
 import {getMainDefinition} from "@apollo/client/utilities";
-
+import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
+import {createClient} from "graphql-ws";
 
 const uri = 'http://localhost:3333/graphql';
 
 export function createApollo(httpLink: HttpLink) {
-  const basic = setContext((operation, context) => ({
+  const basic = setContext(() => ({
     headers: {
       Accept: 'charset=utf-8',
     }
@@ -22,12 +21,11 @@ export function createApollo(httpLink: HttpLink) {
   })
 
   // Create a WebSocket link:
-  const ws = new WebSocketLink({
-    uri: 'ws://localhost:3333/',
-    options: {
-      reconnect: true
-    }
-  })
+  const ws = new GraphQLWsLink(
+    createClient({
+      url: "ws://localhost:3333/graphql",
+    }),
+  );
 
   const auth = setContext((operation, context) => {
     const token = localStorage.getItem('mindmap_token');
