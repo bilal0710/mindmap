@@ -1,17 +1,29 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {ServerService} from "../shared/server.service";
-import {ChatroomsQuery} from "../graphql/generated";
-import {map, of, Subject} from "rxjs";
+import {ChatroomsQuery, WhoAmIQuery} from "../graphql/generated";
+import {map, of, Subject, Subscription} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChatroomService {
+export class ChatroomService implements OnDestroy {
 
+  user !: WhoAmIQuery["whoAmI"];
+  subscriptions !: Subscription;
   private chatrooms!: ChatroomsQuery["chatrooms"];
   private chatroomsubject = new Subject<ChatroomsQuery["chatrooms"]>();
 
-  constructor(private serverService: ServerService) {}
+  constructor(private serverService: ServerService) {
+    if (this.user == null) {
+      this.subscriptions = this.whoAmI().subscribe((user) => {
+        this.user = user;
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
 
   get chatroom$() {
@@ -36,13 +48,15 @@ export class ChatroomService {
     return this.serverService.users();
   }
 
+  whoAmI() {
+    return this.serverService.whoAmI();
+  }
+
   UpdateChatroom(id: string, name: string, privateRoom: boolean, users: string[]) {
     return this.serverService.updateChatroom(id, name, privateRoom, users).pipe(
       map((chatroom) => {
           const index = this.chatrooms.findIndex(room => room.id === id);
           this.chatrooms[index] = chatroom as ChatroomsQuery["chatrooms"][number];
-          console.log('chatroom', chatroom);
-          console.log('list', this.chatrooms);
           return chatroom;
         }
       ));

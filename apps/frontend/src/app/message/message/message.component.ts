@@ -4,6 +4,7 @@ import {MessagesQuery, UsersQuery} from "../../graphql/generated";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {combineLatest} from "rxjs";
+import {ChatroomService} from "../../chatroom/chatroom.service";
 
 @Component({
   selector: 'mindmap-message',
@@ -22,7 +23,8 @@ export class MessageComponent implements OnInit, OnDestroy {
 
 
   constructor(private messageService: MessageService,
-              private activeRoute: ActivatedRoute,) {
+              private activeRoute: ActivatedRoute,
+              private chatroomService: ChatroomService) {
     const height = window.innerHeight - 64;
     this.iMessageContainerHeight = (height * 90) / 100;
     this.textAreaContainerHeight = height - this.iMessageContainerHeight
@@ -39,7 +41,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.subscription.push(
       combineLatest([
         this.messageService.getMessages(this.roomId),
-        this.messageService.whoAmI()])
+        this.chatroomService.whoAmI()])
         .subscribe(([messages, user]) => {
           this.messageList = messages;
           this.user = user;
@@ -54,7 +56,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if(this.message === '') return;
+    if (this.message === '') return;
     this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(result => {
       console.log('result', result);
       this.message = '';

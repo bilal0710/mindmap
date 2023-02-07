@@ -2,6 +2,7 @@
   "CREATE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom created successfully",
   "UPDATE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom updated successfully",
   "DELETE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom deleted successfully",
+  "PRIVATE_CHATROOM": "This room is private, you are not allowed to enter it",
   "CLICK": "click the button",
   "LANGUAGE": "Sprache",
   "CREATE": "Create",

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ChatroomService} from "../chatroom.service";
-import {Subscription} from "rxjs";
-import {ChatroomsQuery} from "../../graphql/generated";
+import {combineLatest, Subscription} from "rxjs";
+import {ChatroomsQuery, WhoAmIQuery} from "../../graphql/generated";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
@@ -15,6 +15,7 @@ import {MatSelectionList} from "@angular/material/list";
 export class ChatroomListComponent implements OnDestroy, OnInit {
 
   chatrooms: ChatroomsQuery["chatrooms"] = [];
+  user !: WhoAmIQuery["whoAmI"];
   @ViewChild('roomList') roomList!: MatSelectionList;
   subscription: Subscription[] = []
 
@@ -29,9 +30,14 @@ export class ChatroomListComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription.push(this.chatroomService.getAllChatrooms().subscribe(chatrooms => {
-      this.chatrooms = chatrooms;
-    }));
+
+    this.subscription.push(
+      combineLatest([
+        this.chatroomService.getAllChatrooms(),
+        this.chatroomService.whoAmI()]).subscribe(([chatrooms, user]) => {
+        this.chatrooms = chatrooms;
+        this.user = user;
+      }));
     this.subscription.push(this.chatroomService.chatroom$.subscribe((data) => {
       if (!data) return;
       this.chatrooms = [...data];
@@ -50,7 +56,15 @@ export class ChatroomListComponent implements OnDestroy, OnInit {
     }));
   }
 
-  navigateToMessageView(id?: string) {
-   this.router.navigate(['chatrooms', id]);
+  navigateToMessageView(room: ChatroomsQuery["chatrooms"][number]) {
+    const include = room.users.some(user => user.id === this.user.id);
+    if (room.type === 'PUBLIC' || include) {
+      this.router.navigate(['chatrooms', room.id]);
+      return;
+    }
+    this._snackBar.open(this.t.instant("PRIVATE_CHATROOM"), 'X', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 }

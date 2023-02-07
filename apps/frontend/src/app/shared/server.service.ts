@@ -90,7 +90,6 @@ export class ServerService {
   }
 
   whoAmI() {
-
     return this.whoAmIGQL.watch().valueChanges.pipe(
       map(result => result.data?.whoAmI)
     );
@@ -101,7 +100,6 @@ export class ServerService {
   }
 
   createMessage(roomId: string, content: string, from: string) {
-    console.log("createMessage", roomId, content, from);
     return this.createMessageGQL.mutate({roomId, content, from})
       .pipe(map(result => result.data?.createMessage));
   }
