@@ -366,7 +366,7 @@ export type NewMessageSubscriptionVariables = Exact<{
 }>;
 
 
-export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', id: string, content: string, from: string } };
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', content: string, from: string, roomId: string, to: string } };
 
 export const MessagesDocument = gql`
     query Messages($id: String!) {
@@ -600,9 +600,10 @@ export const WhoAmIDocument = gql`
 export const NewMessageDocument = gql`
     subscription newMessage($roomId: String!) {
   newMessage(roomId: $roomId) {
-    id
     content
     from
+    roomId
+    to
   }
 }
     `;

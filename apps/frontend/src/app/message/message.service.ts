@@ -18,6 +18,6 @@ export class MessageService {
   }
 
   subscribeNewMessage(roomId : string) {
-    this.serverService.newMessageSubscriber(roomId);
+    return this.serverService.newMessageSubscriber(roomId);
   }
 }

@@ -1,14 +1,21 @@
 import {Injectable} from '@angular/core';
-import {Apollo, gql} from "apollo-angular";
+import {Apollo} from "apollo-angular";
 import {
   ChatroomGQL,
   ChatroomQuery,
   ChatroomsGQL,
-  ChatroomsQuery, CreateRoomGQL, DeleteChatroomGQL,
+  ChatroomsQuery,
+  CreateRoomGQL,
+  DeleteChatroomGQL,
   LoginGQL,
   MessagesGQL,
-  MessagesQuery, NewMessageGQL,
-  SignupGQL, UpdateRoomGQL, UsersGQL, UsersQuery, WhoAmIGQL
+  MessagesQuery,
+  NewMessageGQL,
+  SignupGQL,
+  UpdateRoomGQL,
+  UsersGQL,
+  UsersQuery,
+  WhoAmIGQL
 } from "../graphql/generated";
 import {map, Observable} from "rxjs";
 
@@ -89,10 +96,7 @@ export class ServerService {
   }
 
   newMessageSubscriber(roomId: string) {
-    this.newMessageGQL.subscribe({roomId: roomId}).subscribe((result) => {
-      console.log(result);
-    });
-    // this.newMessageGQL.subscribe()
+    return this.newMessageGQL.subscribe({roomId: roomId});
   }
 }
 
