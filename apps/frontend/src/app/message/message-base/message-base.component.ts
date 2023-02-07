@@ -6,5 +6,9 @@ import {Component} from '@angular/core';
   styleUrls: ['./message-base.component.scss'],
 })
 export class MessageBaseComponent {
+  charHeight: number;
 
+  constructor() {
+    this.charHeight = window.innerHeight - 64;
+  }
 }

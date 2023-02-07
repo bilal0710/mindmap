@@ -2,7 +2,8 @@
   <div class="messages">
     <mindmap-message></mindmap-message>
   </div>
-  <div class="chart">
+  <div class="chart"
+       [ngStyle]="{'height': [charHeight + 'px']}">
     <mindmap-ngx-graph></mindmap-ngx-graph>
   </div>
 </div>

@@ -16,9 +16,15 @@ export class MessageComponent implements OnInit, OnDestroy {
   roomId = '';
   subscription: Subscription[] = [];
   user!: UsersQuery['users'][number];
+  public iMessageContainerHeight: number;
+  public textAreaContainerHeight: number
+
 
   constructor(private messageService: MessageService,
               private activeRoute: ActivatedRoute,) {
+    const height = window.innerHeight - 64;
+    this.iMessageContainerHeight = (height * 90) / 100;
+    this.textAreaContainerHeight =  height - this.iMessageContainerHeight
   }
 
   ngOnInit(): void {
@@ -28,25 +34,24 @@ export class MessageComponent implements OnInit, OnDestroy {
         this.roomId = params.get('id') || '';
       }));
 
-    if(this.roomId === '') return;
+    if (this.roomId === '') return;
     this.subscription.push(
-
       combineLatest([this.messageService.getMessages(this.roomId), this.messageService.whoAmI()])
         .subscribe(([messages, user]) => {
           this.messageList = messages;
           this.user = user;
           this.messageService.subscribeNewMessage(this.roomId);
         }));
-     /* this.messageService.getMessages(this.roomId).subscribe(
-      {
-        next: (messages) => {
-          this.messageList = messages;
-          console.log(messages);
-        },
-        error: (error) => {
-          console.error('error: ', error);
-        }
-      }));*/
+    /* this.messageService.getMessages(this.roomId).subscribe(
+     {
+       next: (messages) => {
+         this.messageList = messages;
+         console.log(messages);
+       },
+       error: (error) => {
+         console.error('error: ', error);
+       }
+     }));*/
   }
 
   ngOnDestroy(): void {
