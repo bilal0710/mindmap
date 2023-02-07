@@ -120,7 +120,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
               );
               return;
             }
-
             //this.profileService.logout();
 
             this.snackBar.open(

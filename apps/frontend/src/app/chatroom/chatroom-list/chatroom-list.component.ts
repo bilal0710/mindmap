@@ -6,6 +6,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
 import {MatSelectionList} from "@angular/material/list";
+import {ConfirmationDialogComponent} from "../../lib/confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'mindmap-chatroom-list',
@@ -22,11 +24,8 @@ export class ChatroomListComponent implements OnDestroy, OnInit {
   constructor(private chatroomService: ChatroomService,
               private _snackBar: MatSnackBar,
               private t: TranslateService,
-              private router: Router) {
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.forEach(sub => sub.unsubscribe());
+              private router: Router,
+              private dialog: MatDialog,) {
   }
 
   ngOnInit(): void {
@@ -45,15 +44,26 @@ export class ChatroomListComponent implements OnDestroy, OnInit {
   }
 
   deleteRoom(id: string) {
-    this.subscription.push(this.chatroomService.deleteChatroom(id).subscribe({
-      next: () => {
-        this._snackBar.open(this.t.instant("DELETE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-        this.router.navigate(['chatrooms']);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'CHATROOMS.DELETE_CHATROOM',
+        description: 'CHATROOMS.DELETE_CHATROOM_WARNING',
       },
-    }));
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.subscription.push(this.chatroomService.deleteChatroom(id).subscribe({
+          next: () => {
+            this._snackBar.open(this.t.instant("DELETE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+            this.router.navigate(['chatrooms']);
+          }
+        }));
+      }
+    })
   }
 
   navigateToMessageView(room: ChatroomsQuery["chatrooms"][number]) {
@@ -67,4 +77,9 @@ export class ChatroomListComponent implements OnDestroy, OnInit {
       verticalPosition: 'top',
     });
   }
+
+  ngOnDestroy(): void {
+    this.subscription.forEach(sub => sub.unsubscribe());
+  }
+
 }

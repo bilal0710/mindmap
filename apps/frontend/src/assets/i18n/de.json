@@ -38,7 +38,10 @@
     "CHATROOM_CREATE_MESSAGE" : "Wählen Sie Chatroom-Mitglieder",
     "CHATROOM_NAME" : "Chatroom-Name",
     "CHATROOM_MEMBER" : "Mitglieder",
-    "CHATROOM_Member" : "Mitglieder auswählen"
+    "CHATROOM_Member" : "Mitglieder auswählen",
+    "DELETE_CHATROOM": "Chatroom löschen",
+    "DELETE_CHATROOM_WARNING": "Wenn Sie diesen Raum löschen, werden auch der Chatverlauf und die Mind Map gelöscht. Wollen Sie den Raum wirklich löschen?",
+    "CHATROOM_DELETE_ERROR": "Raum konnte nicht gelöscht werden"
   },
   "PROFILES": {
     "PROFILE": "Profil",
