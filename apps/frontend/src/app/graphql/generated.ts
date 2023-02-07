@@ -338,7 +338,7 @@ export type UpdateRoomMutationVariables = Exact<{
 }>;
 
 
-export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
+export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
 
 export type CreateRoomMutationVariables = Exact<{
   name: Scalars['String'];
@@ -518,6 +518,7 @@ export const UpdateRoomDocument = gql`
   updateChatroom(
     updateChatroomInput: {id: $id, name: $name, privateRoom: $privateRoom, users: $users}
   ) {
+    id
     name
     type
     users {

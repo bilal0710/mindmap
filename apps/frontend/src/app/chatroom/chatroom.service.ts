@@ -41,7 +41,8 @@ export class ChatroomService {
       map((chatroom) => {
           const index = this.chatrooms.findIndex(room => room.id === id);
           this.chatrooms[index] = chatroom as ChatroomsQuery["chatrooms"][number];
-
+          console.log('chatroom', chatroom);
+          console.log('list', this.chatrooms);
           return chatroom;
         }
       ));

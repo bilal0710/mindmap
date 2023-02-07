@@ -96,6 +96,7 @@ const MUTATION_UPDATE_CHATROOM = gql`
                 users: $users
             }
         ){
+            id,
             name,
             type,
             users{
