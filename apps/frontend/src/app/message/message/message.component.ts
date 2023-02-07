@@ -14,6 +14,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   messageList!: MessagesQuery['messages'];
   roomId = '';
+  message = '';
   subscription: Subscription[] = [];
   user!: UsersQuery['users'][number];
   public iMessageContainerHeight: number;
@@ -50,5 +51,13 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.forEach((sub) => sub.unsubscribe());
+  }
+
+  sendMessage() {
+    if(this.message === '') return;
+    this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(result => {
+      console.log('result', result);
+      this.message = '';
+    });
   }
 }

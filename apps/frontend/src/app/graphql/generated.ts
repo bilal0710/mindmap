@@ -47,7 +47,7 @@ export type CreateMessageInput = {
   content: Scalars['String'];
   from: Scalars['String'];
   roomId: Scalars['String'];
-  to: Scalars['String'];
+  to?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateMindmapInput = {
@@ -70,7 +70,7 @@ export type Message = {
   from: Scalars['String'];
   id: Scalars['String'];
   roomId: Scalars['String'];
-  to: Scalars['String'];
+  to?: Maybe<Scalars['String']>;
 };
 
 export type Mindmap = {
@@ -292,7 +292,7 @@ export type MessagesQueryVariables = Exact<{
 }>;
 
 
-export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string, from: string, to: string, roomId: string }> };
+export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string, from: string, to?: string | null, roomId: string }> };
 
 export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -366,7 +366,16 @@ export type NewMessageSubscriptionVariables = Exact<{
 }>;
 
 
-export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', content: string, from: string, roomId: string, to: string } };
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', content: string, from: string, roomId: string, to?: string | null } };
+
+export type CreateMessageMutationVariables = Exact<{
+  content: Scalars['String'];
+  from: Scalars['String'];
+  roomId: Scalars['String'];
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'Message', content: string, from: string, to?: string | null, roomId: string } };
 
 export const MessagesDocument = gql`
     query Messages($id: String!) {
@@ -613,6 +622,29 @@ export const NewMessageDocument = gql`
   })
   export class NewMessageGQL extends Apollo.Subscription<NewMessageSubscription, NewMessageSubscriptionVariables> {
     override document = NewMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateMessageDocument = gql`
+    mutation createMessage($content: String!, $from: String!, $roomId: String!) {
+  createMessage(
+    createMessageInput: {content: $content, from: $from, roomId: $roomId}
+  ) {
+    content
+    from
+    to
+    roomId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateMessageGQL extends Apollo.Mutation<CreateMessageMutation, CreateMessageMutationVariables> {
+    override document = CreateMessageDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

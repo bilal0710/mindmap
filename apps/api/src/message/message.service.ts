@@ -5,8 +5,6 @@ import {PrismaService} from "../prisma/prisma.service";
 import {LoggedUser} from "../shared/interfaces";
 import {PubSub} from "graphql-subscriptions";
 
-//const pubSub = new PubSub();
-
 @Injectable()
 export class MessageService {
 

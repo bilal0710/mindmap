@@ -6,7 +6,7 @@ type Message {
   id: String!
   content: String!
   from: String!
-  to: String!
+  to: String
   roomId: String!
 }
 
@@ -107,7 +107,7 @@ input UpdateUserInput {
 input CreateMessageInput {
   content: String!
   from: String!
-  to: String!
+  to: String
   roomId: String!
 }
 

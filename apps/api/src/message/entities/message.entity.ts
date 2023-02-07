@@ -11,7 +11,7 @@ export class Message {
   @Field({nullable: false})
   from: string;
 
-  @Field({nullable: false})
+  @Field({nullable: true})
   to: string;
 
   @Field({nullable: false})

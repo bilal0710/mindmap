@@ -4,7 +4,7 @@ import {
   ChatroomGQL,
   ChatroomQuery,
   ChatroomsGQL,
-  ChatroomsQuery,
+  ChatroomsQuery, CreateMessageGQL,
   CreateRoomGQL,
   DeleteChatroomGQL,
   LoginGQL,
@@ -35,7 +35,8 @@ export class ServerService {
               private createChatroomGQL: CreateRoomGQL,
               private deleteChatroomGQL: DeleteChatroomGQL,
               private whoAmIGQL: WhoAmIGQL,
-              private newMessageGQL: NewMessageGQL) {
+              private newMessageGQL: NewMessageGQL,
+              private createMessageGQL: CreateMessageGQL) {
   }
 
   login(email: string, password: string) {
@@ -97,6 +98,12 @@ export class ServerService {
 
   newMessageSubscriber(roomId: string) {
     return this.newMessageGQL.subscribe({roomId: roomId});
+  }
+
+  createMessage(roomId: string, content: string, from: string) {
+    console.log("createMessage", roomId, content, from);
+    return this.createMessageGQL.mutate({roomId, content, from})
+      .pipe(map(result => result.data?.createMessage));
   }
 }
 

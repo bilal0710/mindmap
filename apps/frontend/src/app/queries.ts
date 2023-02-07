@@ -161,3 +161,16 @@ const SUBSCRIPTION_NEW_MESSAGE = gql`
     }
   }
 `
+const MUTATION_CREATE_MESSAGE = gql`
+  mutation createMessage($content: String!,$from: String!, $roomId:String!){
+    createMessage(
+      createMessageInput: {
+        content: $content,
+        from: $from,
+        roomId:$roomId
+      }
+    ){
+      content, from, to, roomId
+    }
+  }
+`

@@ -7,12 +7,16 @@
       </div>
     </div>
   </div>
-
   <div class="text-area"
        [ngStyle]="{'height': [textAreaContainerHeight + 'px']}">
     <mat-form-field>
       <mat-label>{{'MESSAGE' | translate}}</mat-label>
-      <textarea matInput></textarea>
+      <textarea
+        [(ngModel)]="message"
+        value="{{message}}"
+        (keyup.enter)="sendMessage()"
+        matInput></textarea>
     </mat-form-field>
   </div>
 </div>
+
