@@ -114,8 +114,9 @@
 <mat-card>
   <mat-card-content class="bottom-card">
     <div class="language-wrapper" mat-list-item>
-      <span style="margin-right: 6px">{{ 'LANGUAGE' | translate }}</span>
-      <mat-form-field appearance="standard" style="max-width: 50px">
+      <mat-form-field appearance="fill"
+                      class="select-language">
+        <mat-label>{{ 'LANGUAGE' | translate }}</mat-label>
         <mat-select
           [formControl]="langSelect"
           (selectionChange)="handleLanguageChange()"
@@ -129,9 +130,10 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <button mat-stroked-button color="warn" (click)="handleDelete()">
+    <button mat-stroked-button color="warn"
+            class="btn-danger"
+            (click)="handleDelete()">
       {{ 'PROFILES.DELETE_USER' | translate }}
     </button>
   </mat-card-content>
-
 </mat-card>
