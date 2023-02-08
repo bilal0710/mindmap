@@ -4,16 +4,45 @@ import {UpdateMessageInput} from './dto/update-message.input';
 import {PrismaService} from "../prisma/prisma.service";
 import {LoggedUser} from "../shared/interfaces";
 import {PubSub} from "graphql-subscriptions";
+import {MindmapService} from "../mindmap/mindmap.service";
 
 @Injectable()
 export class MessageService {
 
-  constructor(private prisma: PrismaService) {
+  public pubSub = new PubSub();
+
+  constructor(private prisma: PrismaService,
+              private mindmapService: MindmapService) {
   }
 
-  async create(createMessageInput: CreateMessageInput, pubsub: PubSub) {
+  splitMessage(message: string): string[] {
+    const result: string[] = []
+    message = message.substring(message.indexOf('#'));
+    const node = message.split(' ');
+    node.forEach((n) => {
+      if (n.includes('#')) {
+        n = n.substring(n.indexOf('#') + 1);
+        result.push(n);
+      }
+    });
+    return result;
+  }
+
+  async create(createMessageInput: CreateMessageInput) {
     const message = await this.prisma.message.create({data: createMessageInput});
-    pubsub.publish('newMessage', {newMessage: message});
+    const nodes = this.splitMessage(message.content);
+
+    if (nodes.length > 0) {
+      // nodes.forEach((node, i) => {
+      //   if (node.includes('_')) {
+      //     const shouldDeleteNode = node.split('_');
+      //     await this.mindmapService.remove({title: shouldDeleteNode[1], chatroom_id: message.roomId, nodes: []});
+      //   }
+      // });
+      await this.mindmapService.createNodes({title: null, parent_id: null, chatroom_id: message.roomId, nodes: nodes});
+    }
+
+    await this.pubSub.publish('newMessage', {newMessage: message});
     return message;
   }
 

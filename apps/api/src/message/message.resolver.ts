@@ -19,7 +19,7 @@ export class MessageResolver {
   createMessage(
     @Args('createMessageInput') createMessageInput: CreateMessageInput
   ) {
-    return this.messageService.create(createMessageInput, pubSub);
+    return this.messageService.create(createMessageInput);
   }
 
   @Query(() => [Message], {name: 'messages'})
@@ -49,11 +49,12 @@ export class MessageResolver {
   }
 
   @Public()
-  @Subscription(returns => Message, {
+  @Subscription(() => Message, {
     filter: (payload, variables) => payload.newMessage.roomId === variables.roomId
   })
   newMessage(@Args('roomId') roomId: string) {
     console.log('newMessage', roomId);
+    this.messageService.pubSub = pubSub;
     return pubSub.asyncIterator('newMessage');
   }
 }

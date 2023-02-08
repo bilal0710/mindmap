@@ -5,5 +5,6 @@ import {PrismaService} from "../prisma/prisma.service";
 
 @Module({
   providers: [MindmapResolver, MindmapService, PrismaService],
+  exports: [MindmapService]
 })
 export class MindmapModule {}

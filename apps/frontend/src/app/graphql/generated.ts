@@ -52,8 +52,9 @@ export type CreateMessageInput = {
 
 export type CreateMindmapInput = {
   chatroom_id: Scalars['String'];
+  nodes?: InputMaybe<Array<Scalars['String']>>;
   parent_id?: InputMaybe<Scalars['String']>;
-  title: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateUserInput = {
@@ -75,6 +76,7 @@ export type Message = {
 
 export type Mindmap = {
   __typename?: 'Mindmap';
+  chatroom_id?: Maybe<Scalars['String']>;
   children: Array<Mindmap>;
   id: Scalars['String'];
   parent_id?: Maybe<Scalars['String']>;
@@ -87,6 +89,7 @@ export type Mutation = {
   createChatroom: Chatroom;
   createMessage: Message;
   createMindmap: Mindmap;
+  createMindmaps: Mindmap;
   createUser: User;
   deleteUser: User;
   login: Auth;
@@ -119,6 +122,11 @@ export type MutationCreateMessageArgs = {
 
 
 export type MutationCreateMindmapArgs = {
+  createMindmapInput: CreateMindmapInput;
+};
+
+
+export type MutationCreateMindmapsArgs = {
   createMindmapInput: CreateMindmapInput;
 };
 
@@ -229,10 +237,16 @@ export type QueryUserArgs = {
 export type Subscription = {
   __typename?: 'Subscription';
   newMessage: Message;
+  newMindmap: Mindmap;
 };
 
 
 export type SubscriptionNewMessageArgs = {
+  roomId: Scalars['String'];
+};
+
+
+export type SubscriptionNewMindmapArgs = {
   roomId: Scalars['String'];
 };
 
@@ -254,6 +268,7 @@ export type UpdateMessageInput = {
 export type UpdateMindmapInput = {
   chatroom_id?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
+  nodes?: InputMaybe<Array<Scalars['String']>>;
   parent_id?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
@@ -367,6 +382,13 @@ export type NewMessageSubscriptionVariables = Exact<{
 
 
 export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', content: string, from: string, roomId: string, to?: string | null } };
+
+export type NewMindmapSubscriptionVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type NewMindmapSubscription = { __typename?: 'Subscription', newMindmap: { __typename?: 'Mindmap', title: string, parent_id?: string | null, chatroom_id?: string | null, children: Array<{ __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null }> } };
 
 export type CreateMessageMutationVariables = Exact<{
   content: Scalars['String'];
@@ -643,6 +665,32 @@ export const NewMessageDocument = gql`
   })
   export class NewMessageGQL extends Apollo.Subscription<NewMessageSubscription, NewMessageSubscriptionVariables> {
     override document = NewMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const NewMindmapDocument = gql`
+    subscription newMindmap($roomId: String!) {
+  newMindmap(roomId: $roomId) {
+    title
+    parent_id
+    chatroom_id
+    children {
+      id
+      title
+      parent_id
+      chatroom_id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NewMindmapGQL extends Apollo.Subscription<NewMindmapSubscription, NewMindmapSubscriptionVariables> {
+    override document = NewMindmapDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

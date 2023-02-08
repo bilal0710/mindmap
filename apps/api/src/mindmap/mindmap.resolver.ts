@@ -1,8 +1,12 @@
-import {Args, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
+import {Args, Mutation, Parent, Query, ResolveField, Resolver, Subscription} from '@nestjs/graphql';
 import {MindmapService} from './mindmap.service';
 import {Mindmap} from './entities/mindmap.entity';
 import {CreateMindmapInput} from './dto/create-mindmap.input';
 import {UpdateMindmapInput} from './dto/update-mindmap.input';
+import {Public} from "../auth/decorator/public.decorator";
+import {PubSub} from "graphql-subscriptions";
+
+const pubSub = new PubSub();
 
 @Resolver(() => Mindmap)
 export class MindmapResolver {
@@ -14,6 +18,13 @@ export class MindmapResolver {
     @Args('createMindmapInput') createMindmapInput: CreateMindmapInput
   ) {
     return this.mindmapService.create(createMindmapInput);
+  }
+
+  @Mutation(() => Mindmap)
+  createMindmaps(
+    @Args('createMindmapInput') createMindmapInput: CreateMindmapInput
+  ) {
+    return this.mindmapService.createNodes(createMindmapInput);
   }
 
   @Query(() => [Mindmap], {name: 'mindmaps'})
@@ -45,5 +56,13 @@ export class MindmapResolver {
   @Mutation(() => Mindmap)
   removeMindmap(@Args('id', {type: () => String}) id: string) {
     return this.mindmapService.remove(id);
+  }
+
+  @Public()
+  @Subscription(() => Mindmap)
+  newMindmap(@Args('roomId') roomId: string) {
+    this.mindmapService.pubSub = pubSub;
+    console.log('newMindmap', roomId);
+    return pubSub.asyncIterator('newMindmap');
   }
 }

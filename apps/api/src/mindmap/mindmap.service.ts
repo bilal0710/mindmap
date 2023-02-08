@@ -3,9 +3,12 @@ import {CreateMindmapInput} from './dto/create-mindmap.input';
 import {UpdateMindmapInput} from './dto/update-mindmap.input';
 import {PrismaService} from "../prisma/prisma.service";
 import {Mindmap} from "./entities/mindmap.entity";
+import {PubSub} from "graphql-subscriptions";
 
 @Injectable()
 export class MindmapService {
+  public pubSub = new PubSub();
+
   constructor(private prisma: PrismaService) {
   }
 
@@ -23,6 +26,51 @@ export class MindmapService {
     return await this.prisma.mindmap.create({
       data: createMindmapInput,
     });
+  }
+
+  async createNodes(createMindmapInput: CreateMindmapInput) {
+    console.log(createMindmapInput);
+    const mindmap = await this.prisma.mindmap.findFirst({
+      where: {
+        chatroom_id: createMindmapInput.chatroom_id,
+        title: createMindmapInput.nodes[0]
+      }
+    });
+    if (mindmap) {
+      const result =  await this.prisma.mindmap.update({
+        where: {
+          id: mindmap.id
+        },
+        data: {
+          children: {
+            create: createMindmapInput.nodes.slice(1).map(node => {
+              return {
+                title: node,
+                chatroom_id: createMindmapInput.chatroom_id,
+              }
+            })
+          }
+        }
+      });
+      await this.pubSub.publish('newMindmap', {newMindmap: result});
+      return result;
+    }
+    const result = await this.prisma.mindmap.create({
+      data: {
+        title: createMindmapInput.nodes[0],
+        chatroom_id: createMindmapInput.chatroom_id,
+        children: {
+          create: createMindmapInput.nodes.slice(1).map(node => {
+            return {
+              title: node,
+              chatroom_id: createMindmapInput.chatroom_id,
+            }
+          })
+        }
+      },
+    });
+    await this.pubSub.publish('newMindmap', {newMindmap: result});
+    return result;
   }
 
   async findAll() {
@@ -44,11 +92,11 @@ export class MindmapService {
   async findAllChildren(parent_id?: string) {
     return <Mindmap[]>await this.prisma.$queryRaw`
     WITH RECURSIVE mindmap_tree AS (
-    SELECT id, title, parent_id
+    SELECT id, title, parent_id, chatroom_id
     FROM "Mindmap"
     WHERE parent_id = ${parent_id}
     UNION ALL
-    SELECT c.id, c.title, c.parent_id
+    SELECT c.id, c.title, c.parent_id, c.chatroom_id
     FROM "Mindmap" c
     INNER JOIN mindmap_tree ct ON ct.id = c.parent_Id
 )
@@ -62,11 +110,11 @@ export class MindmapService {
   *  one cans get rid of it
   * */
   async findOne(id: string) {
-      const mindmap = await this.prisma.mindmap.findUnique({where: {id}})
-        if (!mindmap) {
-          throw new HttpException(`Mindmap with parent id ${id} not found`, HttpStatus.NOT_FOUND);
-        }
-      return mindmap;
+    const mindmap = await this.prisma.mindmap.findUnique({where: {id}})
+    if (!mindmap) {
+      throw new HttpException(`Mindmap with parent id ${id} not found`, HttpStatus.NOT_FOUND);
+    }
+    return mindmap;
   }
 
   async update(id: string, updateMindmapInput: UpdateMindmapInput) {

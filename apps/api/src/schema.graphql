@@ -51,6 +51,7 @@ type Mindmap {
   title: String!
   parent_id: String
   children: [Mindmap!]!
+  chatroom_id: String
 }
 
 type Query {
@@ -80,6 +81,7 @@ type Mutation {
   removeUserFromChatroom(userId: String!, roomId: String!): Chatroom!
   addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
   createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
+  createMindmaps(createMindmapInput: CreateMindmapInput!): Mindmap!
   updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
   removeMindmap(id: String!): Mindmap!
 }
@@ -133,18 +135,21 @@ input UpdateChatroomInput {
 }
 
 input CreateMindmapInput {
-  title: String!
+  title: String
   parent_id: String
   chatroom_id: String!
+  nodes: [String!]
 }
 
 input UpdateMindmapInput {
   title: String
   parent_id: String
   chatroom_id: String
+  nodes: [String!]
   id: String!
 }
 
 type Subscription {
   newMessage(roomId: String!): Message!
+  newMindmap(roomId: String!): Mindmap!
 }

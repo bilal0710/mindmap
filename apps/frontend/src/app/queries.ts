@@ -162,6 +162,23 @@ const SUBSCRIPTION_NEW_MESSAGE = gql`
     }
   }
 `
+
+const SUBSCRIPTION_NEW_MINDMAP = gql`
+    subscription newMindmap($roomId : String!) {
+        newMindmap (roomId: $roomId) {
+            title,
+            parent_id,
+            chatroom_id
+            children{
+                id,
+                title,
+                parent_id,
+                chatroom_id
+            }
+        }
+    }
+`
+
 const MUTATION_CREATE_MESSAGE = gql`
   mutation createMessage($content: String!,$from: String!, $roomId:String!){
     createMessage(
@@ -197,7 +214,6 @@ const MUTATION_UPDATE_PROFILE = gql`
     }
   }
 `
-
 const MUTATION_DELETE_PROFILE = gql`
   mutation deleteUser($id:String!){
     deleteUser(id:$id){

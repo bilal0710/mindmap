@@ -12,7 +12,7 @@ import {
   LoginGQL,
   MessagesGQL,
   MessagesQuery,
-  NewMessageGQL,
+  NewMessageGQL, NewMindmapGQL,
   SignupGQL,
   UpdateRoomGQL,
   UpdateUserGQL,
@@ -39,9 +39,10 @@ export class ServerService {
               private deleteChatroomGQL: DeleteChatroomGQL,
               private whoAmIGQL: WhoAmIGQL,
               private newMessageGQL: NewMessageGQL,
-              private createMessageGQL: CreateMessageGQL,
+              private createMessageSubscriptionGQL: CreateMessageGQL,
               private updateUserGQL: UpdateUserGQL,
-              private deleteUsersGQL: DeleteUserGQL,) {
+              private deleteUsersGQL: DeleteUserGQL,
+              private newMapGQL: NewMindmapGQL) {
   }
 
   login(email: string, password: string) {
@@ -104,8 +105,12 @@ export class ServerService {
     return this.newMessageGQL.subscribe({roomId: roomId});
   }
 
+  newMapSubscriber(roomId: string) {
+    return this.newMapGQL.subscribe({roomId: roomId});
+  }
+
   createMessage(roomId: string, content: string, from: string) {
-    return this.createMessageGQL.mutate({roomId, content, from})
+    return this.createMessageSubscriptionGQL.mutate({roomId, content, from})
       .pipe(map(result => result.data?.createMessage));
   }
 

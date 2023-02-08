@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Layout} from "@swimlane/ngx-graph";
 import {Edge} from "@swimlane/ngx-graph/lib/models/edge.model";
 import {Node} from "@swimlane/ngx-graph/lib/models/node.model";
+import {MindmapService} from "../mindmap.service";
+import {Subscription} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 interface Mindmap {
   id: string;
@@ -14,8 +17,9 @@ interface Mindmap {
   templateUrl: './ngx-graph.component.html',
   styleUrls: ['./ngx-graph.component.scss'],
 })
-export class NgxGraphComponent implements OnInit {
+export class NgxGraphComponent implements OnInit, OnDestroy {
 
+  roomId = '';
   layout: string | Layout = 'dagreCluster';
   customColors = [
     {
@@ -58,9 +62,22 @@ export class NgxGraphComponent implements OnInit {
 
   links: Edge[] = [];
   nodes: Node[] = [];
+  subscription: Subscription[] = [];
 
+  constructor(private mindmapService: MindmapService,
+              private activeRoute: ActivatedRoute,) {
+  }
 
   ngOnInit(): void {
+    this.subscription.push(
+      this.activeRoute.paramMap.subscribe((params) => {
+        this.roomId = params.get('id') || '';
+      }));
+    this.subscription.push(this.mindmapService.newMindMap(this.roomId).subscribe((result) => {
+      console.log(result);
+    }));
+
+
     this.nodes = this.children?.map((child) => {
       return {
         id: child.id,
@@ -76,4 +93,9 @@ export class NgxGraphComponent implements OnInit {
       }
     });
   }
+
+  ngOnDestroy(): void {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+  }
+
 }

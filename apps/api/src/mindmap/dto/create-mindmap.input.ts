@@ -3,7 +3,7 @@ import {Field, InputType} from '@nestjs/graphql';
 @InputType()
 export class CreateMindmapInput {
 
-  @Field({nullable: false})
+  @Field({nullable: true})
   title: string;
 
   @Field({nullable: true})
@@ -11,4 +11,7 @@ export class CreateMindmapInput {
 
   @Field({nullable: false})
   chatroom_id: string;
+
+  @Field(() => [String], {nullable: true})
+  nodes: string[];
 }

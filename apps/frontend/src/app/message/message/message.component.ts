@@ -56,7 +56,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if (this.message === '') return;
+    if (this.message.trim().length === 0) return;
+
     this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(result => {
       console.log('result', result);
       this.message = '';
