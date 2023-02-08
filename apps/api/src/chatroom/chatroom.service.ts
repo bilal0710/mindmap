@@ -89,7 +89,7 @@ export class ChatroomService {
     if (!chatroom || !user) {
       throw new HttpException('User or room not found', HttpStatus.NOT_FOUND);
     }
-    if (loggedUser.sub !== userId || loggedUser.role !== 'admin') {
+    if (loggedUser.sub !== userId && loggedUser.role !== 'admin') {
       return new HttpException('You are not allowed to remove this user from chat', HttpStatus.FORBIDDEN);
     }
     return await this.prisma.chatroom.update({

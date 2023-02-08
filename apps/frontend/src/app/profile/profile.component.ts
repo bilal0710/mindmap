@@ -5,9 +5,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
 import {ProfileService} from "./profile.service";
-import {HttpErrorResponse} from "@angular/common/http";
 import {ConfirmationDialogComponent} from "../lib/confirmation-dialog/confirmation-dialog.component";
 import {FormControl} from "@angular/forms";
+import {ChatroomService} from "../chatroom/chatroom.service";
+import {UpdateUserMutation} from "../graphql/generated";
 
 @Component({
   selector: 'mindmap-profile',
@@ -16,6 +17,7 @@ import {FormControl} from "@angular/forms";
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
+  user !: UpdateUserMutation['updateUser'];
 
   id!: string;
   email!: string;
@@ -31,69 +33,67 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private profileService: ProfileService,
+    private chatroomService: ChatroomService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    public  t: TranslateService
-  ) {}
-
-  ngOnInit(): void {
-    this.profileService.getProfileData();
-    this.subscriptions.push(
-      this.profileService.submitProfileData.subscribe((data) => {
-        this.id = data.id as string;
-        this.firstname = data.firstname as string;
-        this.lastname = data.lastname as string;
-        this.email = data.email as string;
-        this.firstname = data.firstname as string;
-        this.lastname = data.lastname as string;
-      })
-    );
+    public t: TranslateService
+  ) {
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.chatroomService.whoAmI()
+        .subscribe((user) => {
+          this.id = user.id;
+          this.firstname = user.firstname as string;
+          this.lastname = user.lastname as string;
+          this.email = user.email as string;
+        }));
   }
 
   handleUpdate() {
-    // this.profileService.updateUser(this.id, {
-    //   email: this.email,
-    //   firstname: this.firstname,
-    //   lastname: this.lastname,
-    //   oldPassword: this.oldPassword,
-    //   newPassword: this.newPassword,
-    //   newPasswordRepeat: this.newPasswordRepeat,
-    // });
-    this.subscriptions.push(
-      this.profileService.updateProfileData.subscribe((data) => {
-        if (data instanceof HttpErrorResponse) {
-          this.snackBar.open(this.t.instant(data?.error?.message), undefined, {
+    if (this.newPassword !== this.newPasswordRepeat) {
+      this.snackBar.open(
+        this.t.instant('PROFILES.PASSWORDS_NOT_MATCH'),
+        undefined,
+        {
+          panelClass: 'snackbar-error',
+        });
+      return;
+    }
+    this.subscriptions.push(this.profileService.updateUser(
+      this.id,
+      this.firstname,
+      this.lastname,
+      this.email,
+      this.oldPassword,
+      this.newPassword,
+      this.newPasswordRepeat,
+    ).subscribe(
+      {
+        next: () => {
+          this.snackBar.open(
+            this.t.instant('PROFILES.PROFILE_UPDATE_SUCCESS'),
+            undefined,
+            {
+              panelClass: 'snackbar-success',
+            });
+          this.oldPassword = '';
+          this.newPassword = '';
+          this.newPasswordRepeat = '';
+        },
+        error: (error) => {
+          this.snackBar.open(error.message, undefined, {
             panelClass: 'snackbar-error',
           });
-
-          return;
         }
-
-        this.id = data.id as string;
-        this.firstname = data.firstname as string;
-        this.lastname = data.lastname as string;
-        this.email = data.email as string;
-        this.firstname = data.firstname as string;
-        this.lastname = data.lastname as string;
-
-        this.snackBar.open(
-          this.t.instant('PROFILES.PROFILE_UPDATE_SUCCESS'),
-          undefined,
-          {
-            panelClass: 'snackbar-success',
-          }
-        );
-      })
-    );
+      }));
   }
+
   handleLanguageChange() {
     if (this.langSelect.value) {
       this.t.use(this.langSelect.value);
-      localStorage.setItem('ccn_lang', this.langSelect.value);
+      localStorage.setItem('mindmap_lang', this.langSelect.value);
     }
   }
 
@@ -105,45 +105,37 @@ export class ProfileComponent implements OnInit, OnDestroy {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        this.profileService.deleteUser(this.id);
-        this.subscriptions.push(
-          this.profileService.deleteUserData.subscribe((data) => {
-            if (data instanceof HttpErrorResponse) {
-              this.snackBar.open(
-                this.t.instant('PROFILES.PROFILE_DELETE_ERROR'),
-                undefined,
-                {
-                  panelClass: 'snackbar-error',
+    dialogRef.afterClosed().subscribe(
+      {
+        next: (result) => {
+          if (result === true) {
+            this.subscriptions.push(
+              this.profileService.deleteUser(this.id).subscribe((data) => {
+                if (data?.deleted) {
+                  this.profileService.logout();
+                  this.snackBar.open(
+                    this.t.instant('PROFILES.PROFILE_DELETE_SUCCESS'),
+                    undefined,
+                    {
+                      panelClass: 'snackbar-success',
+                    }
+                  );
+                  this.router.navigate(['/']);
                 }
-              );
-              return;
-            }
-            //this.profileService.logout();
-
-            this.snackBar.open(
-              this.t.instant('PROFILES.PROFILE_DELETE_SUCCESS'),
-              undefined,
-              {
-                panelClass: 'snackbar-success',
-              }
+              })
             );
-
-            this.router.navigate(['/']);
-          })
-        );
-      }
-    });
+          }
+        },
+        error: (error) => {
+          this.snackBar.open(error.message, undefined, {
+            panelClass: 'snackbar-error',
+          });
+        }
+      });
   }
 
-  handleLogout() {
-    //this.profileService.logout();
-
-    this.snackBar.open(this.t.instant('PROFILES.LOGOUT_SUCCESS'), undefined, {
-      panelClass: 'snackbar-success',
-    });
-
-    this.router.navigate(['/']);
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
 }

@@ -4,15 +4,18 @@ import {
   ChatroomGQL,
   ChatroomQuery,
   ChatroomsGQL,
-  ChatroomsQuery, CreateMessageGQL,
+  ChatroomsQuery,
+  CreateMessageGQL,
   CreateRoomGQL,
   DeleteChatroomGQL,
+  DeleteUserGQL,
   LoginGQL,
   MessagesGQL,
   MessagesQuery,
   NewMessageGQL,
   SignupGQL,
   UpdateRoomGQL,
+  UpdateUserGQL,
   UsersGQL,
   UsersQuery,
   WhoAmIGQL
@@ -36,7 +39,9 @@ export class ServerService {
               private deleteChatroomGQL: DeleteChatroomGQL,
               private whoAmIGQL: WhoAmIGQL,
               private newMessageGQL: NewMessageGQL,
-              private createMessageGQL: CreateMessageGQL) {
+              private createMessageGQL: CreateMessageGQL,
+              private updateUserGQL: UpdateUserGQL,
+              private deleteUsersGQL: DeleteUserGQL,) {
   }
 
   login(email: string, password: string) {
@@ -102,6 +107,17 @@ export class ServerService {
   createMessage(roomId: string, content: string, from: string) {
     return this.createMessageGQL.mutate({roomId, content, from})
       .pipe(map(result => result.data?.createMessage));
+  }
+
+  updateUser(id: string, firstname: string, lastname: string,
+             email: string, oldPassword: string,
+             newPassword: string, newPasswordRepeat: string) {
+    return this.updateUserGQL.mutate({id, firstname, lastname, email, oldPassword, newPassword, newPasswordRepeat})
+      .pipe(map(result => result.data?.updateUser));
+  }
+
+  deleteUser(id: string) {
+    return this.deleteUsersGQL.mutate({id}).pipe(map(result => result.data?.deleteUser));
   }
 }
 

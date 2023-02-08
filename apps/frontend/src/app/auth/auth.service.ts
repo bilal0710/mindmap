@@ -3,6 +3,8 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {Router} from "@angular/router";
 import {ServerService} from "../shared/server.service";
 import {Subject, Subscription} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +21,9 @@ export class AuthService implements OnDestroy {
 
   constructor(
     private serverSrv: ServerService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private t: TranslateService,
   ) {
   }
 
@@ -43,11 +47,12 @@ export class AuthService implements OnDestroy {
           this.token = token;
           this.token ? localStorage.setItem('mindmap_token', this.token) : null;
           this.loginSubject.next(true);
-          //this.adminService.autoAdmin();
           this.router.navigate(['/chatrooms']);
         },
         error: (error) => {
-          console.error(error);
+          this.snackBar.open(error.message, undefined, {
+            panelClass: 'snackbar-error',
+          });
         },
       })
     );
@@ -65,7 +70,9 @@ export class AuthService implements OnDestroy {
         this.router.navigate(['/chatrooms']);
       },
       error: (error) => {
-        console.error(error);
+        this.snackBar.open(error.message, undefined, {
+          panelClass: 'snackbar-error',
+        });
       },
     }));
   }
@@ -74,6 +81,9 @@ export class AuthService implements OnDestroy {
     this.token = '';
     this.loginSubject.next(false);
     localStorage.removeItem('mindmap_token');
+    this.snackBar.open(this.t.instant('PROFILES.LOGOUT_SUCCESS'), undefined, {
+      panelClass: 'snackbar-success',
+    });
     //this.adminService.reset();
   }
 

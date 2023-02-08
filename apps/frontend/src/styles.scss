@@ -66,3 +66,13 @@ mat-chip-list {
     display: none;
   }
 }
+
+.snackbar-error{
+  color: #f44336 !important;
+  background-color: #ffebee !important;
+}
+
+.snackbar-success{
+  color: #4caf50 !important;
+  background-color: #e8f5e9 !important;
+}

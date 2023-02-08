@@ -88,11 +88,11 @@ export type Mutation = {
   createMessage: Message;
   createMindmap: Mindmap;
   createUser: User;
+  deleteUser: User;
   login: Auth;
   removeChatroom: Chatroom;
   removeMessage: Message;
   removeMindmap: Mindmap;
-  removeUser: User;
   removeUserFromChatroom: Chatroom;
   signup: Auth;
   updateChatroom: Chatroom;
@@ -128,6 +128,11 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteUserArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -145,11 +150,6 @@ export type MutationRemoveMessageArgs = {
 
 
 export type MutationRemoveMindmapArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationRemoveUserArgs = {
   id: Scalars['String'];
 };
 
@@ -376,6 +376,26 @@ export type CreateMessageMutationVariables = Exact<{
 
 
 export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'Message', content: string, from: string, to?: string | null, roomId: string } };
+
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['String'];
+  firstname: Scalars['String'];
+  lastname: Scalars['String'];
+  email: Scalars['String'];
+  oldPassword: Scalars['String'];
+  newPassword: Scalars['String'];
+  newPasswordRepeat: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', email: string, firstname?: string | null, lastname?: string | null } };
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', deleted: boolean } };
 
 export const MessagesDocument = gql`
     query Messages($id: String!) {
@@ -646,6 +666,47 @@ export const CreateMessageDocument = gql`
   })
   export class CreateMessageGQL extends Apollo.Mutation<CreateMessageMutation, CreateMessageMutationVariables> {
     override document = CreateMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateUserDocument = gql`
+    mutation updateUser($id: String!, $firstname: String!, $lastname: String!, $email: String!, $oldPassword: String!, $newPassword: String!, $newPasswordRepeat: String!) {
+  updateUser(
+    updateUserInput: {id: $id, firstname: $firstname, lastname: $lastname, email: $email, oldPassword: $oldPassword, newPassword: $newPassword, newPasswordRepeat: $newPasswordRepeat}
+  ) {
+    email
+    firstname
+    lastname
+    email
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
+    override document = UpdateUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteUserDocument = gql`
+    mutation deleteUser($id: String!) {
+  deleteUser(id: $id) {
+    deleted
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteUserGQL extends Apollo.Mutation<DeleteUserMutation, DeleteUserMutationVariables> {
+    override document = DeleteUserDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

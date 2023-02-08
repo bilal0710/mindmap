@@ -4,6 +4,7 @@
   "DELETE_CHATROOM_MESSAGE_SUCCESSES": "Chatroom deleted successfully",
   "PRIVATE_CHATROOM": "This room is private, you are not allowed to enter it",
   "CLICK": "click the button",
+  "SELECT_USERS": "Select users",
   "LANGUAGE": "Sprache",
   "CREATE": "Create",
   "DASHBOARD": "Dashboard",
@@ -63,22 +64,19 @@
     "PROFILE_UPDATE_SUCCESS": "Profile updated successfully",
     "LOGOUT_SUCCESS": "You have been logged out successfully",
     "PROFILE_DELETE_SUCCESS": "Your account has been deleted successfully",
-    "PROFILE_DELETE_ERROR": "Could not delete your account"
+    "PROFILE_DELETE_ERROR": "Could not delete your account",
+    "PASSWORDS_NOT_MATCH": " Passwords do not match"
   },
   "YES": "yes",
   "NO": "no",
-  "ROOMS": {
-    "ROOMS": "Rooms",
-    "ROOM": "Room",
-    "ALL_ROOMS": "All Rooms",
-    "CREATE_ROOM": "Create room",
-    "DELETE_ROOM": "Delete Room",
-    "ROOM_DETAILS": "Room Details",
-    "UPDATE_ROOM": "Update Room",
-    "MAX_PARTICIPANTS": "Max Participants",
-    "MAX_DURATION": "Max Duration",
-    "FACULITY": "faculty"
-  },
   "ERROR_OLD_PASSWORD_WRONG": "Old password is wrong",
-  "ERROR_PASSWORDS_NOT_MATCHING": "New password is not matching"
+  "ERRORS": {
+    "REQUIRED": "This field is required",
+    "MINIMUM": "Should be at least {{min}}",
+    "MAXIMUM": "Should be at most {{max}}",
+    "EMAIL_NOT_VALID": "Email is not valid",
+    "OLD_PASSWORD_WRONG": "Old password is wrong",
+    "PASSWORDS_NOT_MATCHING": "New password is not matching",
+    "INPUT_NOT_VALID": "Input is not valid"
+  }
 }
