@@ -13,7 +13,11 @@ export class MessageService {
     return this.serverService.messages(roomId);
   }
 
-  whoAmI() {
-    return this.serverService.whoAmI();
+  subscribeNewMessage(roomId: string) {
+    return this.serverService.newMessageSubscriber(roomId);
+  }
+
+  createMessage(roomId: string, message: string, from: string) {
+    return this.serverService.createMessage(roomId, message, from);
   }
 }

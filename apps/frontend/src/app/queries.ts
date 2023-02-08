@@ -2,15 +2,15 @@
 import {gql} from "apollo-angular";
 
 const QUERY_ALL_MESSAGES = gql`
-    query Messages($id: String!)
-    {
-        messages(id: $id)  {
-            content,
-            from,
-            to,
-            roomId
-        }
+  query Messages($id: String!)
+  {
+    messages(id: $id)  {
+      content,
+      from,
+      to,
+      roomId
     }
+  }
 `
 
 const QUERY_ALL_CHATROOM = gql`
@@ -87,24 +87,25 @@ const MUTATION_SIGNUP = gql`
 `
 
 const MUTATION_UPDATE_CHATROOM = gql`
-    mutation updateRoom($id : String!, $name: String!, $users: [String!]!, $privateRoom: Boolean!){
-        updateChatroom(
-            updateChatroomInput: {
-                id: $id,
-                name:$name,
-                privateRoom: $privateRoom,
-                users: $users
-            }
-        ){
-            name,
-            type,
-            users{
-                id,
-                firstname,
-                lastname
-            }
-        }
+  mutation updateRoom($id : String!, $name: String!, $users: [String!]!, $privateRoom: Boolean!){
+    updateChatroom(
+      updateChatroomInput: {
+        id: $id,
+        name:$name,
+        privateRoom: $privateRoom,
+        users: $users
+      }
+    ){
+      id,
+      name,
+      type,
+      users{
+        id,
+        firstname,
+        lastname
+      }
     }
+  }
 `
 
 const MUTATION_CREATE_CHATROOM = gql`
@@ -139,14 +140,68 @@ const MUTATION_DELETE_CHATROOM = gql`
 `
 
 const WHO_AM_I = gql`
-    query whoAmI {
-        whoAmI
-        {
-            id,
-            firstname,
-            lastname,
-            email,
-            role
-        }
+  query whoAmI {
+    whoAmI
+    {
+      id,
+      firstname,
+      lastname,
+      email,
+      role
     }
+  }
+`
+
+const SUBSCRIPTION_NEW_MESSAGE = gql`
+  subscription newMessage($roomId : String!) {
+    newMessage (roomId: $roomId) {
+      content
+      from
+      roomId
+      to
+    }
+  }
+`
+const MUTATION_CREATE_MESSAGE = gql`
+  mutation createMessage($content: String!,$from: String!, $roomId:String!){
+    createMessage(
+      createMessageInput: {
+        content: $content,
+        from: $from,
+        roomId:$roomId
+      }
+    ){
+      content, from, to, roomId
+    }
+  }
+`
+const MUTATION_UPDATE_PROFILE = gql`
+  mutation updateUser($id: String!, $firstname: String!, $lastname: String!,
+    $email: String!, $oldPassword: String!,
+    $newPassword: String!,  $newPasswordRepeat: String!){
+    updateUser(
+      updateUserInput: {
+        id: $id,
+        firstname: $firstname,
+        lastname: $lastname,
+        email:$email,
+        oldPassword: $oldPassword ,
+        newPassword: $newPassword,
+        newPasswordRepeat: $newPasswordRepeat
+      }
+    ){
+      email,
+      firstname,
+      lastname,
+      email
+    }
+  }
+`
+
+const MUTATION_DELETE_PROFILE = gql`
+  mutation deleteUser($id:String!){
+    deleteUser(id:$id){
+    deleted
+    }
+  }
 `

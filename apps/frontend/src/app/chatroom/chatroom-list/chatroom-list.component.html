@@ -22,13 +22,18 @@
         [multiple]="false">
         <mat-list-option *ngFor="let room of chatrooms" [value]="room">
           <div class="item">
-            {{room.name}}
-            <div>
-              <button mat-button
+            <div>{{room.name}}</div>
+            <div>{{room.type}}</div>
+            <div class="btn-wrapper">
+              <button
+                class="btn"
+                mat-button
                       [routerLink]="[room.id, 'edit']">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-button
+              <button
+                class="btn"
+                mat-button
                       (click)="deleteRoom(room.id)">
                 <mat-icon>delete</mat-icon>
               </button>
@@ -46,7 +51,7 @@
     <button
       mat-stroked-button
       color="accent"
-      (click)="navigateToMessageView(roomList.selectedOptions.selected[0].value.id)"
+      (click)="navigateToMessageView(roomList.selectedOptions.selected[0].value)"
       >
       {{ 'SUBMIT' | translate }}
     </button>

@@ -3,6 +3,7 @@ import {CreateUserInput} from './dto/create-user.input';
 import {UpdateUserInput} from './dto/update-user.input';
 import {PrismaService} from "../prisma/prisma.service";
 import {compareSync, hashSync} from "bcrypt";
+import {LoggedUser} from "../shared/interfaces";
 
 @Injectable()
 export class UserService {
@@ -71,17 +72,22 @@ export class UserService {
     return user;
   }
 
-  async remove(id: string) {
+  async remove(id: string, loggedUser: LoggedUser) {
     let user = await this.prisma.user.findUnique({where: {id: id}});
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    if (loggedUser.sub !== id && loggedUser.role !== 'admin') {
+      return new HttpException('You are not allowed to remove this user', HttpStatus.FORBIDDEN);
     }
     user.deleted = true;
     user.email = 'deleted-' + user.id;
     user.firstname = '';
     user.lastname = '';
     user.password = '';
-    user = await this.prisma.user.update({where: {id: id}, data: user});
+    if (!user.deleted) {
+      user = await this.prisma.user.update({where: {id: id}, data: user});
+    }
     delete user.password;
     return user;
   }

@@ -4,13 +4,24 @@ import {
   ChatroomGQL,
   ChatroomQuery,
   ChatroomsGQL,
-  ChatroomsQuery, CreateRoomGQL, DeleteChatroomGQL,
+  ChatroomsQuery,
+  CreateMessageGQL,
+  CreateRoomGQL,
+  DeleteChatroomGQL,
+  DeleteUserGQL,
   LoginGQL,
   MessagesGQL,
   MessagesQuery,
-  SignupGQL, UpdateRoomGQL, UsersGQL, UsersQuery, WhoAmIGQL
+  NewMessageGQL,
+  SignupGQL,
+  UpdateRoomGQL,
+  UpdateUserGQL,
+  UsersGQL,
+  UsersQuery,
+  WhoAmIGQL
 } from "../graphql/generated";
 import {map, Observable} from "rxjs";
+
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +37,11 @@ export class ServerService {
               private updateChatroomGQL: UpdateRoomGQL,
               private createChatroomGQL: CreateRoomGQL,
               private deleteChatroomGQL: DeleteChatroomGQL,
-              private whoAmIGQL: WhoAmIGQL) {
+              private whoAmIGQL: WhoAmIGQL,
+              private newMessageGQL: NewMessageGQL,
+              private createMessageGQL: CreateMessageGQL,
+              private updateUserGQL: UpdateUserGQL,
+              private deleteUsersGQL: DeleteUserGQL,) {
   }
 
   login(email: string, password: string) {
@@ -79,10 +94,30 @@ export class ServerService {
       .pipe(map(result => result.data?.removeChatroom));
   }
 
-  whoAmI(){
+  whoAmI() {
     return this.whoAmIGQL.watch().valueChanges.pipe(
       map(result => result.data?.whoAmI)
     );
+  }
+
+  newMessageSubscriber(roomId: string) {
+    return this.newMessageGQL.subscribe({roomId: roomId});
+  }
+
+  createMessage(roomId: string, content: string, from: string) {
+    return this.createMessageGQL.mutate({roomId, content, from})
+      .pipe(map(result => result.data?.createMessage));
+  }
+
+  updateUser(id: string, firstname: string, lastname: string,
+             email: string, oldPassword: string,
+             newPassword: string, newPasswordRepeat: string) {
+    return this.updateUserGQL.mutate({id, firstname, lastname, email, oldPassword, newPassword, newPasswordRepeat})
+      .pipe(map(result => result.data?.updateUser));
+  }
+
+  deleteUser(id: string) {
+    return this.deleteUsersGQL.mutate({id}).pipe(map(result => result.data?.deleteUser));
   }
 }
 

@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.t.addLangs(['en', 'de']);
     this.t.setDefaultLang('en');
 
-    const localStoredLang = localStorage.getItem('ccn_lang');
+    const localStoredLang = localStorage.getItem('mindmap_lang');
     const browserLang = this.t.getBrowserLang();
 
     this.t.use(localStoredLang || browserLang || this.t.defaultLang);

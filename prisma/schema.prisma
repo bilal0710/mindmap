@@ -54,7 +54,7 @@ model Message{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   from String
-  to String
+  to String?
   roomId String
   chatroom Chatroom @relation(fields: [roomId], references: [id])
 }

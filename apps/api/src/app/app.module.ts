@@ -22,6 +22,15 @@ import {MindmapModule} from "../mindmap/mindmap.module";
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'apps/api/src/schema.graphql'),
+      installSubscriptionHandlers: true,
+      subscriptions: {
+        'graphql-ws': {
+          path: '/graphql'
+        },
+        'subscriptions-transport-ws': {
+          path: '/graphql'
+        },
+      },
     }),
     UserModule,
     AuthModule,

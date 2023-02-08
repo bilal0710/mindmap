@@ -47,7 +47,7 @@ export type CreateMessageInput = {
   content: Scalars['String'];
   from: Scalars['String'];
   roomId: Scalars['String'];
-  to: Scalars['String'];
+  to?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateMindmapInput = {
@@ -70,7 +70,7 @@ export type Message = {
   from: Scalars['String'];
   id: Scalars['String'];
   roomId: Scalars['String'];
-  to: Scalars['String'];
+  to?: Maybe<Scalars['String']>;
 };
 
 export type Mindmap = {
@@ -88,11 +88,11 @@ export type Mutation = {
   createMessage: Message;
   createMindmap: Mindmap;
   createUser: User;
+  deleteUser: User;
   login: Auth;
   removeChatroom: Chatroom;
   removeMessage: Message;
   removeMindmap: Mindmap;
-  removeUser: User;
   removeUserFromChatroom: Chatroom;
   signup: Auth;
   updateChatroom: Chatroom;
@@ -128,6 +128,11 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteUserArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -145,11 +150,6 @@ export type MutationRemoveMessageArgs = {
 
 
 export type MutationRemoveMindmapArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationRemoveUserArgs = {
   id: Scalars['String'];
 };
 
@@ -226,6 +226,16 @@ export type QueryUserArgs = {
   id: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  newMessage: Message;
+};
+
+
+export type SubscriptionNewMessageArgs = {
+  roomId: Scalars['String'];
+};
+
 export type UpdateChatroomInput = {
   id: Scalars['String'];
   name?: InputMaybe<Scalars['String']>;
@@ -282,7 +292,7 @@ export type MessagesQueryVariables = Exact<{
 }>;
 
 
-export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string, from: string, to: string, roomId: string }> };
+export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', content: string, from: string, to?: string | null, roomId: string }> };
 
 export type ChatroomsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -328,7 +338,7 @@ export type UpdateRoomMutationVariables = Exact<{
 }>;
 
 
-export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
+export type UpdateRoomMutation = { __typename?: 'Mutation', updateChatroom: { __typename?: 'Chatroom', id: string, name: string, type: ChatroomType, users: Array<{ __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null }> } };
 
 export type CreateRoomMutationVariables = Exact<{
   name: Scalars['String'];
@@ -350,6 +360,42 @@ export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'User', id: string, firstname?: string | null, lastname?: string | null, email: string, role: UserRole } };
+
+export type NewMessageSubscriptionVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', content: string, from: string, roomId: string, to?: string | null } };
+
+export type CreateMessageMutationVariables = Exact<{
+  content: Scalars['String'];
+  from: Scalars['String'];
+  roomId: Scalars['String'];
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'Message', content: string, from: string, to?: string | null, roomId: string } };
+
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['String'];
+  firstname: Scalars['String'];
+  lastname: Scalars['String'];
+  email: Scalars['String'];
+  oldPassword: Scalars['String'];
+  newPassword: Scalars['String'];
+  newPasswordRepeat: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', email: string, firstname?: string | null, lastname?: string | null } };
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', deleted: boolean } };
 
 export const MessagesDocument = gql`
     query Messages($id: String!) {
@@ -492,6 +538,7 @@ export const UpdateRoomDocument = gql`
   updateChatroom(
     updateChatroomInput: {id: $id, name: $name, privateRoom: $privateRoom, users: $users}
   ) {
+    id
     name
     type
     users {
@@ -575,6 +622,91 @@ export const WhoAmIDocument = gql`
   })
   export class WhoAmIGQL extends Apollo.Query<WhoAmIQuery, WhoAmIQueryVariables> {
     override document = WhoAmIDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const NewMessageDocument = gql`
+    subscription newMessage($roomId: String!) {
+  newMessage(roomId: $roomId) {
+    content
+    from
+    roomId
+    to
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NewMessageGQL extends Apollo.Subscription<NewMessageSubscription, NewMessageSubscriptionVariables> {
+    override document = NewMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateMessageDocument = gql`
+    mutation createMessage($content: String!, $from: String!, $roomId: String!) {
+  createMessage(
+    createMessageInput: {content: $content, from: $from, roomId: $roomId}
+  ) {
+    content
+    from
+    to
+    roomId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateMessageGQL extends Apollo.Mutation<CreateMessageMutation, CreateMessageMutationVariables> {
+    override document = CreateMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateUserDocument = gql`
+    mutation updateUser($id: String!, $firstname: String!, $lastname: String!, $email: String!, $oldPassword: String!, $newPassword: String!, $newPasswordRepeat: String!) {
+  updateUser(
+    updateUserInput: {id: $id, firstname: $firstname, lastname: $lastname, email: $email, oldPassword: $oldPassword, newPassword: $newPassword, newPasswordRepeat: $newPasswordRepeat}
+  ) {
+    email
+    firstname
+    lastname
+    email
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
+    override document = UpdateUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteUserDocument = gql`
+    mutation deleteUser($id: String!) {
+  deleteUser(id: $id) {
+    deleted
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteUserGQL extends Apollo.Mutation<DeleteUserMutation, DeleteUserMutationVariables> {
+    override document = DeleteUserDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

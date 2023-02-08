@@ -40,16 +40,16 @@ export class ChatroomComponent implements OnInit, OnDestroy {
 
     if (this.id !== '') {
       this.subscriptions.push(combineLatest([
-        this.chatroomService.getAllUsers(),
-        this.chatroomService.getChatroom(this.id),
-      ]).subscribe(result => {
+          this.chatroomService.getAllUsers(),
+          this.chatroomService.getChatroom(this.id),
+        ]).subscribe(result => {
           this.userList = result[0];
-             if (!result[1]) return;
-              const data = result[1];
-             this.chatroomName = data.name;
-             this.roomPrivacy = data.type === 'PRIVATE'
-             const users = this.userList.filter(user => data.users.filter(item => item.id === user.id).length > 0);
-             this.selectedUser.setValue(users);
+          if (!result[1]) return;
+          const data = result[1];
+          this.chatroomName = data.name;
+          this.roomPrivacy = data.type === 'PRIVATE'
+          const users = this.userList.filter(user => data.users.filter(item => item.id === user.id).length > 0);
+          this.selectedUser.setValue(users);
         })
       )
     }
@@ -66,24 +66,39 @@ export class ChatroomComponent implements OnInit, OnDestroy {
     const users = this.selectedUser.value?.map(user => user.id);
     if (this.id !== '') {
       this.subscriptions.push(this.chatroomService.UpdateChatroom(this.id, this.chatroomName, this.roomPrivacy, users || []).subscribe(
-        () => {
-          this._snackBar.open(this.t.instant("UPDATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
-          this.router.navigate(['chatrooms']);
+        {
+          next: () => {
+            this._snackBar.open(this.t.instant("UPDATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+            this.router.navigate(['chatrooms']);
+          },
+          error: (error) => {
+            this._snackBar.open(error.message, undefined, {
+              panelClass: 'snackbar-error',
+            });
+          }
         }
       ));
       return;
     }
     this.subscriptions.push(this.chatroomService.CreateChatroom(this.chatroomName, this.roomPrivacy, users || []).subscribe(
-      () => {
-        this._snackBar.open(this.t.instant("CREATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-        this.router.navigate(['chatrooms']);
-      }));
+      {
+        next: () => {
+          this._snackBar.open(this.t.instant("CREATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          this.router.navigate(['chatrooms']);
+        },
+        error: (error) => {
+          this._snackBar.open(error.message, undefined, {
+            panelClass: 'snackbar-error',
+          });
+        }
+      }
+    ));
 
   }
 

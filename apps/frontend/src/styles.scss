@@ -51,6 +51,28 @@ mat-chip-list {
   transform: unset !important;
 }
 
-.mat-list-item-content{
+.mat-list-item-content {
   padding-right: 0 !important;
+}
+
+.mat-button {
+  padding: 0 !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+}
+
+.select-language {
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+
+.snackbar-error{
+  color: #f44336 !important;
+  background-color: #ffebee !important;
+}
+
+.snackbar-success{
+  color: #4caf50 !important;
+  background-color: #e8f5e9 !important;
 }

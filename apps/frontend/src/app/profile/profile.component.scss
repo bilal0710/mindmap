@@ -4,20 +4,34 @@ mat-card {
   text-align: center;
 }
 
+.btn-save{
+  margin-top: 8px;
+}
+
 mat-form-field {
   display: block;
+  margin-bottom: 8px;
 }
 
 .bottom-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 
-  .language-wrapper{
+  .btn-danger{
+    height: 46px;
+  }
+  .language-wrapper {
     display: flex;
     align-items: center;
+
+    .select-language {
+      width: 100px;
+    }
+
     .mat-form-field {
       margin-left: 12px;
     }
   }
 }
+

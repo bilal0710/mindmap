@@ -1,16 +1,22 @@
 <div class="container">
-  <div class="imessage">
+  <div class="imessage"
+       [ngStyle]="{'height': [iMessageContainerHeight + 'px']}">
     <div *ngFor="let message of messageList">
       <div [ngClass]="message.from === user.id ? 'from-me': 'from-them' ">
         {{message.content}}
       </div>
     </div>
   </div>
-
-  <div class="text-area">
+  <div class="text-area"
+       [ngStyle]="{'height': [textAreaContainerHeight + 'px']}">
     <mat-form-field>
       <mat-label>{{'MESSAGE' | translate}}</mat-label>
-      <textarea matInput></textarea>
+      <textarea
+        [(ngModel)]="message"
+        value="{{message}}"
+        (keyup.enter)="sendMessage()"
+        matInput></textarea>
     </mat-form-field>
   </div>
 </div>
+

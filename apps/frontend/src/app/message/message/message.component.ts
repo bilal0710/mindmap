@@ -4,6 +4,7 @@ import {MessagesQuery, UsersQuery} from "../../graphql/generated";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {combineLatest} from "rxjs";
+import {ChatroomService} from "../../chatroom/chatroom.service";
 
 @Component({
   selector: 'mindmap-message',
@@ -14,11 +15,19 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   messageList!: MessagesQuery['messages'];
   roomId = '';
+  message = '';
   subscription: Subscription[] = [];
   user!: UsersQuery['users'][number];
+  public iMessageContainerHeight: number;
+  public textAreaContainerHeight: number
+
 
   constructor(private messageService: MessageService,
-              private activeRoute: ActivatedRoute,) {
+              private activeRoute: ActivatedRoute,
+              private chatroomService: ChatroomService) {
+    const height = window.innerHeight - 64;
+    this.iMessageContainerHeight = (height * 90) / 100;
+    this.textAreaContainerHeight = height - this.iMessageContainerHeight
   }
 
   ngOnInit(): void {
@@ -28,29 +37,29 @@ export class MessageComponent implements OnInit, OnDestroy {
         this.roomId = params.get('id') || '';
       }));
 
-    if(this.roomId === '') return;
+    if (this.roomId === '') return;
     this.subscription.push(
-
-      combineLatest([this.messageService.getMessages(this.roomId), this.messageService.whoAmI()])
+      combineLatest([
+        this.messageService.getMessages(this.roomId),
+        this.chatroomService.whoAmI()])
         .subscribe(([messages, user]) => {
           this.messageList = messages;
           this.user = user;
-          console.log('message', messages);
-          console.log('user', user);
         }));
-     /* this.messageService.getMessages(this.roomId).subscribe(
-      {
-        next: (messages) => {
-          this.messageList = messages;
-          console.log(messages);
-        },
-        error: (error) => {
-          console.error('error: ', error);
-        }
-      }));*/
+    this.subscription.push(this.messageService.subscribeNewMessage(this.roomId).subscribe((result) => {
+      this.messageList.push(result.data?.newMessage as MessagesQuery['messages'][number]);
+    }));
   }
 
   ngOnDestroy(): void {
     this.subscription.forEach((sub) => sub.unsubscribe());
+  }
+
+  sendMessage() {
+    if (this.message === '') return;
+    this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(result => {
+      console.log('result', result);
+      this.message = '';
+    });
   }
 }

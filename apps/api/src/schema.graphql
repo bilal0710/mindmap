@@ -6,7 +6,7 @@ type Message {
   id: String!
   content: String!
   from: String!
-  to: String!
+  to: String
   roomId: String!
 }
 
@@ -68,7 +68,7 @@ type Query {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: String!): User!
+  deleteUser(id: String!): User!
   login(email: String!, password: String!): Auth!
   signup(email: String!, password: String!, passwordRepeat: String!, firstname: String!, lastname: String!): Auth!
   createMessage(createMessageInput: CreateMessageInput!): Message!
@@ -107,7 +107,7 @@ input UpdateUserInput {
 input CreateMessageInput {
   content: String!
   from: String!
-  to: String!
+  to: String
   roomId: String!
 }
 
@@ -143,4 +143,8 @@ input UpdateMindmapInput {
   parent_id: String
   chatroom_id: String
   id: String!
+}
+
+type Subscription {
+  newMessage(roomId: String!): Message!
 }
