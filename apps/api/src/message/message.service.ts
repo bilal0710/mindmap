@@ -3,16 +3,13 @@ import {CreateMessageInput} from './dto/create-message.input';
 import {UpdateMessageInput} from './dto/update-message.input';
 import {PrismaService} from "../prisma/prisma.service";
 import {LoggedUser} from "../shared/interfaces";
-import {PubSub} from "graphql-subscriptions";
-import {MindmapService} from "../mindmap/mindmap.service";
+import {MindmapResolver} from "../mindmap/mindmap.resolver";
 
 @Injectable()
 export class MessageService {
 
-  public pubSub = new PubSub();
-
   constructor(private prisma: PrismaService,
-              private mindmapService: MindmapService) {
+              private mindmapResolver: MindmapResolver) {
   }
 
   splitMessage(message: string): string[] {
@@ -39,10 +36,13 @@ export class MessageService {
       //     await this.mindmapService.remove({title: shouldDeleteNode[1], chatroom_id: message.roomId, nodes: []});
       //   }
       // });
-      await this.mindmapService.createNodes({title: null, parent_id: null, chatroom_id: message.roomId, nodes: nodes});
+      await this.mindmapResolver.createMindmaps({
+        title: null,
+        parent_id: null,
+        chatroom_id: message.roomId,
+        nodes: nodes
+      });
     }
-
-    await this.pubSub.publish('newMessage', {newMessage: message});
     return message;
   }
 

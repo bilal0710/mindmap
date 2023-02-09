@@ -37,7 +37,7 @@ export class MindmapService {
       }
     });
     if (mindmap) {
-      const result =  await this.prisma.mindmap.update({
+      return await this.prisma.mindmap.update({
         where: {
           id: mindmap.id
         },
@@ -50,12 +50,13 @@ export class MindmapService {
               }
             })
           }
+        },
+        include: {
+          children: true
         }
       });
-      await this.pubSub.publish('newMindmap', {newMindmap: result});
-      return result;
     }
-    const result = await this.prisma.mindmap.create({
+    return await this.prisma.mindmap.create({
       data: {
         title: createMindmapInput.nodes[0],
         chatroom_id: createMindmapInput.chatroom_id,
@@ -68,9 +69,11 @@ export class MindmapService {
           })
         }
       },
+      include: {
+        children: true
+      }
     });
-    await this.pubSub.publish('newMindmap', {newMindmap: result});
-    return result;
+
   }
 
   async findAll() {

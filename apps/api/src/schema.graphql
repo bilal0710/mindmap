@@ -60,10 +60,10 @@ type Query {
   whoAmI: User!
   messages(id: String!): [Message!]!
   message(id: String!): Message!
-  chatrooms: [Chatroom!]!
-  chatroom(id: String!): Chatroom!
   mindmaps: [Mindmap!]!
   mindmap(id: String!): Mindmap!
+  chatrooms: [Chatroom!]!
+  chatroom(id: String!): Chatroom!
 }
 
 type Mutation {
@@ -75,15 +75,15 @@ type Mutation {
   createMessage(createMessageInput: CreateMessageInput!): Message!
   updateMessage(updateMessageInput: UpdateMessageInput!): Message!
   removeMessage(id: String!): Message!
+  createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
+  createMindmaps(createMindmapInput: CreateMindmapInput!): Mindmap!
+  updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
+  removeMindmap(id: String!): Mindmap!
   createChatroom(createChatroomInput: CreateChatroomInput!): Chatroom!
   updateChatroom(updateChatroomInput: UpdateChatroomInput!): Chatroom!
   removeChatroom(id: String!): Chatroom!
   removeUserFromChatroom(userId: String!, roomId: String!): Chatroom!
   addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
-  createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
-  createMindmaps(createMindmapInput: CreateMindmapInput!): Mindmap!
-  updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
-  removeMindmap(id: String!): Mindmap!
 }
 
 input CreateUserInput {
@@ -121,19 +121,6 @@ input UpdateMessageInput {
   id: String!
 }
 
-input CreateChatroomInput {
-  name: String!
-  users: [String!]!
-  privateRoom: Boolean
-}
-
-input UpdateChatroomInput {
-  id: String!
-  name: String
-  privateRoom: Boolean
-  users: [String!]!
-}
-
 input CreateMindmapInput {
   title: String
   parent_id: String
@@ -147,6 +134,19 @@ input UpdateMindmapInput {
   chatroom_id: String
   nodes: [String!]
   id: String!
+}
+
+input CreateChatroomInput {
+  name: String!
+  users: [String!]!
+  privateRoom: Boolean
+}
+
+input UpdateChatroomInput {
+  id: String!
+  name: String
+  privateRoom: Boolean
+  users: [String!]!
 }
 
 type Subscription {

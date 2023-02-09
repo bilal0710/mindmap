@@ -19,7 +19,11 @@ export class MessageResolver {
   createMessage(
     @Args('createMessageInput') createMessageInput: CreateMessageInput
   ) {
-    return this.messageService.create(createMessageInput);
+    return this.messageService.create(createMessageInput).then((data) => {
+      pubSub.publish('newMessage', {newMessage: data});
+      return data;
+    });
+
   }
 
   @Query(() => [Message], {name: 'messages'})
@@ -53,8 +57,6 @@ export class MessageResolver {
     filter: (payload, variables) => payload.newMessage.roomId === variables.roomId
   })
   newMessage(@Args('roomId') roomId: string) {
-    console.log('newMessage', roomId);
-    this.messageService.pubSub = pubSub;
     return pubSub.asyncIterator('newMessage');
   }
 }

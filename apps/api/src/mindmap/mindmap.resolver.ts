@@ -24,7 +24,11 @@ export class MindmapResolver {
   createMindmaps(
     @Args('createMindmapInput') createMindmapInput: CreateMindmapInput
   ) {
-    return this.mindmapService.createNodes(createMindmapInput);
+    const result = this.mindmapService.createNodes(createMindmapInput);
+    result.then((data) => {
+      pubSub.publish('newMindmap', {newMindmap: data});
+    });
+    return result;
   }
 
   @Query(() => [Mindmap], {name: 'mindmaps'})
@@ -59,10 +63,12 @@ export class MindmapResolver {
   }
 
   @Public()
-  @Subscription(() => Mindmap)
+  @Subscription(() => Mindmap,
+    {
+      filter: (payload, variables) => payload.newMessage.roomId === variables.roomId
+    })
   newMindmap(@Args('roomId') roomId: string) {
-    this.mindmapService.pubSub = pubSub;
-    console.log('newMindmap', roomId);
+
     return pubSub.asyncIterator('newMindmap');
   }
 }
