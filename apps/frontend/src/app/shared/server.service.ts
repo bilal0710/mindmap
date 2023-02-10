@@ -7,7 +7,7 @@ import {
   ChatroomsQuery,
   CreateMessageGQL,
   CreateRoomGQL,
-  DeleteChatroomGQL,
+  DeleteChatroomGQL, DeleteMapGQL,
   DeleteUserGQL,
   LoginGQL,
   MessagesGQL,
@@ -45,7 +45,8 @@ export class ServerService {
               private updateUserGQL: UpdateUserGQL,
               private deleteUsersGQL: DeleteUserGQL,
               private newMapGQL: NewMindmapGQL,
-              private mindmapWithRoomIdGQL: MindmapWithRoomIdGQL) {
+              private mindmapWithRoomIdGQL: MindmapWithRoomIdGQL,
+              private deleteMapGQL: DeleteMapGQL) {
   }
 
   login(email: string, password: string) {
@@ -138,6 +139,10 @@ export class ServerService {
         }
         return result.data.mindmapWithRoomId;
       }));
+  }
+
+  deleteMap(id: string) {
+    return this.deleteMapGQL.mutate({id}).pipe(map(result => result.data?.removeMindmap));
   }
 }
 

@@ -52,9 +52,9 @@ export type CreateMessageInput = {
 
 export type CreateMindmapInput = {
   chatroom_id: Scalars['String'];
-  nodes?: InputMaybe<Array<Scalars['String']>>;
+  nodes: Array<Scalars['String']>;
   parent_id?: InputMaybe<Scalars['String']>;
-  title?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type CreateUserInput = {
@@ -432,6 +432,13 @@ export type MindmapWithRoomIdQueryVariables = Exact<{
 
 export type MindmapWithRoomIdQuery = { __typename?: 'Query', mindmapWithRoomId: { __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null, children: Array<{ __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null }> } };
 
+export type DeleteMapMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteMapMutation = { __typename?: 'Mutation', removeMindmap: { __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null } };
+
 export const MessagesDocument = gql`
     query Messages($id: String!) {
   messages(id: $id) {
@@ -796,6 +803,26 @@ export const MindmapWithRoomIdDocument = gql`
   })
   export class MindmapWithRoomIdGQL extends Apollo.Query<MindmapWithRoomIdQuery, MindmapWithRoomIdQueryVariables> {
     override document = MindmapWithRoomIdDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteMapDocument = gql`
+    mutation deleteMap($id: String!) {
+  removeMindmap(id: $id) {
+    id
+    title
+    parent_id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteMapGQL extends Apollo.Mutation<DeleteMapMutation, DeleteMapMutationVariables> {
+    override document = DeleteMapDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

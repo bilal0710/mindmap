@@ -5,6 +5,7 @@ import {Node} from "@swimlane/ngx-graph/lib/models/node.model";
 import {MindmapService} from "../mindmap.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 interface Mindmap {
   id: string;
@@ -28,9 +29,7 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
     }
   ];
 
-
   children: Mindmap[] = [];
-
 
   links: Edge[] = [];
   nodes: Node[] = [];
@@ -38,7 +37,7 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
 
   constructor(private mindmapService: MindmapService,
-              private activeRoute: ActivatedRoute,) {
+              private activeRoute: ActivatedRoute, private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -47,7 +46,14 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
         this.roomId = params.get('id') || '';
       }));
 
-    this.mindmapService.getMindMap(this.roomId).subscribe((result) => {
+    this.subscription.push(
+      this.mindmapService.nodeSubject.subscribe((data) => {
+        if (data) {
+          this.deleteNode(data);
+        }
+      }));
+
+    this.subscription.push(this.mindmapService.getMindMap(this.roomId).subscribe((result) => {
       if (result) {
         this.root = {
           id: result.id,
@@ -56,7 +62,7 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
         this.children = result.children as Mindmap[];
         this.initNodes();
       }
-    });
+    }));
 
     this.subscription.push(this.mindmapService.newMindMapSubscription(this.roomId).subscribe(
       {
@@ -98,6 +104,7 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
       }
     });
     this.nodes = [this.root, ...children];
+    console.log('nodes', this.nodes);
     this.links = this.children.length > 0 ? this.children.map((child) => {
       return {
         source: child.parent_id,
@@ -114,4 +121,30 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
     this.subscription.forEach((sub) => sub.unsubscribe());
   }
 
+  private deleteNode(data: string[]) {
+
+    const shouldDeleteNodes = this.nodes.filter(node => data.find(n => n.toLowerCase().trim() === node.label?.toLowerCase()))
+    if (data[0] !== shouldDeleteNodes[0].label?.toLowerCase()) {
+      const temp = shouldDeleteNodes[0];
+      shouldDeleteNodes[0] = shouldDeleteNodes[1];
+      shouldDeleteNodes[1] = temp;
+    }
+    const index = this.children.findIndex(child => child.id === shouldDeleteNodes[1].id && child.parent_id === shouldDeleteNodes[0].id);
+    if (index > -1) {
+      this.mindmapService.deleteMindMap(this.children[index].id).subscribe({
+        next: () => {
+          this._snackBar.open('node deleted successfully', undefined, {
+            panelClass: 'snackbar-success',
+          });
+        },
+        error: (error) => {
+          this._snackBar.open(error.message, undefined, {
+            panelClass: 'snackbar-error',
+          });
+        }
+      });
+      this.children.splice(index, 1);
+      this.initNodes();
+    }
+  }
 }

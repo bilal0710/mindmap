@@ -239,4 +239,14 @@ const QUERY_ONE_MINDMAP_WITH_ROOM = gql`
     }
   }
 `
+const MUTATION_DELETE_MAP = gql`
+  mutation deleteMap($id: String!){
+    removeMindmap(
+      id: $id
+    ){
+      id,
+      title,
+      parent_id
+    }
+  }`
 

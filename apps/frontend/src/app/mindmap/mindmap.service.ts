@@ -1,10 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ServerService} from "../shared/server.service";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MindmapService {
+
+  nodeSubject = new Subject<string[]>();
 
   constructor(private serverService: ServerService) { }
 
@@ -14,5 +17,9 @@ export class MindmapService {
 
   getMindMap(roomId: string) {
     return this.serverService.mindmap(roomId);
+  }
+
+  deleteMindMap(id: string) {
+    return this.serverService.deleteMap(id);
   }
 }

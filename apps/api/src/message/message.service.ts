@@ -35,6 +35,9 @@ export class MessageService {
     const nodes = this.splitMessage(message.content);
 
     if (nodes.length > 0) {
+
+
+
       await this.mindmapResolver.createMindmaps({
         title: null,
         parent_id: null,
