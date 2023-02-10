@@ -125,10 +125,13 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
 
     const shouldDeleteNodes = this.nodes.filter(node => data.find(n => n.toLowerCase().trim() === node.label?.toLowerCase()))
     if (data[0] !== shouldDeleteNodes[0].label?.toLowerCase()) {
+      console.log('data', data);
+      console.log('shouldDeleteNodes', shouldDeleteNodes);
       const temp = shouldDeleteNodes[0];
       shouldDeleteNodes[0] = shouldDeleteNodes[1];
       shouldDeleteNodes[1] = temp;
     }
+
     const index = this.children.findIndex(child => child.id === shouldDeleteNodes[1].id && child.parent_id === shouldDeleteNodes[0].id);
     if (index > -1) {
       this.mindmapService.deleteMindMap(this.children[index].id).subscribe({

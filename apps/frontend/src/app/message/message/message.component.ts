@@ -64,10 +64,12 @@ export class MessageComponent implements OnInit, OnDestroy {
     if (this.message.trim().length === 0) return;
 
     if (this.message.includes('#') && this.message.includes('_')) {
-      const node = this.message.substring(this.message.indexOf('_') + 1);
+      const node = this.message.substring(this.message.indexOf('#') + 1);
       const nodes = node.split('_');
-      this.mindmapService.nodeSubject.next(nodes);
-      this.message = this.message.substring(this.message.indexOf('#') + 1)
+      if (nodes[0] === 'delete') {
+        this.mindmapService.nodeSubject.next(nodes.slice(1));
+        this.message = this.message.substring(this.message.indexOf('#') + 1)
+      }
     }
 
     this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(
