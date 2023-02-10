@@ -16,13 +16,18 @@ export class MessageService {
     const result: string[] = []
     message = message.substring(message.indexOf('#'));
     const node = message.split(' ');
-    node.forEach((n) => {
-      if (n.includes('#')) {
-        n = n.substring(n.indexOf('#') + 1);
-        result.push(n);
-      }
-    });
-    return result;
+    if (node.length > 0) {
+      node.forEach((n) => {
+        if (n.includes('#')) {
+          n = n.substring(n.indexOf('#') + 1).trim();
+          if (n !== '') {
+            result.push(n);
+          }
+        }
+      });
+      return result;
+    }
+    return [];
   }
 
   async create(createMessageInput: CreateMessageInput) {
@@ -30,12 +35,6 @@ export class MessageService {
     const nodes = this.splitMessage(message.content);
 
     if (nodes.length > 0) {
-      // nodes.forEach((node, i) => {
-      //   if (node.includes('_')) {
-      //     const shouldDeleteNode = node.split('_');
-      //     await this.mindmapService.remove({title: shouldDeleteNode[1], chatroom_id: message.roomId, nodes: []});
-      //   }
-      // });
       await this.mindmapResolver.createMindmaps({
         title: null,
         parent_id: null,

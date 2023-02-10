@@ -8,7 +8,11 @@ export class MindmapService {
 
   constructor(private serverService: ServerService) { }
 
-  newMindMap(roomId: string) {
+  newMindMapSubscription(roomId: string) {
   return this.serverService.newMapSubscriber(roomId);
+  }
+
+  getMindMap(roomId: string) {
+    return this.serverService.mindmap(roomId);
   }
 }

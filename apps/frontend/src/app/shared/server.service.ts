@@ -12,7 +12,9 @@ import {
   LoginGQL,
   MessagesGQL,
   MessagesQuery,
-  NewMessageGQL, NewMindmapGQL,
+  MindmapWithRoomIdGQL,
+  NewMessageGQL,
+  NewMindmapGQL,
   SignupGQL,
   UpdateRoomGQL,
   UpdateUserGQL,
@@ -42,7 +44,8 @@ export class ServerService {
               private createMessageSubscriptionGQL: CreateMessageGQL,
               private updateUserGQL: UpdateUserGQL,
               private deleteUsersGQL: DeleteUserGQL,
-              private newMapGQL: NewMindmapGQL) {
+              private newMapGQL: NewMindmapGQL,
+              private mindmapWithRoomIdGQL: MindmapWithRoomIdGQL) {
   }
 
   login(email: string, password: string) {
@@ -106,7 +109,9 @@ export class ServerService {
   }
 
   newMapSubscriber(roomId: string) {
-    return this.newMapGQL.subscribe({roomId: roomId});
+    return this.newMapGQL.subscribe({roomId: roomId}).pipe(
+      map(result => result.data?.newMindmap)
+    );
   }
 
   createMessage(roomId: string, content: string, from: string) {
@@ -123,6 +128,16 @@ export class ServerService {
 
   deleteUser(id: string) {
     return this.deleteUsersGQL.mutate({id}).pipe(map(result => result.data?.deleteUser));
+  }
+
+  mindmap(roomId: string) {
+    return this.mindmapWithRoomIdGQL.watch({roomId}).valueChanges.pipe(
+      map(result => {
+        if (result.data === null) {
+          return null;
+        }
+        return result.data.mindmapWithRoomId;
+      }));
   }
 }
 

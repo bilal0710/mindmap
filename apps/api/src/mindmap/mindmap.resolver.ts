@@ -5,6 +5,8 @@ import {CreateMindmapInput} from './dto/create-mindmap.input';
 import {UpdateMindmapInput} from './dto/update-mindmap.input';
 import {Public} from "../auth/decorator/public.decorator";
 import {PubSub} from "graphql-subscriptions";
+import {HttpStatus} from "@nestjs/common";
+import {ApolloError} from "apollo-server-express";
 
 const pubSub = new PubSub();
 
@@ -24,17 +26,21 @@ export class MindmapResolver {
   createMindmaps(
     @Args('createMindmapInput') createMindmapInput: CreateMindmapInput
   ) {
-    const result = this.mindmapService.createNodes(createMindmapInput);
-    result.then((data) => {
-      pubSub.publish('newMindmap', {newMindmap: data});
+    return this.mindmapService.createNodes(createMindmapInput).then((data) => {
+      data !== null ? pubSub.publish('newMindmap', {newMindmap: data}) : null;
+    }).catch((err) => {
+      throw new ApolloError(err.message, HttpStatus.BAD_REQUEST.toString())
     });
-    return result;
   }
 
   @Query(() => [Mindmap], {name: 'mindmaps'})
   findAll() {
     return this.mindmapService.findAll();
+  }
 
+  @Query(() => Mindmap, {name: 'mindmapWithRoomId'})
+  findOneWithRoomId(@Args('roomId', {type: () => String}) roomId: string) {
+    return this.mindmapService.findOneWithRoomId(roomId ? roomId : '');
   }
 
   @Query(() => Mindmap, {name: 'mindmap'})
@@ -65,10 +71,12 @@ export class MindmapResolver {
   @Public()
   @Subscription(() => Mindmap,
     {
-      filter: (payload, variables) => payload.newMessage.roomId === variables.roomId
+      filter: (payload, variables) => {
+        return payload.newMindmap.chatroom_id === variables.roomId
+      }
     })
   newMindmap(@Args('roomId') roomId: string) {
-
+    console.log('newMindmap');
     return pubSub.asyncIterator('newMindmap');
   }
 }

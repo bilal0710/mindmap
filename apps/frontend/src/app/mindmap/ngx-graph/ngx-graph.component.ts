@@ -27,41 +27,14 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
       value: '#ffffff'
     }
   ];
-  children: Mindmap[] = [
-    {
-      id: "00000000-0000-0000-0000-000000000001",
-      title: "root",
-      parent_id: "null"
-    },
-    {
-      id: "00000000-0000-0000-0000-000000000003",
-      title: "child_3",
-      parent_id: "00000000-0000-0000-0000-000000000001"
-    },
-    {
-      id: "00000000-0000-0000-0000-000000000005",
-      title: "child_5",
-      parent_id: "00000000-0000-0000-0000-000000000002"
-    },
-    {
-      id: "00000000-0000-0000-0000-000000000004",
-      title: "child_4",
-      parent_id: "00000000-0000-0000-0000-000000000002"
-    },
-    {
-      id: "00000000-0000-0000-0000-000000000002",
-      title: "child_2",
-      parent_id: "00000000-0000-0000-0000-000000000001"
-    },
-    {
-      id: "00000000-0000-0000-0000-000000000006",
-      title: "child_6",
-      parent_id: "00000000-0000-0000-0000-000000000004"
-    }
-  ]
+
+
+  children: Mindmap[] = [];
+
 
   links: Edge[] = [];
   nodes: Node[] = [];
+  root !: Node;
   subscription: Subscription[] = [];
 
   constructor(private mindmapService: MindmapService,
@@ -73,25 +46,68 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
       this.activeRoute.paramMap.subscribe((params) => {
         this.roomId = params.get('id') || '';
       }));
-    this.subscription.push(this.mindmapService.newMindMap(this.roomId).subscribe((result) => {
-      console.log(result);
-    }));
 
-
-    this.nodes = this.children?.map((child) => {
-      return {
-        id: child.id,
-        label: child.title,
+    this.mindmapService.getMindMap(this.roomId).subscribe((result) => {
+      if (result) {
+        this.root = {
+          id: result.id,
+          label: result.title.toUpperCase(),
+        }
+        this.children = result.children as Mindmap[];
+        this.initNodes();
       }
     });
-    this.children = this.children?.filter((child) => child.parent_id !== "null");
-    this.links = this.children.map((child) => {
+
+    this.subscription.push(this.mindmapService.newMindMapSubscription(this.roomId).subscribe(
+      {
+        next: (result) => {
+          if (result) {
+            console.log('result', result);
+            if (result.children.length > 0 && this.children.length === 0) {
+              this.children = result.children as Mindmap[];
+              this.initNodes();
+              return;
+            }
+            if (this.children.length > 0 && this.children.some(child => child.id === result.id) || result.id === this.root?.id) {
+              const newChildren = result.children.filter(newChild => !this.children.find(child => child.id === newChild.id));
+              newChildren.length === 1 ? this.children?.push(newChildren[0] as unknown as Mindmap) :
+                newChildren.forEach((child) => this.children?.push(child as unknown as Mindmap));
+              this.initNodes();
+            }
+            if (result.parent_id === null && !this.root) {
+              this.root = {
+                id: result.id,
+                label: result.title.toUpperCase()
+              }
+              this.initNodes();
+            }
+          }
+        },
+        error: (err) => {
+          console.error('error', err);
+        }
+      }
+    ));
+  }
+
+  initNodes() {
+    const children = this.children?.map((child) => {
+      return {
+        id: child.id,
+        label: child.title.toUpperCase(),
+      }
+    });
+    this.nodes = [this.root, ...children];
+    this.links = this.children.length > 0 ? this.children.map((child) => {
       return {
         source: child.parent_id,
         target: child.id,
         label: 'is parent of',
       }
-    });
+    }) : [{
+      source: this.root.id,
+      target: this.root.id,
+    }];
   }
 
   ngOnDestroy(): void {

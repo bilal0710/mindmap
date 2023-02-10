@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {combineLatest} from "rxjs";
 import {ChatroomService} from "../../chatroom/chatroom.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'mindmap-message',
@@ -24,7 +25,8 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private activeRoute: ActivatedRoute,
-              private chatroomService: ChatroomService) {
+              private chatroomService: ChatroomService,
+              private _snackBar: MatSnackBar) {
     const height = window.innerHeight - 64;
     this.iMessageContainerHeight = (height * 90) / 100;
     this.textAreaContainerHeight = height - this.iMessageContainerHeight
@@ -58,9 +60,17 @@ export class MessageComponent implements OnInit, OnDestroy {
   sendMessage() {
     if (this.message.trim().length === 0) return;
 
-    this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(result => {
-      console.log('result', result);
-      this.message = '';
-    });
+    this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(
+      {
+        next: result => {
+          console.log('result', result);
+        },
+        error: error => {
+          this._snackBar.open(error.message, undefined, {
+            panelClass: 'snackbar-error',
+          });
+        }
+      });
+    this.message = '';
   }
 }

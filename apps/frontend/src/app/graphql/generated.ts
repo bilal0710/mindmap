@@ -203,6 +203,7 @@ export type Query = {
   message: Message;
   messages: Array<Message>;
   mindmap: Mindmap;
+  mindmapWithRoomId: Mindmap;
   mindmaps: Array<Mindmap>;
   user: User;
   users: Array<User>;
@@ -227,6 +228,11 @@ export type QueryMessagesArgs = {
 
 export type QueryMindmapArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryMindmapWithRoomIdArgs = {
+  roomId: Scalars['String'];
 };
 
 
@@ -388,7 +394,7 @@ export type NewMindmapSubscriptionVariables = Exact<{
 }>;
 
 
-export type NewMindmapSubscription = { __typename?: 'Subscription', newMindmap: { __typename?: 'Mindmap', title: string, parent_id?: string | null, chatroom_id?: string | null, children: Array<{ __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null }> } };
+export type NewMindmapSubscription = { __typename?: 'Subscription', newMindmap: { __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null, children: Array<{ __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null }> } };
 
 export type CreateMessageMutationVariables = Exact<{
   content: Scalars['String'];
@@ -418,6 +424,13 @@ export type DeleteUserMutationVariables = Exact<{
 
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', deleted: boolean } };
+
+export type MindmapWithRoomIdQueryVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type MindmapWithRoomIdQuery = { __typename?: 'Query', mindmapWithRoomId: { __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null, children: Array<{ __typename?: 'Mindmap', id: string, title: string, parent_id?: string | null, chatroom_id?: string | null }> } };
 
 export const MessagesDocument = gql`
     query Messages($id: String!) {
@@ -673,6 +686,7 @@ export const NewMessageDocument = gql`
 export const NewMindmapDocument = gql`
     subscription newMindmap($roomId: String!) {
   newMindmap(roomId: $roomId) {
+    id
     title
     parent_id
     chatroom_id
@@ -755,6 +769,33 @@ export const DeleteUserDocument = gql`
   })
   export class DeleteUserGQL extends Apollo.Mutation<DeleteUserMutation, DeleteUserMutationVariables> {
     override document = DeleteUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const MindmapWithRoomIdDocument = gql`
+    query mindmapWithRoomId($roomId: String!) {
+  mindmapWithRoomId(roomId: $roomId) {
+    id
+    title
+    parent_id
+    chatroom_id
+    children {
+      id
+      title
+      parent_id
+      chatroom_id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MindmapWithRoomIdGQL extends Apollo.Query<MindmapWithRoomIdQuery, MindmapWithRoomIdQueryVariables> {
+    override document = MindmapWithRoomIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

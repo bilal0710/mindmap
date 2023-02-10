@@ -61,6 +61,7 @@ type Query {
   messages(id: String!): [Message!]!
   message(id: String!): Message!
   mindmaps: [Mindmap!]!
+  mindmapWithRoomId(roomId: String!): Mindmap!
   mindmap(id: String!): Mindmap!
   chatrooms: [Chatroom!]!
   chatroom(id: String!): Chatroom!
@@ -122,10 +123,10 @@ input UpdateMessageInput {
 }
 
 input CreateMindmapInput {
-  title: String
+  title: String!
   parent_id: String
   chatroom_id: String!
-  nodes: [String!]
+  nodes: [String!]!
 }
 
 input UpdateMindmapInput {

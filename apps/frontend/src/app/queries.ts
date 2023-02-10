@@ -166,6 +166,7 @@ const SUBSCRIPTION_NEW_MESSAGE = gql`
 const SUBSCRIPTION_NEW_MINDMAP = gql`
     subscription newMindmap($roomId : String!) {
         newMindmap (roomId: $roomId) {
+            id,
             title,
             parent_id,
             chatroom_id
@@ -221,3 +222,21 @@ const MUTATION_DELETE_PROFILE = gql`
     }
   }
 `
+
+const QUERY_ONE_MINDMAP_WITH_ROOM = gql`
+  query mindmapWithRoomId($roomId: String!){
+    mindmapWithRoomId (roomId: $roomId) {
+      id,
+      title,
+      parent_id,
+      chatroom_id
+      children{
+        id,
+        title,
+        parent_id,
+        chatroom_id
+      }
+    }
+  }
+`
+
