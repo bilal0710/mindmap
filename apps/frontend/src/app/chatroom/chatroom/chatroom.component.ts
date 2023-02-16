@@ -71,6 +71,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
             this._snackBar.open(this.t.instant("UPDATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
+              panelClass: 'snackbar-success',
             });
             this.router.navigate(['chatrooms']);
           },
@@ -89,6 +90,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
           this._snackBar.open(this.t.instant("CREATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
+            panelClass: 'snackbar-success',
           });
           this.router.navigate(['chatrooms']);
         },
