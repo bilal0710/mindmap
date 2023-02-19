@@ -5,6 +5,8 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {combineLatest} from "rxjs";
 import {ChatroomService} from "../../chatroom/chatroom.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MindmapService} from "../../mindmap/mindmap.service";
 
 @Component({
   selector: 'mindmap-message',
@@ -24,7 +26,10 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private activeRoute: ActivatedRoute,
-              private chatroomService: ChatroomService) {
+              private chatroomService: ChatroomService,
+              private mindmapService: MindmapService,
+              private _snackBar: MatSnackBar) {
+
     const height = window.innerHeight - 64;
     this.iMessageContainerHeight = (height * 90) / 100;
     this.textAreaContainerHeight = height - this.iMessageContainerHeight
@@ -56,10 +61,28 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if (this.message === '') return;
-    this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(result => {
-      console.log('result', result);
-      this.message = '';
-    });
+    if (this.message.trim().length === 0) return;
+
+    if (this.message.includes('#') && this.message.includes('_')) {
+      const node = this.message.substring(this.message.indexOf('#') + 1);
+      const nodes = node.split('_');
+      if (nodes[0] === 'delete') {
+        this.mindmapService.nodeSubject.next(nodes.slice(1));
+        this.message = this.message.substring(this.message.indexOf('#') + 1)
+      }
+    }
+
+    this.messageService.createMessage(this.roomId, this.message, this.user.id).subscribe(
+      {
+        next: result => {
+          console.log('result', result);
+        },
+        error: error => {
+          this._snackBar.open(error.message, undefined, {
+            panelClass: 'snackbar-error',
+          });
+        }
+      });
+    this.message = '';
   }
 }

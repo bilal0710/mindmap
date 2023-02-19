@@ -51,6 +51,7 @@
     <button
       mat-stroked-button
       color="accent"
+      [disabled]="!roomList?.selectedOptions?.selected?.length"
       (click)="navigateToMessageView(roomList.selectedOptions.selected[0].value)"
       >
       {{ 'SUBMIT' | translate }}

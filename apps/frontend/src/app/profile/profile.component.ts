@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -6,7 +6,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
 import {ProfileService} from "./profile.service";
 import {ConfirmationDialogComponent} from "../lib/confirmation-dialog/confirmation-dialog.component";
-import {FormControl} from "@angular/forms";
+import {FormControl, NgForm} from "@angular/forms";
 import {ChatroomService} from "../chatroom/chatroom.service";
 import {UpdateUserMutation} from "../graphql/generated";
 
@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   newPassword!: string;
   newPasswordRepeat!: string;
   langSelect = new FormControl(this.t.currentLang);
+  @ViewChild('f') f !: NgForm
 
   error!: string;
 
@@ -71,7 +72,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.newPasswordRepeat,
     ).subscribe(
       {
-        next: () => {
+        next: (data) => {
+          if (data) {
+            this.f.resetForm();
+          }
           this.snackBar.open(
             this.t.instant('PROFILES.PROFILE_UPDATE_SUCCESS'),
             undefined,

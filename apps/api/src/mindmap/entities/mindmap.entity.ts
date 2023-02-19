@@ -14,4 +14,7 @@ export class Mindmap {
 
   @Field(() => Mindmap, {nullable: true})
   children: Mindmap[];
+
+  @Field({nullable: true})
+  chatroom_id: string;
 }

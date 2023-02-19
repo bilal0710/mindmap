@@ -11,4 +11,7 @@ export class CreateMindmapInput {
 
   @Field({nullable: false})
   chatroom_id: string;
+
+  @Field(() => [String], {nullable: false})
+  nodes: string[];
 }
