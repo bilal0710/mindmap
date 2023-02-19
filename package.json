@@ -7,6 +7,7 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "start:all": "nx run-many --target=serve --all",
+    "prisma:migrate": "prisma migrate dev create",
     "lint": "nx lint",
     "build": "nx build",
     "test": "nx test",
