@@ -68,8 +68,13 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
       {
         next: (result) => {
           if (result) {
-            console.log('result', result);
             if (result.children.length > 0 && this.children.length === 0) {
+              if(result.parent_id === null && !this.root) {
+                this.root = {
+                  id: result.id,
+                  label: result.title.toUpperCase()
+                }
+              }
               this.children = result.children as Mindmap[];
               this.initNodes();
               return;
@@ -104,7 +109,6 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
       }
     });
     this.nodes = [this.root, ...children];
-    console.log('nodes', this.nodes);
     this.links = this.children.length > 0 ? this.children.map((child) => {
       return {
         source: child.parent_id,
@@ -125,8 +129,6 @@ export class NgxGraphComponent implements OnInit, OnDestroy {
 
     const shouldDeleteNodes = this.nodes.filter(node => data.find(n => n.toLowerCase().trim() === node.label?.toLowerCase()))
     if (data[0] !== shouldDeleteNodes[0].label?.toLowerCase()) {
-      console.log('data', data);
-      console.log('shouldDeleteNodes', shouldDeleteNodes);
       const temp = shouldDeleteNodes[0];
       shouldDeleteNodes[0] = shouldDeleteNodes[1];
       shouldDeleteNodes[1] = temp;

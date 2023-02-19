@@ -30,7 +30,7 @@ export class MindmapService {
   }
 
   async createNodes(createMindmapInput: CreateMindmapInput) {
-    console.log('createMindmapInput', createMindmapInput);
+
     createMindmapInput.nodes = createMindmapInput.nodes.filter(node => node !== '').map(node => node.toLowerCase());
 
     const mindmaps = await this.prisma.mindmap.findMany({

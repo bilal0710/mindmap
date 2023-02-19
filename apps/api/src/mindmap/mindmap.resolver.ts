@@ -27,6 +27,7 @@ export class MindmapResolver {
     @Args('createMindmapInput') createMindmapInput: CreateMindmapInput
   ) {
     return this.mindmapService.createNodes(createMindmapInput).then((data) => {
+      console.log('data', data);
       data !== null ? pubSub.publish('newMindmap', {newMindmap: data}) : null;
     }).catch((err) => {
       throw new ApolloError(err.message, HttpStatus.BAD_REQUEST.toString())
