@@ -39,6 +39,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
       }));
 
     if (this.id !== '') {
+      console.log('id', this.id);
       this.subscriptions.push(combineLatest([
           this.chatroomService.getAllUsers(),
           this.chatroomService.getChatroom(this.id),
@@ -52,7 +53,11 @@ export class ChatroomComponent implements OnInit, OnDestroy {
           this.selectedUser.setValue(users);
         })
       )
+      return;
     }
+    this.subscriptions.push(this.chatroomService.getAllUsers().subscribe(result => {
+      this.userList = result;
+    }));
   }
 
   remove(user: UsersQuery['users'][number]): void {
@@ -71,6 +76,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
             this._snackBar.open(this.t.instant("UPDATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
+              panelClass: 'snackbar-success',
             });
             this.router.navigate(['chatrooms']);
           },
@@ -86,9 +92,11 @@ export class ChatroomComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.chatroomService.CreateChatroom(this.chatroomName, this.roomPrivacy, users || []).subscribe(
       {
         next: () => {
+          console.log('next');
           this._snackBar.open(this.t.instant("CREATE_CHATROOM_MESSAGE_SUCCESSES"), 'X', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
+            panelClass: 'snackbar-success',
           });
           this.router.navigate(['chatrooms']);
         },

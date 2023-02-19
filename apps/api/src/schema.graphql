@@ -51,6 +51,7 @@ type Mindmap {
   title: String!
   parent_id: String
   children: [Mindmap!]!
+  chatroom_id: String
 }
 
 type Query {
@@ -59,10 +60,11 @@ type Query {
   whoAmI: User!
   messages(id: String!): [Message!]!
   message(id: String!): Message!
+  mindmaps: [Mindmap!]!
+  mindmapWithRoomId(roomId: String!): Mindmap!
+  mindmap(id: String!): Mindmap!
   chatrooms: [Chatroom!]!
   chatroom(id: String!): Chatroom!
-  mindmaps: [Mindmap!]!
-  mindmap(id: String!): Mindmap!
 }
 
 type Mutation {
@@ -74,14 +76,15 @@ type Mutation {
   createMessage(createMessageInput: CreateMessageInput!): Message!
   updateMessage(updateMessageInput: UpdateMessageInput!): Message!
   removeMessage(id: String!): Message!
+  createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
+  createMindmaps(createMindmapInput: CreateMindmapInput!): Mindmap!
+  updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
+  removeMindmap(id: String!): Mindmap!
   createChatroom(createChatroomInput: CreateChatroomInput!): Chatroom!
   updateChatroom(updateChatroomInput: UpdateChatroomInput!): Chatroom!
   removeChatroom(id: String!): Chatroom!
   removeUserFromChatroom(userId: String!, roomId: String!): Chatroom!
   addUserFromChatroom(userId: String!, roomId: String!): Chatroom!
-  createMindmap(createMindmapInput: CreateMindmapInput!): Mindmap!
-  updateMindmap(updateMindmapInput: UpdateMindmapInput!): Mindmap!
-  removeMindmap(id: String!): Mindmap!
 }
 
 input CreateUserInput {
@@ -119,6 +122,21 @@ input UpdateMessageInput {
   id: String!
 }
 
+input CreateMindmapInput {
+  title: String!
+  parent_id: String
+  chatroom_id: String!
+  nodes: [String!]!
+}
+
+input UpdateMindmapInput {
+  title: String
+  parent_id: String
+  chatroom_id: String
+  nodes: [String!]
+  id: String!
+}
+
 input CreateChatroomInput {
   name: String!
   users: [String!]!
@@ -132,19 +150,7 @@ input UpdateChatroomInput {
   users: [String!]!
 }
 
-input CreateMindmapInput {
-  title: String!
-  parent_id: String
-  chatroom_id: String!
-}
-
-input UpdateMindmapInput {
-  title: String
-  parent_id: String
-  chatroom_id: String
-  id: String!
-}
-
 type Subscription {
   newMessage(roomId: String!): Message!
+  newMindmap(roomId: String!): Mindmap!
 }
